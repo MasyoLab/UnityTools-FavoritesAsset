@@ -10,8 +10,8 @@ using System.Text;
 
 //=========================================================
 //
-//  developer : masyo-lab
-//  github    : https://github.com/masyo-lab/UnityTools
+//  developer : MasyoLab
+//  github    : https://github.com/MasyoLab/UnityTools
 //
 //=========================================================
 
