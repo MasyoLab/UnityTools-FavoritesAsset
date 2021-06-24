@@ -37,6 +37,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         UnlockAll,
         NumFav,
         ChangeDisplay,
+        Import,
+        Export,
     }
 
     class CONST {
@@ -104,22 +106,26 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         static public readonly string[] LANGUAGE = {
             $"{LanguageEnum.English}",
-            $"{LanguageEnum.Japanese}",
+            "日本語",
         };
 
         static readonly string[] text_en ={
-            "Language",
+            "Editor Language",
             "Drag and drop to register",
-            "Unlock all favorites",
-            "Number of Favorites",
-            "Change the display order",
+            "Delete all favorites",
+            "favourites",
+            "Sort Window",
+            "Import",
+            "Export",
         };
         static readonly string[] text_jp ={
-            "言語",
+            "エディター言語",
             "ドラッグ＆ドロップで登録",
             "全てのお気に入りを解除",
-            "お気に入りの数",
+            "個のお気に入り",
             "表示順の変更",
+            "インポート",
+            "エクスポート",
         };
 
         static public string GetText(LanguageEnum lang, Texts text) {
@@ -530,7 +536,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // アセット表示
             DrawAssetGUI();
 
-            GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true), GUILayout.Height(20)), $"{CONST.GetText(_manager.Language, Texts.NumFav)} : {_manager.Data.Count}");
+            GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true), GUILayout.Height(20)), $"{_manager.Data.Count} {CONST.GetText(_manager.Language, Texts.NumFav)}");
         }
 
         void OnFocus() {
@@ -605,10 +611,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void ImportExportGUI() {
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent("Import"), GUILayout.ExpandWidth(true), GUILayout.Height(20))) {
+            if (GUILayout.Button(new GUIContent(CONST.GetText(_manager.Language, Texts.Import)), GUILayout.ExpandWidth(true), GUILayout.Height(20))) {
                 _manager.SetJsonData(InOutSys.Load());
             }
-            if (GUILayout.Button(new GUIContent("Export"), GUILayout.ExpandWidth(true), GUILayout.Height(20))) {
+            if (GUILayout.Button(new GUIContent(CONST.GetText(_manager.Language, Texts.Export)), GUILayout.ExpandWidth(true), GUILayout.Height(20))) {
                 InOutSys.Save(_manager.AssetDBJson);
             }
             GUILayout.EndHorizontal();
