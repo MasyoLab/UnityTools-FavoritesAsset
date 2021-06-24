@@ -1,6 +1,4 @@
 # UnityTools
-The extension editor for this repository is available under a free and permissive license.
-
 This repository is for developing features that are not included in the build.
 
 ----
