@@ -10,7 +10,7 @@ This repository is for developing features that are not included in the build.
 
 The extended editor can be used from “Tools”.
 
-The access method may change with future expansion.
+Note : The access method may change with future expansion.
 
 For more information on how to use each of the extension editors, please check the [Wiki](https://github.com/MasyoLab/UnityTools/wiki).
 
