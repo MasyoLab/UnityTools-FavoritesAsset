@@ -7,7 +7,7 @@ This function allows you to bookmark (register as a favorite) resources.
 ![sub window](https://user-images.githubusercontent.com/20793765/123297813-e15dfd80-d552-11eb-9622-9ab2e9da8b3f.jpg)
 
 ### Register
-You can bookmark assets by dragging & dropping them.
+You can bookmark assets by dragging and dropping them.
 ![fav assets action 1](https://user-images.githubusercontent.com/20793765/123298861-e5d6e600-d553-11eb-8928-ee576f50ca90.gif)
 
 ### Ping asset. Open asset.
