@@ -12,7 +12,7 @@ The extended editor can be used from “Tools”.
 
 Note : The access method may change with future expansion.
 
-For more information on how to use each of the extension editors, please check the [Wiki](https://github.com/MasyoLab/UnityTools/wiki).
+- [Favorites Asset](https://github.com/MasyoLab/UnityTools/tree/master/Assets/MasyoLab%40github/Editor/FavoritesAsset#readme)
 
 License
 -------
