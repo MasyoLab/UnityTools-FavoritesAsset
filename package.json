@@ -3,6 +3,19 @@
     "displayName": "MasyoLab@UnityTools",
     "version": "1.0.2",
     "unity": "2018.1",
-    "description": "説明分",
+    "description": "UnityTools",
+    "author": {
+        "name": "MasyoLab",
+        "url": "https://github.com/MasyoLab"
+    },
+    "keywords": [
+        "masyolab",
+        "masyo lab",
+        "favoritesasset",
+        "favorites asset",
+        "favorites",
+        "bookmark",
+        "fav"
+    ],
     "dependencies": {}
 }
