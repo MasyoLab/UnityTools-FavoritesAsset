@@ -64,3 +64,4 @@ ProjectSettings/
 Packages/
 Assets/*
 !Assets/MasyoLab@github/
+!UnityTools
