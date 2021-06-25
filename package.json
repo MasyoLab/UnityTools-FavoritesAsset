@@ -1,11 +1,12 @@
 {
     "name": "com.masyo-lab.unity-tools",
-    "displayName": "MasyoLab@UnityTools",
     "version": "1.0.2",
+    "displayName": "MasyoLab@UnityTools",
     "unity": "2018.1",
-    "description": "UnityTools",
+    "description": "UnityTools\n\nThe extended editor can be used from “Tools”.\nNote : The access method may change with future expansion.\n\nLicense\nThe extension editor included in this repository is licensed under the MIT License. see LICENSE for more information.",
     "author": {
         "name": "MasyoLab",
+        "email": "masyo.lab@gmail.com",
         "url": "https://github.com/MasyoLab"
     },
     "keywords": [
