@@ -1,8 +1,0 @@
-{
-    "name": "com.masyo-lab.unity-tools",
-    "displayName": "MasyoLab@UnityTools",
-    "version": "1.0.2",
-    "unity": "2018.1",
-    "description": "説明分",
-    "dependencies": {}
-}
