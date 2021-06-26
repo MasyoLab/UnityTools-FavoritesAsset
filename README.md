@@ -17,6 +17,7 @@ In the package manager, press "Add package from git URL..." and paste the follow
 https://github.com/MasyoLab/UnityTools-FavoritesAsset.git
 ```
 
+### For manifest.json
 Add the following sentence to manifest.json in the Packages folder to complete the installation
 ```
 "com.masyo-lab.favorites-asset": "https://github.com/MasyoLab/UnityTools-FavoritesAsset.git",
