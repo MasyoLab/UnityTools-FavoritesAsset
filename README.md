@@ -3,7 +3,7 @@ This repository is for developing features that are not included in the build.
 
 ----
 
-How to install
+Install
 -------
 
 ### For PackageManager
