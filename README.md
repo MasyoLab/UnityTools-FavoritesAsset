@@ -23,9 +23,6 @@ Add the following sentence to manifest.json in the Packages folder to complete t
 "com.masyo-lab.favorites-asset": "https://github.com/MasyoLab/UnityTools-FavoritesAsset.git",
 ```
 
-### When PackageManager is not used
-[Download the latest unitypackage from here.](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)
-
 ----
 
 ### Usage
