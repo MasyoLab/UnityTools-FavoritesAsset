@@ -12,10 +12,10 @@ Install
 ### For PackageManager
 Add the following sentence to manifest.json in the Packages folder to complete the installation
 ```
-"com.masyo-lab.unity-tools": "https://github.com/MasyoLab/UnityTools.git",
+"com.masyo-lab.favorites-asset": "https://github.com/MasyoLab/UnityTools-FavoritesAsset.git",
 ```
 ### When PackageManager is not used
-[Download the latest unitypackage from here.](https://github.com/MasyoLab/UnityTools/releases)
+[Download the latest unitypackage from here.](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)
 
 ----
 
@@ -47,4 +47,4 @@ You can import and export the data you have registered as a favorite.
 License
 -------
 
-This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools/blob/master/LICENSE) for more information.
+This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE) for more information.
