@@ -3,6 +3,19 @@ This repository is for developing features that are not included in the build.
 
 ----
 
+How to install
+-------
+
+### For PackageManager
+Add the following sentence to manifest.json in the Packages folder to complete the installation
+```
+"com.masyo-lab.unity-tools": "https://github.com/MasyoLab/UnityTools.git",
+```
+### When PackageManager is not used
+[Download the latest unitypackage from here.](https://github.com/MasyoLab/UnityTools/releases)
+
+----
+
 ### Usage
 ![Open the editor](https://user-images.githubusercontent.com/20793765/123286869-3f85e300-d549-11eb-98e9-33523237ddd6.png)
 
