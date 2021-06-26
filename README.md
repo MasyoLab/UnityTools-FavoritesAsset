@@ -12,19 +12,14 @@ Install
 
 ![user action 7](https://user-images.githubusercontent.com/20793765/123511981-bb09a080-d6bf-11eb-8a15-68bad60e0278.png)
 
-In the package manager, press "Add package from git URL..." and paste the following string into the input field that comes up.
-```
-https://github.com/MasyoLab/UnityTools-FavoritesAsset.git
-```
+In the package manager, press “Add package from git URL...” and paste the following string into the input field that comes up.
+
+```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git```
 
 ### For manifest.json
 Add the following sentence to manifest.json in the Packages folder to complete the installation
-```
-"com.masyo-lab.favorites-asset": "https://github.com/MasyoLab/UnityTools-FavoritesAsset.git",
-```
 
-### When PackageManager is not used
-[Download the latest unitypackage from here.](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)
+```"com.masyo-lab.favorites-asset": "https://github.com/MasyoLab/UnityTools-FavoritesAsset.git",```
 
 ----
 
