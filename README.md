@@ -12,7 +12,7 @@ Install
 
 ![user action 7](https://user-images.githubusercontent.com/20793765/123511981-bb09a080-d6bf-11eb-8a15-68bad60e0278.png)
 
-In the package manager, press "Add package from git URL..." and paste the following string into the input field that comes up.
+In the package manager, press “Add package from git URL...” and paste the following string into the input field that comes up.
 ```
 https://github.com/MasyoLab/UnityTools-FavoritesAsset.git
 ```
