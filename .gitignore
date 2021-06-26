@@ -57,10 +57,3 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
-
-# MasyoLab UnityTools Setting
-*.vsconfig
-ProjectSettings/
-Packages/
-Assets/*
-!Assets/MasyoLab@github/
