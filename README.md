@@ -1,4 +1,8 @@
-# Favorites Asset
+# Favorites Asset Window
+
+[![CI-Build](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml/badge.svg?branch=release&event=push)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml)
+[![CI-Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
+
 This function allows you to bookmark (register as a favorite) resources.
 
 ![main window](https://user-images.githubusercontent.com/20793765/123297800-defba380-d552-11eb-8667-b630e260471d.jpg)
