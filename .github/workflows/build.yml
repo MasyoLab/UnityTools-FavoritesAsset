@@ -35,5 +35,5 @@ jobs:
 
       - uses: actions/upload-artifact@v1
         with:
-          name: Build.unitypackage
-          path: Build.unitypackage
+          name: FavoritesAsset.unitypackage
+          path: FavoritesAsset.unitypackage
