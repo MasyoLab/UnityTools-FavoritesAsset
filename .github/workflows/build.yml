@@ -1,11 +1,17 @@
 name: CI-Build
 on: 
   push:
-    branches:
-      - release
+    tags:
+      - '*'
 env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
   PROJECT_ROOT: .
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  with:
+    tag_name: ${{ github.ref }}
+    release_name: ${{ github.ref }}
+    draft: false
+    prerelease: false
 jobs:
   createUnityPackage:
     name: Create UnityPackage
@@ -37,3 +43,13 @@ jobs:
         with:
           name: FavoritesAsset.unitypackage
           path: FavoritesAsset.unitypackage
+      
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: FavoritesAsset.unitypackage
+          asset_name: FavoritesAsset.unitypackage
+          asset_content_type: application/gzip
