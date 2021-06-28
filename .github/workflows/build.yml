@@ -38,6 +38,7 @@ jobs:
           name: FavoritesAsset.unitypackage
           path: FavoritesAsset.unitypackage
       
+      - uses: actions/checkout@v1
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -48,7 +49,7 @@ jobs:
           release_name: ${{ github.ref }}
           draft: false
           prerelease: false
-          
+
       - name: Upload Release Asset
         uses: actions/upload-release-asset@master
         env:
