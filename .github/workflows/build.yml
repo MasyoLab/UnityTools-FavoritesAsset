@@ -6,7 +6,6 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
   PROJECT_ROOT: .
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 jobs:
   createUnityPackage:
     name: Create UnityPackage
@@ -39,15 +38,21 @@ jobs:
           name: FavoritesAsset.unitypackage
           path: FavoritesAsset.unitypackage
       
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           draft: false
           prerelease: false
+          
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: FavoritesAsset.unitypackage
