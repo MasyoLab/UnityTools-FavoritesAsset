@@ -1,10 +1,10 @@
 name: CI-Build
 on: 
   push:
-    tags:
-      - '*'
+    branches:
+      - release
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   PROJECT_ROOT: .
 jobs:
   createUnityPackage:
@@ -34,16 +34,6 @@ jobs:
           buildMethod: CI.Builder.Build
 
       - uses: actions/upload-artifact@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
           name: FavoritesAsset.unitypackage
           path: FavoritesAsset.unitypackage
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: FavoritesAsset.unitypackage
-          asset_name: FavoritesAsset.unitypackage
-          asset_content_type: application/gzip
