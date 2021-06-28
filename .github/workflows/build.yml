@@ -7,11 +7,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
   PROJECT_ROOT: .
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-  with:
-    tag_name: ${{ github.ref }}
-    release_name: ${{ github.ref }}
-    draft: false
-    prerelease: false
 jobs:
   createUnityPackage:
     name: Create UnityPackage
@@ -48,6 +43,11 @@ jobs:
         uses: actions/upload-release-asset@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: FavoritesAsset.unitypackage
