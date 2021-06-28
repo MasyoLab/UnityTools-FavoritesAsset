@@ -1,4 +1,4 @@
-name: CI-Test
+name: Test
 on: push
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
