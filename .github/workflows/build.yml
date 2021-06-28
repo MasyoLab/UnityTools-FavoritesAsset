@@ -1,0 +1,39 @@
+name: CI-Build
+on: 
+  push:
+    branches:
+      - master
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  PROJECT_ROOT: .
+jobs:
+  createUnityPackage:
+    name: Create UnityPackage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      - uses: actions/cache@v1.1.0
+        with:
+          path: ${{ env.PROJECT_ROOT }}/Library
+          key: Library-${{ env.PROJECT_ROOT }}
+
+      - name: Get Unity editor version
+        id: getUnityEditorVersion
+        uses: CumulusDS/get-yaml-paths-action@v0.1.0
+        with:
+          file: ${{ env.PROJECT_ROOT }}/ProjectSettings/ProjectVersion.txt
+          versionOutput: m_EditorVersion
+
+      - uses: webbertakken/unity-builder@v1.0
+        with:
+          unityVersion: ${{ steps.getUnityEditorVersion.outputs.versionOutput }}
+          projectPath: ${{ env.PROJECT_ROOT }}
+          buildMethod: CI.Builder.Build
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Build.unitypackage
+          path: Build.unitypackage
