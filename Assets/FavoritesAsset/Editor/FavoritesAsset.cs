@@ -50,6 +50,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         void OnGUI() {
             DrawBG();
 
+            DrawToolbar();
+
             // ドラッグアンドドロップ
             DragAndDropGUI();
 
@@ -337,6 +339,35 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Event.current.Use();
 
             return DragAndDrop.paths;
+        }
+
+        //上のツールバーを表示する
+        private void DrawToolbar() {
+            void Callback(object obj) {
+                Debug.Log("Selected: " + obj);
+            }
+
+            void OpenMenu(Vector2 mousePos) {
+                Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
+                if (contextRect.Contains(mousePos)) {
+                    // Now create the menu, add items and show it
+                    GenericMenu menu = new GenericMenu();
+
+                    menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false, Callback, "item 1");
+                    menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false, Callback, "item 2");
+                    menu.AddSeparator("");
+                    menu.AddItem(new GUIContent("SubMenu/MenuItem3"), false, Callback, "item 3");
+
+                    menu.ShowAsContext();
+                }
+            }
+
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.Width(100))) {
+                if (GUILayout.Button("File", EditorStyles.toolbarDropDown)) {
+                    OpenMenu(Vector2.zero);
+                    Debug.Log("New!");
+                }
+            }
         }
     }
 }
