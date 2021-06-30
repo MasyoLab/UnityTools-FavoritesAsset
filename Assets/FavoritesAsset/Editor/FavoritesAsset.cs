@@ -34,6 +34,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         static Vector2 _scrollVec2;
+        SortWindow _sortWindow = null;
+        UnityEngine.Events.UnityAction _guiAction;
+
 
         /// <summary>
         /// ウィンドウを追加
@@ -44,13 +47,27 @@ namespace MasyoLab.Editor.FavoritesAsset {
             window.titleContent.image = EditorGUIUtility.IconContent(CONST.FAVORITE_ICON).image;
         }
 
+        void GUIActionUpdate() {
+            if (_guiAction == null) {
+                _guiAction = FavoritesGUI;
+            }
+            _guiAction.Invoke();
+        }
+
         /// <summary>
         /// GUI 描画
         /// </summary>
         void OnGUI() {
-            DrawBG();
-
             DrawToolbar();
+            GUIActionUpdate();
+        }
+
+        void OnFocus() {
+            _manager.CheckFavoritesAsset();
+        }
+
+        void FavoritesGUI() {
+            DrawBG();
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
@@ -67,10 +84,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             DrawAssetGUI();
 
             GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true), GUILayout.Height(20)), $"{_manager.Data.Count} {LanguageData.GetText(_manager.Language, TextEnum.NumFav)}");
-        }
-
-        void OnFocus() {
-            _manager.CheckFavoritesAsset();
         }
 
         void DrawBG() {
@@ -154,12 +167,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 // お気に入り全解除
                 if (GUILayout.Button(content, GUILayout.ExpandWidth(true), GUILayout.Height(40))) {
                     _manager.RemoveAll();
-                }
-            }
-            {
-                var content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.ChangeDisplay));
-                if (GUILayout.Button(content, GUILayout.ExpandWidth(true), GUILayout.Height(40))) {
-                    SortWindow.Display(this, _manager);
                 }
             }
             GUILayout.EndHorizontal();
@@ -324,12 +331,30 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return DragAndDrop.paths;
         }
 
-        //上のツールバーを表示する
-        private void DrawToolbar() {
+        void DrawToolbar() {
+            GUIContent content = null;
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.MinWidth(1))) {
                 if (GUILayout.Button("File", EditorStyles.toolbarDropDown)) {
                     OpenMenu(Vector2.zero);
+                }
+
+                content = new GUIContent("Fav Window");
+                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
+                    _guiAction = FavoritesGUI;
+                }
+
+                content = new GUIContent("Sort Window");
+                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
+                    _sortWindow = _sortWindow ?? new SortWindow();
+                    _sortWindow.SetData(_manager);
+                    _guiAction = _sortWindow.SortGUI;
+                }
+
+                content = new GUIContent("Setting");
+                content.image = EditorGUIUtility.IconContent(CONST.ICON_SETTINGS).image;
+                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
+                    _guiAction = () => { };
                 }
             }
         }
@@ -349,5 +374,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 menu.ShowAsContext();
             }
         }
+
+
     }
 }

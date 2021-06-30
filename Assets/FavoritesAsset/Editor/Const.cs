@@ -70,6 +70,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const string SELECTION_LIST_TEMPLATE_ICON = "d_SelectionListTemplate Icon";
 
         /// <summary>
+        /// Settings Icon
+        /// </summary>
+        public const string ICON_SETTINGS = "SettingsIcon";
+
+        /// <summary>
         /// レイアウト
         /// </summary>
         public const int GUI_LAYOUT_HEIGHT = 22;
