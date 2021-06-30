@@ -35,6 +35,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         static Vector2 _scrollVec2;
         SortWindow _sortWindow = null;
+        SettingWindow _settingWindow = null;
         UnityEngine.Events.UnityAction _guiAction;
 
 
@@ -71,9 +72,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
-
-            // プルダウンメニュー
-            PulldownMenuGUI();
 
             // メニュー
             MenuGUI();
@@ -146,15 +144,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             _manager.SavePrefs();
-        }
-
-        /// <summary>
-        /// プルダウンメニュー
-        /// </summary>
-        void PulldownMenuGUI() {
-            EditorGUI.BeginChangeCheck();
-            _manager.Language = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(_manager.Language, TextEnum.Language), (int)_manager.Language, LanguageData.LANGUAGE);
-            EditorGUI.EndChangeCheck();
         }
 
         /// <summary>
@@ -336,15 +325,15 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.MinWidth(1))) {
                 if (GUILayout.Button("File", EditorStyles.toolbarDropDown)) {
-                    OpenMenu(Vector2.zero);
+                    OpenMenuA(Vector2.zero);
                 }
 
-                content = new GUIContent("Fav Window");
+                content = new GUIContent("Favorites");
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     _guiAction = FavoritesGUI;
                 }
 
-                content = new GUIContent("Sort Window");
+                content = new GUIContent("Sort");
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     _sortWindow = _sortWindow ?? new SortWindow();
                     _sortWindow.SetData(_manager);
@@ -354,27 +343,56 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 content = new GUIContent("Setting");
                 content.image = EditorGUIUtility.IconContent(CONST.ICON_SETTINGS).image;
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _guiAction = () => { };
+                    _settingWindow = _settingWindow ?? new SettingWindow();
+                    _settingWindow.SetData(_manager);
+                    _guiAction = _settingWindow.SettingGUI;
                 }
             }
         }
 
-        void OpenMenu(Vector2 mousePos) {
+        void OpenMenuA(Vector2 mousePos) {
 
             Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
             if (contextRect.Contains(mousePos)) {
                 // Now create the menu, add items and show it
                 var menu = new GenericMenu();
 
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false, (call) => { _manager.SetJsonData(SaveLoad.Load()); }, "item 1");
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false, (call) => { SaveLoad.Save(_manager.AssetDBJson); }, "item 2");
+                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
+                    (call) => { 
+                        _manager.SetJsonData(SaveLoad.Load()); 
+                    }, "item 1");
+
+                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false, 
+                    (call) => { 
+                        SaveLoad.Save(_manager.AssetDBJson);
+                    }, "item 2");
+
                 menu.AddSeparator("");
                 menu.AddItem(new GUIContent("SubMenu/MenuItem3"), false, call => { }, "item 3");
+                menu.ShowAsContext();
+            }
+        }
+        void OpenMenuB(Vector2 mousePos) {
+
+            Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
+            if (contextRect.Contains(mousePos)) {
+                // Now create the menu, add items and show it
+                var menu = new GenericMenu();
+
+                menu.AddItem(new GUIContent("Favorites"), false, 
+                    (call) => {
+                        _guiAction = FavoritesGUI;
+                    }, "item 1");
+
+                menu.AddItem(new GUIContent("Sort"), false,
+                    (call) => {
+                        _sortWindow = _sortWindow ?? new SortWindow();
+                        _sortWindow.SetData(_manager);
+                        _guiAction = _sortWindow.SortGUI;
+                    }, "item 2");
 
                 menu.ShowAsContext();
             }
         }
-
-
     }
 }

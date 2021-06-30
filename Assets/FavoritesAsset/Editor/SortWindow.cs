@@ -22,6 +22,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         List<AssetInfo> _assetInfos = null;
         Vector2 _scrollVec2;
 
+        public SortWindow() { }
+        public SortWindow(FavoritesManager manager) {
+            SetData(manager);
+        }
+
         public void SortGUI() {
             // スクロールビュー
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
