@@ -17,37 +17,34 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// <summary>
     /// ソート画面
     /// </summary>
-    class SortWindow {
+    class SortWindow : BaseWindow {
         ReorderableList _reorderableList = null;
         List<AssetInfo> _assetInfos = null;
         Vector2 _scrollVec2;
 
-        public SortWindow() { }
-        public SortWindow(FavoritesManager manager) {
-            SetData(manager);
-        }
-
-        public void SortGUI() {
+        public override void OnGUI() {
             // スクロールビュー
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
             _reorderableList?.DoLayoutList();
             GUILayout.EndScrollView();
         }
 
-        public void SetData(FavoritesManager manager) {
+        public override void Init(FavoritesManager manager, EditorWindow root) {
+            base.Init(manager, root);
+
             // データを複製
-            _assetInfos = manager.Data.ToList();
+            _assetInfos = _manager.Data.ToList();
 
             // 入れ替え時に呼び出す
             void OnChanged(ReorderableList list) {
                 if (_assetInfos == null)
                     return;
-                manager?.SortData(_assetInfos);
+                _manager.SortData(_assetInfos);
             }
 
             _reorderableList = new ReorderableList(_assetInfos, typeof(GameObject)) {
                 drawElementCallback = OnDrawElement,
-                onChangedCallback = OnChanged
+                onChangedCallback = OnChanged,
             };
         }
 

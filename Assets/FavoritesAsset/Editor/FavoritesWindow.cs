@@ -18,56 +18,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// <summary>
     /// お気に入り登録機能
     /// </summary>
-    public class FavoritesAsset : EditorWindow {
-
-        /// <summary>
-        /// マネージャー
-        /// </summary>
-        static FavoritesManager _ref = null;
-        FavoritesManager _manager {
-            get {
-                if (_ref == null) {
-                    _ref = new FavoritesManager();
-                }
-                return _ref;
-            }
-        }
+    class FavoritesWindow : BaseWindow {
 
         static Vector2 _scrollVec2;
-        SortWindow _sortWindow = null;
-        SettingWindow _settingWindow = null;
-        UnityEngine.Events.UnityAction _guiAction;
 
-
-        /// <summary>
-        /// ウィンドウを追加
-        /// </summary>
-        [MenuItem(CONST.MENU_ITEM)]
-        static void Init() {
-            var window = GetWindow<FavoritesAsset>(CONST.EDITOR_NAME);
-            window.titleContent.image = EditorGUIUtility.IconContent(CONST.FAVORITE_ICON).image;
-        }
-
-        void GUIActionUpdate() {
-            if (_guiAction == null) {
-                _guiAction = FavoritesGUI;
-            }
-            _guiAction.Invoke();
-        }
-
-        /// <summary>
-        /// GUI 描画
-        /// </summary>
-        void OnGUI() {
-            DrawToolbar();
-            GUIActionUpdate();
-        }
-
-        void OnFocus() {
-            _manager.CheckFavoritesAsset();
-        }
-
-        void FavoritesGUI() {
+        public override void OnGUI() {
             DrawBG();
 
             // ドラッグアンドドロップ
@@ -76,7 +31,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // メニュー
             MenuGUI();
 
-            GUILayout.Box("", GUILayout.Width(this.position.width), GUILayout.Height(1));
+            GUILayout.Box("", GUILayout.Width(Position.width), GUILayout.Height(1));
 
             // アセット表示
             DrawAssetGUI();
@@ -90,7 +45,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 右下レイアウト
                 style.alignment = TextAnchor.LowerRight;
-                GUI.Label(new Rect(position.width * 0f, position.height * 0f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0f, Position.height * 0f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D)
                     );
                 style.alignment = originalAlignment;
@@ -101,7 +56,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.LowerLeft;
-                GUI.Label(new Rect(position.width * 0.5f, position.height * 0f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0.5f, Position.height * 0f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED)
                     );
                 style.alignment = originalAlignment;
@@ -112,7 +67,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.UpperRight;
-                GUI.Label(new Rect(position.width * 0f, position.height * 0.5f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0f, Position.height * 0.5f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED)
                     );
                 style.alignment = originalAlignment;
@@ -123,7 +78,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.UpperLeft;
-                GUI.Label(new Rect(position.width * 0.5f, position.height * 0.5f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0.5f, Position.height * 0.5f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D)
                     );
                 style.alignment = originalAlignment;
@@ -136,7 +91,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         void DragAndDropGUI() {
             GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true)), LanguageData.GetText(_manager.Language, TextEnum.DragAndDrop));
 
-            if (!GetObjects(out List<string> objs, this))
+            if (!GetObjects(out List<string> objs, _root))
                 return;
 
             foreach (var item in objs) {
@@ -186,7 +141,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             AssetDrawer.OnPingObjectButton(info);
 
             // アセットを開くボタン
-            AssetDrawer.OnAssetButton(this, info, OpenAsset);
+            AssetDrawer.OnAssetButton(_root, info, OpenAsset);
 
             // お気に入り除ボタン
             bool result = AssetDrawer.OnUnfavoriteButton(info, RemoveAsset);
@@ -299,7 +254,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return null;
 
             var paths = DragAndDrop.paths;
-            if (mouseOverWindow != window || paths.Length <= 0)
+            if (EditorWindow.mouseOverWindow != window || paths.Length <= 0)
                 return null;
 
             // カーソルに「+」のアイコンを表示
@@ -318,81 +273,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Event.current.Use();
 
             return DragAndDrop.paths;
-        }
-
-        void DrawToolbar() {
-            GUIContent content = null;
-
-            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.MinWidth(1))) {
-                if (GUILayout.Button("File", EditorStyles.toolbarDropDown)) {
-                    OpenMenuA(Vector2.zero);
-                }
-
-                content = new GUIContent("Favorites");
-                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _guiAction = FavoritesGUI;
-                }
-
-                content = new GUIContent("Sort");
-                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _sortWindow = _sortWindow ?? new SortWindow();
-                    _sortWindow.SetData(_manager);
-                    _guiAction = _sortWindow.SortGUI;
-                }
-
-                content = new GUIContent("Setting");
-                content.image = EditorGUIUtility.IconContent(CONST.ICON_SETTINGS).image;
-                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _settingWindow = _settingWindow ?? new SettingWindow();
-                    _settingWindow.SetData(_manager);
-                    _guiAction = _settingWindow.SettingGUI;
-                }
-            }
-        }
-
-        void OpenMenuA(Vector2 mousePos) {
-
-            Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
-            if (contextRect.Contains(mousePos)) {
-                // Now create the menu, add items and show it
-                var menu = new GenericMenu();
-
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
-                    (call) => { 
-                        _manager.SetJsonData(SaveLoad.Load()); 
-                    }, "item 1");
-
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false, 
-                    (call) => { 
-                        SaveLoad.Save(_manager.AssetDBJson);
-                    }, "item 2");
-
-                menu.AddSeparator("");
-                menu.AddItem(new GUIContent("SubMenu/MenuItem3"), false, call => { }, "item 3");
-                menu.ShowAsContext();
-            }
-        }
-        void OpenMenuB(Vector2 mousePos) {
-
-            Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
-            if (contextRect.Contains(mousePos)) {
-                // Now create the menu, add items and show it
-                var menu = new GenericMenu();
-
-                menu.AddItem(new GUIContent("Favorites"), false, 
-                    (call) => {
-                        _guiAction = FavoritesGUI;
-                    }, "item 1");
-
-                menu.AddItem(new GUIContent("Sort"), false,
-                    (call) => {
-                        _sortWindow = _sortWindow ?? new SortWindow();
-                        _sortWindow.SetData(_manager);
-                        _guiAction = _sortWindow.SortGUI;
-                    }, "item 2");
-
-                menu.ShowAsContext();
-            }
         }
     }
 }

@@ -90,4 +90,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return string.Join("", provider.ComputeHash(Encoding.UTF8.GetBytes(value)).Select(x => $"{x:x2}"));
         }
     }
+
+    enum WindowEnum {
+        Favorites,
+        Sort,
+        Setting,
+        Max,
+    }
 }

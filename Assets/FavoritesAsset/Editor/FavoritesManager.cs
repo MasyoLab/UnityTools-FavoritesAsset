@@ -81,12 +81,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
             foreach (var item in Data) {
                 // GUIDでパスを取得
                 var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
-                // パスがある
-                if (newPath != string.Empty) {
-                    item.Path = newPath;
-                    // 基本的にここで終わる
+                if (newPath == string.Empty)
                     continue;
-                }
+
+                item.Path = newPath;
+
+                // アセットの情報
+                var assetData = AssetDatabase.LoadAssetAtPath<Object>(item.Path);
+                if (assetData == null)
+                    continue;
+
+                item.Name = assetData.name;
+                item.Type = assetData.GetType().ToString();
             }
             SavePrefs();
         }
