@@ -16,7 +16,7 @@
 
 ![user action 7](https://user-images.githubusercontent.com/20793765/123511981-bb09a080-d6bf-11eb-8a15-68bad60e0278.png)
 
-パッケージマネージャーで「Git URLからパッケージを追加...」を押して、
+パッケージマネージャーで「Add package from git URL...」を押して、
 
 表示された入力フィールドに次の文字列を貼り付けるとインストールできます。
 
