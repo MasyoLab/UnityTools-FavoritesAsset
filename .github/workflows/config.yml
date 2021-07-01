@@ -1,17 +1,28 @@
 version: 2
-cli:
-  server: https://app.fossa.com
-  fetcher: custom
-  project: gradle-test
-analyze:
-  modules:
-  - name: data
-    type: gradle
-    target: 'data:'
-    path: .
-    options:
-      all-configurations: true
-  - name: api
-    type: gradle
-    target: 'api:'
-    path: .
+jobs:
+  build:
+    docker:
+      - image: circleci/<language>:<version TAG>
+    steps:
+      - run: |
+          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+      - checkout
+      - run: <build command>
+      - run:
+        command: fossa 
+        working_directory: <repo_dir>
+  test:
+    docker:
+      - image: circleci/<language>:<version TAG>
+    steps:
+      - checkout
+      - run: <test command>
+      - run:
+        command: fossa test
+        working_directory: <repo_dir>
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
