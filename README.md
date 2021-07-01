@@ -2,6 +2,7 @@
 
 [![Build](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml/badge.svg?branch=release&event=push)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml)
 [![Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
 
 This function allows you to bookmark (register as a favorite) resources.
 
@@ -51,3 +52,7 @@ License
 -------
 
 This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE) for more information.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_large)
