@@ -4,9 +4,6 @@
 [![Build](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml/badge.svg?branch=release&event=push)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml)
 [![Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
 
-[![Coverage Status](https://coveralls.io/repos/github/MasyoLab/UnityTools-FavoritesAsset/badge.svg?branch=master)](https://coveralls.io/github/MasyoLab/UnityTools-FavoritesAsset?branch=master)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
-
 This function allows you to bookmark (register as a favorite) resources.
 
 ![main window](https://user-images.githubusercontent.com/20793765/123297800-defba380-d552-11eb-8667-b630e260471d.jpg)
