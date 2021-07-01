@@ -52,7 +52,3 @@ License
 -------
 
 This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE) for more information.
-
-
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_large)
