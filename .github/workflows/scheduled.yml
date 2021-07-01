@@ -6,7 +6,7 @@ name: scheduled
 
 on:
   schedule:
-    - cron:  '33 2 * * *'
+    - cron:  '35 20 * * *'
 
 jobs:
   scheduled:
