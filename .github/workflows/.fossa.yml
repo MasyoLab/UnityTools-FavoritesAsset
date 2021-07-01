@@ -1,0 +1,17 @@
+version: 2
+cli:
+  server: https://app.fossa.com
+  fetcher: custom
+  project: gradle-test
+analyze:
+  modules:
+  - name: data
+    type: gradle
+    target: 'data:'
+    path: .
+    options:
+      all-configurations: true
+  - name: api
+    type: gradle
+    target: 'api:'
+    path: .
