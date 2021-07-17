@@ -20,7 +20,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         SettingData _linker {
             get {
                 if (_ref == null) {
-                    _ref = LoadAssetInfo();
+                    _ref = LoadSettingData();
                 }
                 return _ref;
             }
@@ -31,21 +31,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public LanguageEnum Language {
             get => _linker.Language;
             set {
-                _linker.Language = value;
-                SavePrefs();
+                if (_linker.Language != value) {
+                    _linker.Language = value;
+                    SaveSettingData();
+                }
             }
         }
 
-        public void SavePrefs() {
-            EditorPrefs.SetString(CONST.SETTING_DATA_KEY_NAME, JsonUtility.ToJson(_linker));
+        public void SaveSettingData() {
+            SaveLoad.Save(JsonUtility.ToJson(_linker), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
         }
 
-        SettingData LoadAssetInfo() {
-            // データがない
-            if (!EditorPrefs.HasKey(CONST.SETTING_DATA_KEY_NAME))
-                return new SettingData();
-
-            string jsonData = EditorPrefs.GetString(CONST.SETTING_DATA_KEY_NAME);
+        SettingData LoadSettingData() {
+            string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
 
             // json から読み込む
             var assets = JsonUtility.FromJson<SettingData>(jsonData);

@@ -23,7 +23,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         AssetInfoList _assetInfo {
             get {
                 if (_ref == null) {
-                    _ref = LoadAssetInfo();
+                    _ref = LoadFavoritesData();
                 }
                 return _ref;
             }
@@ -65,29 +65,26 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public bool ExistsAssetPath(string path) => _assetInfo.Ref.Exists(x => x.Path == path);
 
-        public void SavePrefs() {
-            EditorPrefs.SetString(CONST.DATA_KEY_NAME, JsonUtility.ToJson(_assetInfo));
+        public void SaveFavoritesData() {
+            SaveLoad.Save(AssetDBJson, SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
         }
 
-        AssetInfoList LoadAssetInfo() {
-            // データがない
-            if (!EditorPrefs.HasKey(CONST.DATA_KEY_NAME))
-                return new AssetInfoList();
-
-            string jsonData = EditorPrefs.GetString(CONST.DATA_KEY_NAME);
+        AssetInfoList LoadFavoritesData() {
+            string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
 
             // json から読み込む
             var assets = JsonUtility.FromJson<AssetInfoList>(jsonData);
             if (assets == null) {
                 return new AssetInfoList();
             }
-            return assets;
+            return FavoritesJson.FromJson(jsonData).AssetDB;
         }
 
         /// <summary>
         /// お気に入り登録したアセットを更新
         /// </summary>
         public void CheckFavoritesAsset() {
+            bool isUpdate = false;
             foreach (var item in Data) {
                 // GUIDでパスを取得
                 var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
@@ -103,8 +100,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 item.Name = assetData.name;
                 item.Type = assetData.GetType().ToString();
+
+                isUpdate = isUpdate ? isUpdate : item.Path != newPath;
             }
-            SavePrefs();
+
+            if (isUpdate) {
+                SaveFavoritesData();
+            }
         }
 
         /// <summary>
@@ -123,13 +125,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             _assetInfo.Ref.Clear();
             _assetInfo.Ref.AddRange(newData);
-            SavePrefs();
+            SaveFavoritesData();
         }
 
         public void SetJsonData(string jsonData) {
             if (jsonData == string.Empty)
                 return;
             _ref = FavoritesJson.FromJson(jsonData).AssetDB;
+            SaveFavoritesData();
         }
     }
 }

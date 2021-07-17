@@ -21,6 +21,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const string SAVE = "Save";
         public const string LOAD = "Load";
         public const string ASSETS = "Assets";
+        public const string LIBRARY = "Library";
+        public const string SETTING_DATA = "SettingData";
+        public const string FAVORITES_DATA = "FavoritesData";
 
         /// <summary>
         /// アイコン：https://github.com/halak/unity-editor-icons
@@ -76,12 +79,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         public const int GUI_LAYOUT_HEIGHT = 22;
 
-        /// <summary>
-        /// 鍵名
-        /// </summary>
-        public static string DATA_KEY_NAME => $"{EDITOR_NAME}-FavoritesData-{SHA256}";
-        public static string SETTING_DATA_KEY_NAME => $"{EDITOR_NAME}SettingData-{SHA256}";
-        public static string JSON_DATA_NAME => $"{Application.productName}-FavoritesData";
+        public static string FOLDER_NAME => $"{EDITOR_NAME}-{SHA256}";
+        public static string JSON_DATA_NAME => $"{Application.productName}-{FAVORITES_DATA}";
     }
 
     enum WindowEnum {

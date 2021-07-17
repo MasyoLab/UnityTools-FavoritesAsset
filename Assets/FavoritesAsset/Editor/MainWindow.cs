@@ -95,12 +95,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
                     (call) => {
-                        _manager.SetJsonData(SaveLoad.Load());
+                        _manager.SetJsonData(SaveLoad.LoadFilePanel());
                     }, TextEnum.Import);
 
                 menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false,
                     (call) => {
-                        SaveLoad.Save(_manager.AssetDBJson);
+                        SaveLoad.SaveFilePanel(_manager.AssetDBJson);
                     }, TextEnum.Export);
 
                 menu.AddSeparator("");

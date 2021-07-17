@@ -16,6 +16,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.UnlockAll));
             if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 _manager.RemoveAll();
+                _manager.SaveFavoritesData();
             }
         }
     }
