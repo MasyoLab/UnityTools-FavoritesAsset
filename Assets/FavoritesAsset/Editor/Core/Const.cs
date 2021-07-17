@@ -1,8 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using UnityEngine;
 
 //=========================================================
@@ -16,8 +13,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     struct CONST {
         public const string EDITOR_NAME = "Favorites Asset";
-        static public readonly string SORT_WINDOW = $"{EDITOR_NAME}(SortWindow)";
-        public const string MENU_ITEM = "Tools/" + EDITOR_NAME;
+        public const string EDITOR_WINDOW_NAME = "Favorites Asset Window";
+        public const string MENU_ITEM = "Tools/" + EDITOR_WINDOW_NAME;
         public const string UNITY_EXT = ".unity";
         public const string JSON_EXT = "favorites";
         public const string SHA256 = "3cf97e6a402faa1f0604b395a0a20228b86431175662ae14ef70beaf1978918b";
@@ -82,13 +79,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// 鍵名
         /// </summary>
-        static public string DATA_KEY_NAME => $"{Application.productName}-FavoritesData-{SHA256}";
-        static public string JSON_DATA_NAME => $"{Application.productName}-FavoritesData";
-
-        static public string GetSHA256HashString(string value) {
-            SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();
-            return string.Join("", provider.ComputeHash(Encoding.UTF8.GetBytes(value)).Select(x => $"{x:x2}"));
-        }
+        public static string DATA_KEY_NAME => $"{EDITOR_NAME}-FavoritesData-{SHA256}";
+        public static string SETTING_DATA_KEY_NAME => $"{EDITOR_NAME}SettingData-{SHA256}";
+        public static string JSON_DATA_NAME => $"{Application.productName}-FavoritesData";
     }
 
     enum WindowEnum {

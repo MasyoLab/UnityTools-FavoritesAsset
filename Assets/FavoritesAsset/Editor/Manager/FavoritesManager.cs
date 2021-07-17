@@ -29,14 +29,24 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
+        SettingManager _refSetting = null;
+        SettingManager _setting {
+            get {
+                if (_refSetting == null) {
+                    _refSetting = new SettingManager();
+                }
+                return _refSetting;
+            }
+        }
+
         /// <summary>
         /// データ
         /// </summary>
         public IReadOnlyList<AssetInfo> Data => _assetInfo.Ref;
 
         public LanguageEnum Language {
-            get => _assetInfo.Language;
-            set => _assetInfo.Language = value;
+            get => _setting.Language;
+            set => _setting.Language = value;
         }
 
         public string AssetDBJson => FavoritesJson.ToJson(_assetInfo);

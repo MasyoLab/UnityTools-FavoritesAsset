@@ -36,20 +36,30 @@ namespace MasyoLab.Editor.FavoritesAsset {
             _assetInfos = _manager.Data.ToList();
 
             // 入れ替え時に呼び出す
-            void OnChanged(ReorderableList list) {
+            void Changed(ReorderableList list) {
                 if (_assetInfos == null)
                     return;
                 _manager.SortData(_assetInfos);
             }
 
             _reorderableList = new ReorderableList(_assetInfos, typeof(GameObject)) {
-                drawElementCallback = OnDrawElement,
-                onChangedCallback = OnChanged,
+                drawElementCallback = DrawElement,
+                onChangedCallback = Changed,
+                drawHeaderCallback = DrawHeader,
+                drawFooterCallback = DrawFooter,
             };
         }
 
-        void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+        void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
             AssetDrawer.OnAssetButton(rect, _assetInfos[index]);
+        }
+
+        void DrawHeader(Rect rect) {
+            EditorGUI.LabelField(rect, "");
+        }
+
+        private void DrawFooter(Rect rect) {
+            EditorGUI.LabelField(rect, "");
         }
     }
 }

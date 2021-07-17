@@ -28,11 +28,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // ドラッグアンドドロップ
             DragAndDropGUI();
 
-            // メニュー
-            MenuGUI();
-
-            GUILayout.Box("", GUILayout.Width(Position.width), GUILayout.Height(1));
-
             // アセット表示
             DrawAssetGUI();
 
@@ -99,21 +94,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             _manager.SavePrefs();
-        }
-
-        /// <summary>
-        /// メニュー
-        /// </summary>
-        void MenuGUI() {
-            GUILayout.BeginHorizontal();
-            {
-                var content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.UnlockAll));
-                // お気に入り全解除
-                if (GUILayout.Button(content, GUILayout.ExpandWidth(true), GUILayout.Height(40))) {
-                    _manager.RemoveAll();
-                }
-            }
-            GUILayout.EndHorizontal();
         }
 
         /// <summary>

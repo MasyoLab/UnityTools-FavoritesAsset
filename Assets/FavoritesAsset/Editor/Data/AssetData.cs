@@ -44,7 +44,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     [System.Serializable]
     class AssetInfoList {
-        public LanguageEnum Language = LanguageEnum.English;
         public List<AssetInfo> Ref = new List<AssetInfo>();
     }
 }
