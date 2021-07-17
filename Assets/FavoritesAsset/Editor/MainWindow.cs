@@ -45,7 +45,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         void UpdateGUIAction() {
             if (_guiAction == null) {
-                _guiAction = GetWindowClass<HelpWindow>().OnGUI;
+                _guiAction = GetWindowClass<FavoritesWindow>().OnGUI;
             }
             _guiAction.Invoke();
         }
