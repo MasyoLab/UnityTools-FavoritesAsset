@@ -18,60 +18,20 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// <summary>
     /// お気に入り登録機能
     /// </summary>
-    public class FavoritesAsset : EditorWindow {
-
-        /// <summary>
-        /// マネージャー
-        /// </summary>
-        static FavoritesManager _ref = null;
-        FavoritesManager _manager {
-            get {
-                if (_ref == null) {
-                    _ref = new FavoritesManager();
-                }
-                return _ref;
-            }
-        }
+    class FavoritesWindow : BaseWindow {
 
         static Vector2 _scrollVec2;
 
-        /// <summary>
-        /// ウィンドウを追加
-        /// </summary>
-        [MenuItem(CONST.MENU_ITEM)]
-        static void Init() {
-            var window = GetWindow<FavoritesAsset>(CONST.EDITOR_NAME);
-            window.titleContent.image = EditorGUIUtility.IconContent(CONST.FAVORITE_ICON).image;
-        }
-
-        /// <summary>
-        /// GUI 描画
-        /// </summary>
-        void OnGUI() {
+        public override void OnGUI() {
             DrawBG();
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
 
-            // インポート/エクスポート
-            ImportExportGUI();
-
-            // プルダウンメニュー
-            PulldownMenuGUI();
-
-            // メニュー
-            MenuGUI();
-
-            GUILayout.Box("", GUILayout.Width(this.position.width), GUILayout.Height(1));
-
             // アセット表示
             DrawAssetGUI();
 
             GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true), GUILayout.Height(20)), $"{_manager.Data.Count} {LanguageData.GetText(_manager.Language, TextEnum.NumFav)}");
-        }
-
-        void OnFocus() {
-            _manager.CheckFavoritesAsset();
         }
 
         void DrawBG() {
@@ -80,7 +40,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 右下レイアウト
                 style.alignment = TextAnchor.LowerRight;
-                GUI.Label(new Rect(position.width * 0f, position.height * 0f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0f, Position.height * 0f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D)
                     );
                 style.alignment = originalAlignment;
@@ -91,7 +51,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.LowerLeft;
-                GUI.Label(new Rect(position.width * 0.5f, position.height * 0f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0.5f, Position.height * 0f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED)
                     );
                 style.alignment = originalAlignment;
@@ -102,7 +62,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.UpperRight;
-                GUI.Label(new Rect(position.width * 0f, position.height * 0.5f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0f, Position.height * 0.5f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED)
                     );
                 style.alignment = originalAlignment;
@@ -113,7 +73,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.UpperLeft;
-                GUI.Label(new Rect(position.width * 0.5f, position.height * 0.5f, position.width * 0.5f, position.height * 0.5f),
+                GUI.Label(new Rect(Position.width * 0.5f, Position.height * 0.5f, Position.width * 0.5f, Position.height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D)
                     );
                 style.alignment = originalAlignment;
@@ -126,7 +86,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         void DragAndDropGUI() {
             GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true)), LanguageData.GetText(_manager.Language, TextEnum.DragAndDrop));
 
-            if (!GetObjects(out List<string> objs, this))
+            if (!GetObjects(out List<string> objs, _root))
                 return;
 
             foreach (var item in objs) {
@@ -134,50 +94,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             _manager.SavePrefs();
-        }
-
-        /// <summary>
-        /// インポート/エクスポート
-        /// </summary>
-        void ImportExportGUI() {
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), GUILayout.ExpandWidth(true), GUILayout.Height(20))) {
-                _manager.SetJsonData(SaveLoad.Load());
-            }
-            if (GUILayout.Button(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), GUILayout.ExpandWidth(true), GUILayout.Height(20))) {
-                SaveLoad.Save(_manager.AssetDBJson);
-            }
-            GUILayout.EndHorizontal();
-        }
-
-        /// <summary>
-        /// プルダウンメニュー
-        /// </summary>
-        void PulldownMenuGUI() {
-            EditorGUI.BeginChangeCheck();
-            _manager.Language = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(_manager.Language, TextEnum.Language), (int)_manager.Language, LanguageData.LANGUAGE);
-            EditorGUI.EndChangeCheck();
-        }
-
-        /// <summary>
-        /// メニュー
-        /// </summary>
-        void MenuGUI() {
-            GUILayout.BeginHorizontal();
-            {
-                var content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.UnlockAll));
-                // お気に入り全解除
-                if (GUILayout.Button(content, GUILayout.ExpandWidth(true), GUILayout.Height(40))) {
-                    _manager.RemoveAll();
-                }
-            }
-            {
-                var content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.ChangeDisplay));
-                if (GUILayout.Button(content, GUILayout.ExpandWidth(true), GUILayout.Height(40))) {
-                    SortWindow.Display(this, _manager);
-                }
-            }
-            GUILayout.EndHorizontal();
         }
 
         /// <summary>
@@ -205,7 +121,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             AssetDrawer.OnPingObjectButton(info);
 
             // アセットを開くボタン
-            AssetDrawer.OnAssetButton(this, info, OpenAsset);
+            AssetDrawer.OnAssetButton(_root, info, OpenAsset);
 
             // お気に入り除ボタン
             bool result = AssetDrawer.OnUnfavoriteButton(info, RemoveAsset);
@@ -318,7 +234,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return null;
 
             var paths = DragAndDrop.paths;
-            if (mouseOverWindow != window || paths.Length <= 0)
+            if (EditorWindow.mouseOverWindow != window || paths.Length <= 0)
                 return null;
 
             // カーソルに「+」のアイコンを表示

@@ -14,6 +14,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     struct AssetDrawer {
 
+        static GUIStyle ButtonStyle = new GUIStyle(GUI.skin.button);
+
         /// <summary>
         /// アセットの情報を描画
         /// </summary>
@@ -23,7 +25,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // 名前を使う
             var content = new GUIContent(info.Name, AssetDatabase.GetCachedIcon(info.Path));
 
-            var style = GUI.skin.button;
+            var style = ButtonStyle;
             var originalAlignment = style.alignment;
             var originalFontStyle = style.fontStyle;
             var originalTextColor = style.normal.textColor;

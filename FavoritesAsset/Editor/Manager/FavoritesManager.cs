@@ -29,14 +29,24 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
+        SettingManager _refSetting = null;
+        SettingManager _setting {
+            get {
+                if (_refSetting == null) {
+                    _refSetting = new SettingManager();
+                }
+                return _refSetting;
+            }
+        }
+
         /// <summary>
         /// データ
         /// </summary>
         public IReadOnlyList<AssetInfo> Data => _assetInfo.Ref;
 
         public LanguageEnum Language {
-            get => _assetInfo.Language;
-            set => _assetInfo.Language = value;
+            get => _setting.Language;
+            set => _setting.Language = value;
         }
 
         public string AssetDBJson => FavoritesJson.ToJson(_assetInfo);
@@ -81,12 +91,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
             foreach (var item in Data) {
                 // GUIDでパスを取得
                 var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
-                // パスがある
-                if (newPath != string.Empty) {
-                    item.Path = newPath;
-                    // 基本的にここで終わる
+                if (newPath == string.Empty)
                     continue;
-                }
+
+                item.Path = newPath;
+
+                // アセットの情報
+                var assetData = AssetDatabase.LoadAssetAtPath<Object>(item.Path);
+                if (assetData == null)
+                    continue;
+
+                item.Name = assetData.name;
+                item.Type = assetData.GetType().ToString();
             }
             SavePrefs();
         }

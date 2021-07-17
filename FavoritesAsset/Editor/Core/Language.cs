@@ -13,8 +13,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     [System.Serializable]
     enum LanguageEnum {
+        Japanese,
         English,
-        Japanese
     }
 
     /// <summary>
@@ -28,12 +28,17 @@ namespace MasyoLab.Editor.FavoritesAsset {
         ChangeDisplay,
         Import,
         Export,
+        File,
+        Favorites,
+        Sort,
+        Setting,
+        Help,
     }
 
     struct LanguageData {
-        static public readonly string[] LANGUAGE = {
-            $"{LanguageEnum.English}",
+        public static readonly string[] LANGUAGE = {
             "日本語",
+            $"{LanguageEnum.English}",
         };
 
         static readonly string[] TEXT_EN ={
@@ -44,18 +49,29 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "Sort Window",
             "Import",
             "Export",
+            "File",
+            "Favorites",
+            "Sort",
+            "Setting",
+            "Help",
         };
+
         static readonly string[] TEXT_JP ={
             "エディター言語",
             "ドラッグ＆ドロップで登録",
             "全てのお気に入りを解除",
             "個のお気に入り",
             "表示順の変更",
-            "インポート",
-            "エクスポート",
+            "読み込み",
+            "名前を付けて保存",
+            "ファイル",
+            "お気に入り",
+            "ソート",
+            "設定",
+            "ヘルプ",
         };
 
-        static public string GetText(LanguageEnum lang, TextEnum text) {
+        public static string GetText(LanguageEnum lang, TextEnum text) {
             switch (lang) {
                 case LanguageEnum.English:
                     return TEXT_EN[(int)text];

@@ -17,50 +17,49 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// <summary>
     /// ソート画面
     /// </summary>
-    class SortWindow : EditorWindow {
-        static SortWindow _inst = null;
+    class SortWindow : BaseWindow {
         ReorderableList _reorderableList = null;
         List<AssetInfo> _assetInfos = null;
         Vector2 _scrollVec2;
 
-        private void OnGUI() {
+        public override void OnGUI() {
             // スクロールビュー
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
             _reorderableList?.DoLayoutList();
             GUILayout.EndScrollView();
         }
 
-        public static void Display(EditorWindow win, FavoritesManager manager) {
-            _inst?.Close();
-            _inst = CreateInstance<SortWindow>();
-            _inst.titleContent = new GUIContent(CONST.SORT_WINDOW) {
-                image = EditorGUIUtility.IconContent(CONST.SELECTION_LIST_TEMPLATE_ICON).image
-            };
-            _inst.SetData(win, manager);
-            _inst.Show();
-        }
+        public override void Init(FavoritesManager manager, EditorWindow root) {
+            base.Init(manager, root);
 
-        public void SetData(EditorWindow editorWindow, FavoritesManager manager) {
             // データを複製
-            _assetInfos = manager.Data.ToList();
+            _assetInfos = _manager.Data.ToList();
 
             // 入れ替え時に呼び出す
-            void OnChanged(ReorderableList list) {
+            void Changed(ReorderableList list) {
                 if (_assetInfos == null)
                     return;
-                manager?.SortData(_assetInfos);
-                // 描画
-                editorWindow?.Repaint();
+                _manager.SortData(_assetInfos);
             }
 
             _reorderableList = new ReorderableList(_assetInfos, typeof(GameObject)) {
-                drawElementCallback = OnDrawElement,
-                onChangedCallback = OnChanged
+                drawElementCallback = DrawElement,
+                onChangedCallback = Changed,
+                drawHeaderCallback = DrawHeader,
+                drawFooterCallback = DrawFooter,
             };
         }
 
-        void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+        void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
             AssetDrawer.OnAssetButton(rect, _assetInfos[index]);
+        }
+
+        void DrawHeader(Rect rect) {
+            EditorGUI.LabelField(rect, "");
+        }
+
+        private void DrawFooter(Rect rect) {
+            EditorGUI.LabelField(rect, "");
         }
     }
 }
