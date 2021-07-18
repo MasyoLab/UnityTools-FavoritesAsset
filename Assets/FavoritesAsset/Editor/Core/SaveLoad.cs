@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using UnityEngine;
 using UnityEditor;
 
 //=========================================================
@@ -30,9 +28,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (string.IsNullOrEmpty(filePath))
                 return string.Empty;
 
-            if (!File.Exists(filePath)) {
+            if (!File.Exists(filePath))
                 return string.Empty;
-            }
 
             var reader = new StreamReader(filePath);
             string jsonStr = reader.ReadLine();
@@ -41,15 +38,27 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return jsonStr;
         }
 
-        public static void SaveFilePanel(string jsonData) {
+        public static void SaveFile(string jsonData, string directory, UnityEngine.Events.UnityAction<string> result = null) {
+            directory = directory == string.Empty ? CONST.ASSETS : directory;
+
             // ファイルパス
-            var filePath = EditorUtility.SaveFilePanel(CONST.SAVE, CONST.ASSETS, CONST.JSON_DATA_NAME, CONST.JSON_EXT);
+            var filePath = EditorUtility.SaveFilePanel(CONST.SAVE, directory, CONST.JSON_DATA_NAME, CONST.JSON_EXT);
+            if (string.IsNullOrEmpty(filePath))
+                return;
+
+            result?.Invoke(CreateDirectoryFromFilePath(filePath));
             Save(jsonData, filePath);
         }
 
-        public static string LoadFilePanel() {
+        public static string LoadFile(string directory, UnityEngine.Events.UnityAction<string> result = null) {
+            directory = directory == string.Empty ? CONST.ASSETS : directory;
+
             // ファイルパス
-            var filePath = EditorUtility.OpenFilePanel(CONST.LOAD, CONST.ASSETS, CONST.JSON_EXT);
+            var filePath = EditorUtility.OpenFilePanel(CONST.LOAD, directory, CONST.JSON_EXT);
+            if (string.IsNullOrEmpty(filePath))
+                return string.Empty;
+
+            result?.Invoke(CreateDirectoryFromFilePath(filePath));
             return Load(filePath);
         }
 
@@ -65,6 +74,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             return $"{filePath}/{fileName}.{ext}";
+        }
+
+        /// <summary>
+        /// ファイルパスからディレクトリを取得
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        static string CreateDirectoryFromFilePath(string filePath) {
+            var index = filePath.LastIndexOf("/");
+            if (index == -1)
+                return string.Empty;
+            return filePath.RemoveAtLast(filePath.Substring(index));
         }
     }
 }

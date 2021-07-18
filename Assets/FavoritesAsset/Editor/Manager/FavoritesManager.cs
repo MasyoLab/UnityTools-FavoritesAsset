@@ -16,60 +16,50 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// お気に入りマネージャー
     /// </summary>
     class FavoritesManager {
-        /// <summary>
-        /// 保存リスト
-        /// </summary>
-        AssetInfoList _ref = null;
-        AssetInfoList _assetInfo {
-            get {
-                if (_ref == null) {
-                    _ref = LoadFavoritesData();
-                }
-                return _ref;
-            }
-        }
-
-        SettingManager _refSetting = null;
-        SettingManager _setting {
-            get {
-                if (_refSetting == null) {
-                    _refSetting = new SettingManager();
-                }
-                return _refSetting;
-            }
-        }
+        PtrLinker<AssetInfoList> _assetInfo = new PtrLinker<AssetInfoList>(LoadFavoritesData);
+        PtrLinker<SettingManager> _setting = new PtrLinker<SettingManager>();
 
         /// <summary>
         /// データ
         /// </summary>
-        public IReadOnlyList<AssetInfo> Data => _assetInfo.Ref;
+        public IReadOnlyList<AssetInfo> Data => _assetInfo.Inst.Ref;
 
         public LanguageEnum Language {
-            get => _setting.Language;
-            set => _setting.Language = value;
+            get => _setting.Inst.Language;
+            set => _setting.Inst.Language = value;
         }
 
-        public string AssetDBJson => FavoritesJson.ToJson(_assetInfo);
+        public string ImportTarget {
+            get => _setting.Inst.ImportTarget;
+            set => _setting.Inst.ImportTarget = value;
+        }
 
-        public void Add(AssetInfo info) => _assetInfo.Ref.Add(info);
+        public string ExportTarget {
+            get => _setting.Inst.ExportTarget;
+            set => _setting.Inst.ExportTarget = value;
+        }
+
+        public string AssetDBJson => FavoritesJson.ToJson(_assetInfo.Inst);
+
+        public void Add(AssetInfo info) => _assetInfo.Inst.Ref.Add(info);
 
         public void Add(string guid, string path, string name, string type) {
-            _assetInfo.Ref.Add(new AssetInfo(guid, path, name, type));
+            _assetInfo.Inst.Ref.Add(new AssetInfo(guid, path, name, type));
         }
 
-        public void Remove(AssetInfo info) => _assetInfo.Ref.Remove(info);
+        public void Remove(AssetInfo info) => _assetInfo.Inst.Ref.Remove(info);
 
-        public void RemoveAll() => _assetInfo.Ref.RemoveRange(0, _assetInfo.Ref.Count);
+        public void RemoveAll() => _assetInfo.Inst.Ref.RemoveRange(0, _assetInfo.Inst.Ref.Count);
 
-        public bool ExistsGUID(string guid) => _assetInfo.Ref.Exists(x => x.Guid == guid);
+        public bool ExistsGUID(string guid) => _assetInfo.Inst.Ref.Exists(x => x.Guid == guid);
 
-        public bool ExistsAssetPath(string path) => _assetInfo.Ref.Exists(x => x.Path == path);
+        public bool ExistsAssetPath(string path) => _assetInfo.Inst.Ref.Exists(x => x.Path == path);
 
         public void SaveFavoritesData() {
             SaveLoad.Save(AssetDBJson, SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
         }
 
-        AssetInfoList LoadFavoritesData() {
+        static AssetInfoList LoadFavoritesData() {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
 
             // json から読み込む
@@ -85,6 +75,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         public void CheckFavoritesAsset() {
             bool isUpdate = false;
+
             foreach (var item in Data) {
                 // GUIDでパスを取得
                 var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
@@ -114,24 +105,24 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="assetInfos"></param>
         public void SortData(in List<AssetInfo> assetInfos) {
-            var newData = new List<AssetInfo>(_assetInfo.Ref.Count);
+            var newData = new List<AssetInfo>(_assetInfo.Inst.Ref.Count);
 
             foreach (var item in assetInfos) {
-                var outItem = _assetInfo.Ref.Find(data => data.Guid == item.Guid);
+                var outItem = _assetInfo.Inst.Ref.Find(data => data.Guid == item.Guid);
                 if (outItem == null)
                     continue;
                 newData.Add(outItem);
             }
 
-            _assetInfo.Ref.Clear();
-            _assetInfo.Ref.AddRange(newData);
+            _assetInfo.Inst.Ref.Clear();
+            _assetInfo.Inst.Ref.AddRange(newData);
             SaveFavoritesData();
         }
 
         public void SetJsonData(string jsonData) {
             if (jsonData == string.Empty)
                 return;
-            _ref = FavoritesJson.FromJson(jsonData).AssetDB;
+            _assetInfo.SetInst(FavoritesJson.FromJson(jsonData).AssetDB);
             SaveFavoritesData();
         }
     }

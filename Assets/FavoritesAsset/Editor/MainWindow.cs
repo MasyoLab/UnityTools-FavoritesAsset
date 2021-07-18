@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+//=========================================================
+//
+//  developer : MasyoLab
+//  github    : https://github.com/MasyoLab/UnityTools-FavoritesAsset
+//
+//=========================================================
+
 namespace MasyoLab.Editor.FavoritesAsset {
 
     public class MainWindow : EditorWindow {
@@ -95,12 +102,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
                     (call) => {
-                        _manager.SetJsonData(SaveLoad.LoadFilePanel());
+                        _manager.SetJsonData(SaveLoad.LoadFile(_manager.ImportTarget, (result) => {
+                            _manager.ImportTarget = result;
+                        }));
                     }, TextEnum.Import);
 
                 menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false,
                     (call) => {
-                        SaveLoad.SaveFilePanel(_manager.AssetDBJson);
+                        SaveLoad.SaveFile(_manager.AssetDBJson, _manager.ExportTarget, (result) => {
+                            _manager.ExportTarget = result;
+                        });
                     }, TextEnum.Export);
 
                 menu.AddSeparator("");

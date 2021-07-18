@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 //=========================================================
 //
@@ -13,36 +12,46 @@ using UnityEditor;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     class SettingManager {
-        /// <summary>
-        /// 保存リスト
-        /// </summary>
-        SettingData _ref = null;
-        SettingData _linker {
-            get {
-                if (_ref == null) {
-                    _ref = LoadSettingData();
+
+        PtrLinker<SettingData> _data = new PtrLinker<SettingData>(LoadSettingData);
+
+        public SettingData Data => _data.Inst;
+
+        public LanguageEnum Language {
+            get => _data.Inst.Language;
+            set {
+                if (_data.Inst.Language != value) {
+                    _data.Inst.Language = value;
+                    SaveSettingData();
                 }
-                return _ref;
             }
         }
 
-        public SettingData Data => _linker;
-
-        public LanguageEnum Language {
-            get => _linker.Language;
+        public string ImportTarget {
+            get => _data.Inst.ImportTarget;
             set {
-                if (_linker.Language != value) {
-                    _linker.Language = value;
+                if (_data.Inst.ImportTarget != value) {
+                    _data.Inst.ImportTarget = value;
+                    SaveSettingData();
+                }
+            }
+        }
+
+        public string ExportTarget {
+            get => _data.Inst.ExportTarget;
+            set {
+                if (_data.Inst.ExportTarget != value) {
+                    _data.Inst.ExportTarget = value;
                     SaveSettingData();
                 }
             }
         }
 
         public void SaveSettingData() {
-            SaveLoad.Save(JsonUtility.ToJson(_linker), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
+            SaveLoad.Save(JsonUtility.ToJson(_data.Inst), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
         }
 
-        SettingData LoadSettingData() {
+        static SettingData LoadSettingData() {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
 
             // json から読み込む

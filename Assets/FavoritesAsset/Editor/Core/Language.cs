@@ -33,6 +33,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         Sort,
         Setting,
         Help,
+        ImportAndExportTarget,
+        ExportTarget,
+        ImportTarget,
     }
 
     struct LanguageData {
@@ -43,7 +46,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         static readonly string[] TEXT_EN ={
             "Editor Language",
-            "Drag and drop to register",
+            "Drag & drop to register",
             "Delete all favorites",
             "favourites",
             "Sort Window",
@@ -54,6 +57,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "Sort",
             "Setting",
             "Help",
+            "Import & Export Target",
+            "Export Target",
+            "Import Target",
         };
 
         static readonly string[] TEXT_JP ={
@@ -69,6 +75,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "ソート",
             "設定",
             "ヘルプ",
+            "インポート＆エクスポート先",
+            "エクスポート先",
+            "インポート先",
         };
 
         public static string GetText(LanguageEnum lang, TextEnum text) {

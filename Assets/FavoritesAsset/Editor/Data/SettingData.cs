@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
+﻿
 //=========================================================
 //
 //  developer : MasyoLab
@@ -15,5 +11,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
     [System.Serializable]
     class SettingData {
         public LanguageEnum Language = LanguageEnum.Japanese;
+        public string ImportTarget = string.Empty;
+        public string ExportTarget = string.Empty;
     }
 }
