@@ -10,7 +10,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     [System.Serializable]
     class SettingData {
-        public LanguageEnum Language = LanguageEnum.Japanese;
+        public LanguageEnum Language = LanguageEnum.English;
         public string ImportTarget = string.Empty;
         public string ExportTarget = string.Empty;
     }
