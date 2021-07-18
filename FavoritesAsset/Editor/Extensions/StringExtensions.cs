@@ -7,11 +7,10 @@
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
+    static class StringExtensions {
 
-    [System.Serializable]
-    class SettingData {
-        public LanguageEnum Language = LanguageEnum.Japanese;
-        public string ImportTarget = string.Empty;
-        public string ExportTarget = string.Empty;
+        public static string RemoveAtLast(this string self, string value) {
+            return self.Remove(self.LastIndexOf(value), value.Length);
+        }
     }
 }

@@ -93,7 +93,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 AddAssetToAssetPath(item);
             }
 
-            _manager.SavePrefs();
+            _manager.SaveFavoritesData();
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <param name="info"></param>
         void RemoveAsset(AssetInfo info) {
             _manager.Remove(info);
-            _manager.SavePrefs();
+            _manager.SaveFavoritesData();
         }
 
         /// <summary>

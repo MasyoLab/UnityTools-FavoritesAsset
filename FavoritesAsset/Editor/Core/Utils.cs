@@ -6,6 +6,13 @@ using System.Text;
 using UnityEngine;
 using UnityEditor;
 
+//=========================================================
+//
+//  developer : MasyoLab
+//  github    : https://github.com/MasyoLab/UnityTools-FavoritesAsset
+//
+//=========================================================
+
 namespace MasyoLab.Editor.FavoritesAsset {
     struct Utils {
         public static string GetSHA256HashString(string value) {
@@ -27,6 +34,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return false;
             }
             return true;
+        }
+
+        public static void GUILine() {
+            GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
         }
     }
 }
