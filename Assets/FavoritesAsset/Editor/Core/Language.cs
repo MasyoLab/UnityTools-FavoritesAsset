@@ -13,8 +13,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     [System.Serializable]
     enum LanguageEnum {
-        Japanese,
         English,
+        Japanese,
     }
 
     /// <summary>
@@ -40,8 +40,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     struct LanguageData {
         public static readonly string[] LANGUAGE = {
-            "日本語",
             $"{LanguageEnum.English}",
+            "日本語",
         };
 
         static readonly string[] TEXT_EN ={
