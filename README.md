@@ -1,12 +1,14 @@
 # Favorites Asset Window
 
+[![](https://img.shields.io/badge/Licenses-MIT-brightgreen)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE)
 [![Build](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml/badge.svg?branch=release&event=push)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml)
 [![Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
 
+[![Coverage Status](https://coveralls.io/repos/github/MasyoLab/UnityTools-FavoritesAsset/badge.svg?branch=master)](https://coveralls.io/github/MasyoLab/UnityTools-FavoritesAsset?branch=master)
+
 This function allows you to bookmark (register as a favorite) resources.
 
-![main window](https://user-images.githubusercontent.com/20793765/123297800-defba380-d552-11eb-8667-b630e260471d.jpg)
-![sub window](https://user-images.githubusercontent.com/20793765/123297813-e15dfd80-d552-11eb-9622-9ab2e9da8b3f.jpg)
+![main window](https://user-images.githubusercontent.com/20793765/126061063-6d5ad988-dfde-416a-9735-d8986ffa70f4.jpg)
 
 ----
 
@@ -23,7 +25,7 @@ In the package manager, press “Add package from git URL...” and paste the fo
 ----
 
 ### Usage
-![Open the editor](https://user-images.githubusercontent.com/20793765/123286869-3f85e300-d549-11eb-98e9-33523237ddd6.png)
+![Open the editor](https://user-images.githubusercontent.com/20793765/126061572-bb8e0619-52fa-4560-b5b7-50f51db3e675.png)
 
 The extended editor can be used from “Tools”.
 
@@ -31,21 +33,17 @@ Note : The access method may change with future expansion.
 
 ### Register
 You can bookmark assets by dragging and dropping them.
-![fav assets action 1](https://user-images.githubusercontent.com/20793765/123298861-e5d6e600-d553-11eb-8928-ee576f50ca90.gif)
+![fav assets action 1](https://user-images.githubusercontent.com/20793765/126061164-f7da02ab-9360-46e7-8431-dfa1736f8123.gif)
 
 ### Ping asset. Open asset.
 Registered assets can have a focus button for the Project view and an open button for the asset.
-![fav assets action 2](https://user-images.githubusercontent.com/20793765/123300092-28e58900-d555-11eb-8e10-a0cc34981c77.gif)
+![fav assets action 2](https://user-images.githubusercontent.com/20793765/126061290-80599d54-3677-4c12-b8ce-ac187eaaf925.gif)
 
 ### Unsubscribe
-![fav assets action 3](https://user-images.githubusercontent.com/20793765/123303319-a5c63200-d558-11eb-9d39-04df72eab611.gif)
+![fav assets action 3](https://user-images.githubusercontent.com/20793765/126061474-c3674f57-4e92-48ec-add3-33c134382b59.gif)
 
 ### Sorting
-![fav assets action 4](https://user-images.githubusercontent.com/20793765/123303675-035a7e80-d559-11eb-81b8-c1d3b57f2e7b.gif)
-
-### Import and Export
-You can import and export the data you have registered as a favorite.
-![fav assets action 5](https://user-images.githubusercontent.com/20793765/123304439-e96d6b80-d559-11eb-8b0d-8bf0dd49ba5e.gif)
+![fav assets action 4](https://user-images.githubusercontent.com/20793765/126061513-0eb3bd34-1864-4b35-8f94-1c262c21aeda.gif)
 
 License
 -------
