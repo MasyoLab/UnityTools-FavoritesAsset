@@ -1,6 +1,6 @@
 {
     "name": "com.masyo-lab.favorites-asset",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "displayName": "MasyoLab@FavoritesAsset",
     "unity": "2018.1",
     "description": "This function allows you to bookmark (register as a favorite) resources.\n\nMIT License\nCopyright (c) 2021 MasyoLab",
