@@ -16,8 +16,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
         List<BaseWindow> _windows = new List<BaseWindow>((int)WindowEnum.Max);
         BaseWindow _guiWindow = null;
 
-        Rect _toolbarSize = Rect.zero;
-
         /// <summary>
         /// マネージャー
         /// </summary>
@@ -56,8 +54,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (_guiWindow == null) {
                 _guiWindow = GetWindowClass<FavoritesWindow>();
             }
-
-            _guiWindow.OnGUI(new Rect(0, _toolbarSize.y, position.width, position.height - _toolbarSize.height));
+            
+            _guiWindow.OnGUI(new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight));
         }
 
         _Ty GetWindowClass<_Ty>() where _Ty : BaseWindow, new() {
@@ -79,7 +77,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.MinWidth(1))) {
                 GUIContent content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.File));
                 if (GUILayout.Button(content, EditorStyles.toolbarDropDown)) {
-                    OpenMenuA(Vector2.zero);
+                    OpenMenuA();
                 }
 
                 content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Favorites));
@@ -92,67 +90,61 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     _guiWindow = GetWindowClass<SortWindow>();
                 }
             }
-
-            _toolbarSize = GUILayoutUtility.GetLastRect();
         }
 
-        void OpenMenuA(Vector2 mousePos) {
+        void OpenMenuA() {
+            // Now create the menu, add items and show it
+            var menu = new GenericMenu();
 
-            Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
-            if (contextRect.Contains(mousePos)) {
-                // Now create the menu, add items and show it
-                var menu = new GenericMenu();
+            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
+                (call) => {
+                    _manager.SetJsonData(SaveLoad.LoadFile(_manager.ImportTarget, (result) => {
+                        _manager.ImportTarget = result;
+                    }));
+                }, TextEnum.Import);
 
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
-                    (call) => {
-                        _manager.SetJsonData(SaveLoad.LoadFile(_manager.ImportTarget, (result) => {
-                            _manager.ImportTarget = result;
-                        }));
-                    }, TextEnum.Import);
+            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false,
+                (call) => {
+                    SaveLoad.SaveFile(_manager.AssetDBJson, _manager.ExportTarget, (result) => {
+                        _manager.ExportTarget = result;
+                    });
+                }, TextEnum.Export);
 
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false,
-                    (call) => {
-                        SaveLoad.SaveFile(_manager.AssetDBJson, _manager.ExportTarget, (result) => {
-                            _manager.ExportTarget = result;
-                        });
-                    }, TextEnum.Export);
+            menu.AddSeparator("");
 
-                menu.AddSeparator("");
+            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Setting)), false,
+                (call) => {
+                    _guiWindow = GetWindowClass<SettingWindow>();
+                }, TextEnum.Setting);
 
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Setting)), false,
-                    (call) => {
-                        _guiWindow = GetWindowClass<SettingWindow>();
-                    }, TextEnum.Setting);
+            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Help)), false,
+                (call) => {
+                    _guiWindow = GetWindowClass<HelpWindow>();
+                }, TextEnum.Help);
 
-                menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Help)), false,
-                    (call) => {
-                        _guiWindow = GetWindowClass<HelpWindow>();
-                    }, TextEnum.Help);
 
-                //menu.AddItem(new GUIContent("SubMenu/MenuItem3"), false, call => { }, "item 3");
-                menu.ShowAsContext();
-            }
+            menu.DropDown(new Rect(0, EditorStyles.toolbar.fixedHeight, 0f, 0f));
         }
 
-        void OpenMenuB(Vector2 mousePos) {
+        void OpenMenuB() {
+            // Now create the menu, add items and show it
+            var menu = new GenericMenu();
 
-            Rect contextRect = new Rect(0, 0, Screen.width, Screen.height);
-            if (contextRect.Contains(mousePos)) {
-                // Now create the menu, add items and show it
-                var menu = new GenericMenu();
+            menu.AddItem(new GUIContent("Favorites"), false,
+                (call) => {
+                    _guiWindow = GetWindowClass<FavoritesWindow>();
+                }, "item 1");
 
-                menu.AddItem(new GUIContent("Favorites"), false,
-                    (call) => {
-                        _guiWindow = GetWindowClass<FavoritesWindow>();
-                    }, "item 1");
+            menu.AddItem(new GUIContent("Sort"), false,
+                (call) => {
+                    _guiWindow = GetWindowClass<SortWindow>();
+                }, "item 2");
 
-                menu.AddItem(new GUIContent("Sort"), false,
-                    (call) => {
-                        _guiWindow = GetWindowClass<SortWindow>();
-                    }, "item 2");
+            menu.ShowAsContext();
 
-                menu.ShowAsContext();
-            }
+            menu.AddItem(new GUIContent("SubMenu/MenuItem3"), false, call => { }, "item 3");
+
+            menu.DropDown(new Rect(0, EditorStyles.toolbar.fixedHeight, 0f, 0f));
         }
     }
 }
