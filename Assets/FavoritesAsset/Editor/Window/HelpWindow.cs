@@ -15,7 +15,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         Vector2 _scrollVec2;
 
-        GUIStyle _headerStyle = new GUIStyle(EditorStyles.label) {
+        static GUIStyle _headerStyle = new GUIStyle(EditorStyles.label) {
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
         };

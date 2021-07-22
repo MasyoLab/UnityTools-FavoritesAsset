@@ -30,13 +30,30 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 _manager.RemoveAll();
                 _manager.SaveFavoritesData();
             }
+
             Utils.GUILine();
 
             GUILayout.Label(LanguageData.GetText(_manager.Language, TextEnum.ImportAndExportTarget));
-            EditorGUILayout.TextField(LanguageData.GetText(_manager.Language, TextEnum.ExportTarget), _manager.ExportTarget);
-            EditorGUILayout.TextField(LanguageData.GetText(_manager.Language, TextEnum.ImportTarget), _manager.ImportTarget);
-            Utils.GUILine();
 
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(LanguageData.GetText(_manager.Language, TextEnum.ExportTarget));
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.TextField(_manager.ExportTarget);
+                EditorGUI.EndDisabledGroup();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(LanguageData.GetText(_manager.Language, TextEnum.ImportTarget));
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.TextField(_manager.ImportTarget);
+                EditorGUI.EndDisabledGroup();
+            }
+            GUILayout.EndHorizontal();
+
+            Utils.GUILine();
             GUILayout.EndScrollView();
         }
     }
