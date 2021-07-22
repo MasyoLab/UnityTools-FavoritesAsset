@@ -22,7 +22,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         List<AssetInfo> _assetInfos = null;
         Vector2 _scrollVec2;
 
-        public override void OnGUI() {
+        public override void OnGUI(Rect windowSize) {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
             _reorderableList?.DoLayoutList();
             GUILayout.EndScrollView();
