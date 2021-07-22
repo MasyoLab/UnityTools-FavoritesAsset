@@ -16,9 +16,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         protected FavoritesManager _manager { private set; get; } = null;
         protected EditorWindow _root { private set; get; } = null;
-        protected Rect Position => _root.position;
 
-        public virtual void OnGUI() { }
+        public virtual void OnGUI(Rect windowSize) { }
         public virtual void Init(FavoritesManager manager, EditorWindow root) {
             _manager = manager;
             _root = root;

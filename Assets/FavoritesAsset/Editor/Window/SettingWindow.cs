@@ -16,7 +16,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         Vector2 _scrollVec2;
 
-        public override void OnGUI() {
+        public override void OnGUI(Rect windowSize) {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
 
             EditorGUI.BeginChangeCheck();

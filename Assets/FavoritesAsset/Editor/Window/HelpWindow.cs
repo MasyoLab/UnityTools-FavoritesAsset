@@ -20,7 +20,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             alignment = TextAnchor.MiddleCenter,
         };
 
-        public override void OnGUI() {
+        public override void OnGUI(Rect windowSize) {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
 
             GUILayout.Label(CONST.EDITOR_WINDOW_NAME, _headerStyle, GUILayout.ExpandWidth(true));
