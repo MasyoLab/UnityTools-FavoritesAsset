@@ -4,6 +4,7 @@
 [![Build](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml/badge.svg?branch=release&event=push)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/build.yml)
 [![Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
 
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
 [![Coverage Status](https://coveralls.io/repos/github/MasyoLab/UnityTools-FavoritesAsset/badge.svg?branch=master)](https://coveralls.io/github/MasyoLab/UnityTools-FavoritesAsset?branch=master)
 
 この機能を使用すると、アセットをお気に入り登録できます。
@@ -38,7 +39,7 @@
 ![fav assets action 1](https://user-images.githubusercontent.com/20793765/126061164-f7da02ab-9360-46e7-8431-dfa1736f8123.gif)
 
 ### アセットを Ping 、アセットを開く
-登録済みのアセットには、プロジェクトビューに対してのピングボタンと、アセットを開くためのボタンが追加されます。
+登録済みのアセットにはプロジェクトビューに対してのピングボタンと、アセットを開くためのボタンが追加されます。
 ![fav assets action 2](https://user-images.githubusercontent.com/20793765/126061290-80599d54-3677-4c12-b8ce-ac187eaaf925.gif)
 
 ### お気に入りを解除
