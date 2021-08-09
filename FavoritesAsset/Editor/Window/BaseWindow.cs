@@ -14,12 +14,17 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     class BaseWindow {
 
-        protected FavoritesManager _manager { private set; get; } = null;
+        PtrLinker<SystemManager> _systemManager = null;
+
+        protected SystemManager _manager => _systemManager.Inst;
+        protected FavoritesManager _favorites => _manager.Favorites;
+        protected SettingManager _setting => _manager.Setting;
+
         protected EditorWindow _root { private set; get; } = null;
 
         public virtual void OnGUI(Rect windowSize) { }
-        public virtual void Init(FavoritesManager manager, EditorWindow root) {
-            _manager = manager;
+        public virtual void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
+            _systemManager = manager;
             _root = root;
         }
     }

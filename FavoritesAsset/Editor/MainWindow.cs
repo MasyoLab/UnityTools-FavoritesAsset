@@ -16,18 +16,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         List<BaseWindow> _windows = new List<BaseWindow>((int)WindowEnum.Max);
         BaseWindow _guiWindow = null;
 
-        /// <summary>
-        /// マネージャー
-        /// </summary>
-        static FavoritesManager _refFavorites = null;
-        FavoritesManager _manager {
-            get {
-                if (_refFavorites == null) {
-                    _refFavorites = new FavoritesManager();
-                }
-                return _refFavorites;
-            }
-        }
+        static PtrLinker<SystemManager> _systemManager = new PtrLinker<SystemManager>();
+
+        SystemManager _manager => _systemManager.Inst;
+        FavoritesManager _favorites => _manager.Favorites;
+        SettingManager _setting => _manager.Setting;
 
         /// <summary>
         /// ウィンドウを追加
@@ -47,7 +40,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         void OnFocus() {
-            _manager.CheckFavoritesAsset();
+            _favorites.CheckFavoritesAsset();
         }
 
         void UpdateGUIAction() {
@@ -63,29 +56,29 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 _Ty win = item as _Ty;
                 if (win == null)
                     continue;
-                win.Init(_manager, this);
+                win.Init(_systemManager, this);
                 return win;
             }
 
             var newWin = new _Ty();
-            newWin.Init(_manager, this);
+            newWin.Init(_systemManager, this);
             _windows.Add(newWin);
             return newWin;
         }
 
         void DrawToolbar() {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.MinWidth(1))) {
-                GUIContent content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.File));
+                GUIContent content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.File));
                 if (GUILayout.Button(content, EditorStyles.toolbarDropDown)) {
                     OpenMenuA();
                 }
 
-                content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Favorites));
+                content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Favorites));
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     _guiWindow = GetWindowClass<FavoritesWindow>();
                 }
 
-                content = new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Sort));
+                content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Sort));
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     _guiWindow = GetWindowClass<SortWindow>();
                 }
@@ -96,28 +89,28 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // Now create the menu, add items and show it
             var menu = new GenericMenu();
 
-            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Import)), false,
+            menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Import)), false,
                 (call) => {
-                    _manager.SetJsonData(SaveLoad.LoadFile(_manager.ImportTarget, (result) => {
-                        _manager.ImportTarget = result;
+                    _favorites.SetJsonData(SaveLoad.LoadFile(_setting.ImportTarget, (result) => {
+                        _setting.ImportTarget = result;
                     }));
                 }, TextEnum.Import);
 
-            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Export)), false,
+            menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
                 (call) => {
-                    SaveLoad.SaveFile(_manager.AssetDBJson, _manager.ExportTarget, (result) => {
-                        _manager.ExportTarget = result;
+                    SaveLoad.SaveFile(_favorites.AssetDBJson, _setting.ExportTarget, (result) => {
+                        _setting.ExportTarget = result;
                     });
                 }, TextEnum.Export);
 
             menu.AddSeparator("");
 
-            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Setting)), false,
+            menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Setting)), false,
                 (call) => {
                     _guiWindow = GetWindowClass<SettingWindow>();
                 }, TextEnum.Setting);
 
-            menu.AddItem(new GUIContent(LanguageData.GetText(_manager.Language, TextEnum.Help)), false,
+            menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Help)), false,
                 (call) => {
                     _guiWindow = GetWindowClass<HelpWindow>();
                 }, TextEnum.Help);
