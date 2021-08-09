@@ -32,7 +32,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // アセット表示
             DrawAssetGUI();
 
-            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true), GUILayout.Height(TEXT_PACE)), $"{_manager.Data.Count} {LanguageData.GetText(_manager.Language, TextEnum.NumFav)}");
+            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true), GUILayout.Height(TEXT_PACE)), $"{_favorites.Data.Count} {LanguageData.GetText(_setting.Language, TextEnum.NumFav)}");
         }
 
         void DrawBG(float posX, float posY, float width, float height) {
@@ -85,7 +85,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// ドラッグアンドドロップ
         /// </summary>
         void DragAndDropGUI() {
-            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true)), LanguageData.GetText(_manager.Language, TextEnum.DragAndDrop));
+            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true)), LanguageData.GetText(_setting.Language, TextEnum.DragAndDrop));
 
             if (!GetObjects(out List<string> objs, _root))
                 return;
@@ -94,7 +94,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 AddAssetToAssetPath(item);
             }
 
-            _manager.SaveFavoritesData();
+            _favorites.SaveFavoritesData();
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void DrawAssetGUI() {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
-            foreach (var info in _manager.Data) {
+            foreach (var info in _favorites.Data) {
                 // お気に入り登録したアセットを表示
                 if (DrawAssetRow(info))
                     break;
@@ -137,7 +137,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void AddAssetToAssetPath(string assetPath) {
             // AssetPathは保存済み
-            if (_manager.ExistsAssetPath(assetPath))
+            if (_favorites.ExistsAssetPath(assetPath))
                 return;
 
             // GUID を取得
@@ -147,7 +147,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
             // お気に入りに登録
-            _manager.Add(guid, assetPath, asset.name, asset.GetType().ToString());
+            _favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString());
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void AddAssetToGUID(string assetGuid) {
             // GUIDは保存済み
-            if (_manager.ExistsGUID(assetGuid))
+            if (_favorites.ExistsGUID(assetGuid))
                 return;
 
             // GUID からアセットパスを取得
@@ -165,7 +165,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
 
             // お気に入りに登録
-            _manager.Add(assetGuid, path, asset.name, asset.GetType().ToString());
+            _favorites.Add(assetGuid, path, asset.name, asset.GetType().ToString());
         }
 
         /// <summary>
@@ -173,8 +173,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="info"></param>
         void RemoveAsset(AssetInfo info) {
-            _manager.Remove(info);
-            _manager.SaveFavoritesData();
+            _favorites.Remove(info);
+            _favorites.SaveFavoritesData();
         }
 
         /// <summary>
