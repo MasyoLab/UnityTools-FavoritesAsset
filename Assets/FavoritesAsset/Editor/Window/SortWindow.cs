@@ -28,17 +28,17 @@ namespace MasyoLab.Editor.FavoritesAsset {
             GUILayout.EndScrollView();
         }
 
-        public override void Init(FavoritesManager manager, EditorWindow root) {
+        public override void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
             base.Init(manager, root);
 
             // データを複製
-            _assetInfos = _manager.Data.ToList();
+            _assetInfos = _favorites.Data.ToList();
 
             // 入れ替え時に呼び出す
             void Changed(ReorderableList list) {
                 if (_assetInfos == null)
                     return;
-                _manager.SortData(_assetInfos);
+                _favorites.SortData(_assetInfos);
             }
 
             _reorderableList = new ReorderableList(_assetInfos, typeof(GameObject)) {

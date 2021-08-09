@@ -17,27 +17,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     class FavoritesManager {
         PtrLinker<AssetInfoList> _assetInfo = new PtrLinker<AssetInfoList>(LoadFavoritesData);
-        PtrLinker<SettingManager> _setting = new PtrLinker<SettingManager>();
 
         /// <summary>
         /// データ
         /// </summary>
         public IReadOnlyList<AssetInfo> Data => _assetInfo.Inst.Ref;
-
-        public LanguageEnum Language {
-            get => _setting.Inst.Language;
-            set => _setting.Inst.Language = value;
-        }
-
-        public string ImportTarget {
-            get => _setting.Inst.ImportTarget;
-            set => _setting.Inst.ImportTarget = value;
-        }
-
-        public string ExportTarget {
-            get => _setting.Inst.ExportTarget;
-            set => _setting.Inst.ExportTarget = value;
-        }
 
         public string AssetDBJson => FavoritesJson.ToJson(_assetInfo.Inst);
 
