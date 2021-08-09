@@ -7,47 +7,46 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
 [![Coverage Status](https://coveralls.io/repos/github/MasyoLab/UnityTools-FavoritesAsset/badge.svg?branch=master)](https://coveralls.io/github/MasyoLab/UnityTools-FavoritesAsset?branch=master)
 
-この機能を使用すると、アセットをお気に入り登録できます。
+This function allows you to bookmark (register as a favorite) resources.
 
 ![main window](https://user-images.githubusercontent.com/20793765/126061063-6d5ad988-dfde-416a-9735-d8986ffa70f4.jpg)
 
 ----
 
-インストール方法
+Install
 -------
-### パッケージマネージャー
+### PackageManager
 
 ![user action 7](https://user-images.githubusercontent.com/20793765/123511981-bb09a080-d6bf-11eb-8a15-68bad60e0278.png)
 
-パッケージマネージャーで「Add package from git URL...」を押して、
-
-表示された入力フィールドに次の文字列を貼り付けるとインストールできます。
+In the package manager, press “Add package from git URL...” and paste the following string into the input field that comes up.
 
 ```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git```
 
 ----
 
-### 使い方
+### Usage
 ![Open the editor](https://user-images.githubusercontent.com/20793765/126061572-bb8e0619-52fa-4560-b5b7-50f51db3e675.png)
 
-この拡張エディタは「ツール」から使用できます。
+The extended editor can be used from “Tools”.
 
-注意：アクセス方法は、今後の更新で変更する可能性があります。
+Note : The access method may change with future expansion.
 
-### 登録
-アセットをドラッグ&ドロップすると、お気に入り登録できます。
+### Register
+You can bookmark assets by dragging and dropping them.
 ![fav assets action 1](https://user-images.githubusercontent.com/20793765/126061164-f7da02ab-9360-46e7-8431-dfa1736f8123.gif)
 
-### アセットを Ping 、アセットを開く
-登録済みのアセットにはプロジェクトビューに対してのピングボタンと、アセットを開くためのボタンが追加されます。
+### Ping asset. Open asset.
+Registered assets can have a focus button for the Project view and an open button for the asset.
 ![fav assets action 2](https://user-images.githubusercontent.com/20793765/126061290-80599d54-3677-4c12-b8ce-ac187eaaf925.gif)
 
-### お気に入りを解除
+### Unsubscribe
 ![fav assets action 3](https://user-images.githubusercontent.com/20793765/126061474-c3674f57-4e92-48ec-add3-33c134382b59.gif)
 
-### ソート
+### Sorting
 ![fav assets action 4](https://user-images.githubusercontent.com/20793765/126061513-0eb3bd34-1864-4b35-8f94-1c262c21aeda.gif)
 
 License
 -------
-この拡張エディタは、MITライセンスです。詳細は [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE) を参照してください。
+
+This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE) for more information.
