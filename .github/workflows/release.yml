@@ -1,4 +1,4 @@
-name: release
+name: Release
 on:
   push:
     tags:
@@ -41,6 +41,7 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           buildMethod: CI.Builder.Build
           
+      # Create Release
       - name: Create release
         id: create_release
         uses: actions/create-release@v1.0.0
