@@ -41,18 +41,16 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           buildMethod: CI.Builder.Build
           
-      # Versioning
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v5.5
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Upload
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.FILE_NAME }}.unitypackage
-          path: ${{ env.FILE_NAME }}.unitypackage
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
       # Upload Assets
       - name: Upload Release Asset
@@ -61,7 +59,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.tag_version.outputs.upload_url }} 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.FILE_NAME }}.unitypackage
           asset_name: ${{ env.FILE_NAME }}.unitypackage
           asset_content_type: application/zip
