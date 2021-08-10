@@ -8,8 +8,15 @@ env:
   FILE_NAME: "FavoritesAsset"
 jobs:
   createUnityPackage:
-    name: Create UnityPackage
+    name: Create UnityPackage for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - .
+        unityVersion:
+          - 2019.4.14f1
     steps:
       # Checkout
       - name: Checkout repository
@@ -28,14 +35,15 @@ jobs:
       # Build
       - name: Build package
         id: build
-        uses: game-ci/unity-builder@v2
+        uses: webbertakken/unity-builder@v2
         with:
           buildName: ${{ env.FILE_NAME }}.unitypackage
-          unityVersion: ${{ steps.getUnityEditorVersion.outputs.versionOutput }}
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
           buildMethod: CI.Builder.Build
           versioning: None
 
       - uses: actions/upload-artifact@v2
         with:
-          name: FavoritesAsset.unitypackage
-          path: FavoritesAsset.unitypackage
+          name: ${{ env.FILE_NAME }}.unitypackage
+          path: ${{ env.FILE_NAME }}.unitypackage
