@@ -34,6 +34,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
         ImportAndExportTarget,
         ExportTarget,
         ImportTarget,
+        SourceCode,
+        License,
+        LatestRelease,
+        Link,
     }
 
     struct LanguageData {
@@ -56,6 +60,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "Import & Export Target",
             "Export Target",
             "Import Target",
+            "Source Code",
+            "License",
+            "Latest release",
+            "Link",
         };
 
         static readonly string[] TEXT_JP ={
@@ -72,6 +80,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "インポート＆エクスポート先",
             "エクスポート先",
             "インポート先",
+            "ソースコード",
+            "ライセンス",
+            "最新のリリース",
+            "リンク",
         };
 
         public static string GetText(LanguageEnum lang, TextEnum text) {
