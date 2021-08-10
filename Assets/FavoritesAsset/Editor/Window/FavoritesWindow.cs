@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditorInternal;
 
 //=========================================================
 //
@@ -22,6 +23,54 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         static Vector2 _scrollVec2;
         const float TEXT_PACE = 20;
+        ReorderableList _reorderableList = null;
+
+        public override void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
+            base.Init(manager, root);
+
+            if (_reorderableList == null) {
+
+                // データを複製
+                var assetInfos = _favorites.Data.ToList();
+
+                // 入れ替え時に呼び出す
+                void Changed(ReorderableList list) {
+                    _favorites.SortData(assetInfos);
+                }
+
+                void DrawHeader(Rect rect) {
+                    EditorGUI.LabelField(rect, "");
+
+                    // ヘッダーは最初に処理されるのでここでデータ数の確認
+                    if(assetInfos.Count != _favorites.Data.Count) {
+                        assetInfos = _favorites.Data.ToList();
+                        _reorderableList.list = assetInfos;
+                    }
+                }
+
+                void DrawFooter(Rect rect) {
+                    EditorGUI.LabelField(rect, "");
+                }
+
+                void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+                    // お気に入り解除時に実行
+                    if(DrawAsset(rect, index, isActive, isFocused)) {
+                        assetInfos = _favorites.Data.ToList();
+                        _reorderableList.list = assetInfos;
+                    }
+                }
+
+                _reorderableList = new ReorderableList(assetInfos, typeof(GameObject)) {
+                    drawElementCallback = DrawElement,
+                    onChangedCallback = Changed,
+                    drawHeaderCallback = DrawHeader,
+                    drawFooterCallback = DrawFooter,
+                };
+                _reorderableList.headerHeight = 0;
+                _reorderableList.footerHeight = 0;
+                _reorderableList.showDefaultBackground = false;
+            }
+        }
 
         public override void OnGUI(Rect windowSize) {
             DrawBG(windowSize.x, windowSize.y + (TEXT_PACE * 2), windowSize.width, windowSize.height - (TEXT_PACE * 2));
@@ -102,11 +151,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void DrawAssetGUI() {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
-            foreach (var info in _favorites.Data) {
-                // お気に入り登録したアセットを表示
-                if (DrawAssetRow(info))
-                    break;
-            }
+            _reorderableList.DoLayoutList();
             GUILayout.EndScrollView();
         }
 
@@ -115,21 +160,26 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        bool DrawAssetRow(AssetInfo info) {
-            GUILayout.BeginHorizontal();
+        bool DrawAsset(Rect rect, int index, bool isActive, bool isFocused) {
+            float BUTTON_WIDTH = 30;
+            var assetInfo = _favorites.Data[index];
+            var copyRect = rect;
+            
+            copyRect.width = BUTTON_WIDTH;
 
             // Ping を実行
-            AssetDrawer.OnPingObjectButton(info);
+            AssetDrawer.OnPingObjectButton(copyRect, assetInfo);
+
+            rect.x += BUTTON_WIDTH;
+            rect.width -= BUTTON_WIDTH * 2;
 
             // アセットを開くボタン
-            AssetDrawer.OnAssetButton(_root, info, OpenAsset);
+            AssetDrawer.OnAssetButton(rect, assetInfo, OpenAsset);
+
+            copyRect.x = rect.x + rect.width;
 
             // お気に入り除ボタン
-            bool result = AssetDrawer.OnUnfavoriteButton(info, RemoveAsset);
-
-            GUILayout.EndHorizontal();
-
-            return result;
+             return AssetDrawer.OnUnfavoriteButton(copyRect, assetInfo, RemoveAsset);
         }
 
         /// <summary>

@@ -93,6 +93,21 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         /// <summary>
+        /// アセットをPingする
+        /// </summary>
+        /// <param name="info"></param>
+        public static void OnPingObjectButton(Rect rect, AssetInfo info) {
+            // アイコンを指定
+            var content = EditorGUIUtility.IconContent(CONST.ICON_ANIMATION_VISIBILITY_TOGGLE_ON);
+            // ボタン
+            if (GUI.Button(rect, content)) {
+                // アセットの情報
+                var asset = AssetDatabase.LoadAssetAtPath<Object>(info.Path);
+                EditorGUIUtility.PingObject(asset);
+            }
+        }
+
+        /// <summary>
         /// お気に入り解除
         /// </summary>
         /// <param name="info"></param>
@@ -102,6 +117,22 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var content = EditorGUIUtility.IconContent(CONST.ICON_CLOSE);
             // ボタン
             if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.Height(GUI_LAYOUT_HEIGHT))) {
+                onButtonAction?.Invoke(info);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// お気に入り解除
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static bool OnUnfavoriteButton(Rect rect, AssetInfo info, UnityEngine.Events.UnityAction<AssetInfo> onButtonAction = null) {
+            // アイコンを指定
+            var content = EditorGUIUtility.IconContent(CONST.ICON_CLOSE);
+            // ボタン
+            if (GUI.Button(rect, content)) {
                 onButtonAction?.Invoke(info);
                 return true;
             }

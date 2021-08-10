@@ -77,11 +77,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     _guiWindow = GetWindowClass<FavoritesWindow>();
                 }
-
-                content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Sort));
-                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _guiWindow = GetWindowClass<SortWindow>();
-                }
             }
         }
 
@@ -127,11 +122,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 (call) => {
                     _guiWindow = GetWindowClass<FavoritesWindow>();
                 }, "item 1");
-
-            menu.AddItem(new GUIContent("Sort"), false,
-                (call) => {
-                    _guiWindow = GetWindowClass<SortWindow>();
-                }, "item 2");
 
             menu.ShowAsContext();
 
