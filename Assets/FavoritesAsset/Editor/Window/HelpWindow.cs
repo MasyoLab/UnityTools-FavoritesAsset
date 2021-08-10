@@ -15,12 +15,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         Vector2 _scrollVec2;
 
-        GUIStyle _headerStyle = new GUIStyle(EditorStyles.label) {
+        static GUIStyle _headerStyle = new GUIStyle(EditorStyles.label) {
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
         };
 
-        public override void OnGUI() {
+        public override void OnGUI(Rect windowSize) {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
 
             GUILayout.Label(CONST.EDITOR_WINDOW_NAME, _headerStyle, GUILayout.ExpandWidth(true));

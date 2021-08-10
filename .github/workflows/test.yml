@@ -1,8 +1,10 @@
 name: Test
-on: push
+on: 
+  push:
+    branches:
+      - develop
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-  PROJECT_ROOT: .
 jobs:
   testAllModes:
     name: Test in ${{ matrix.testMode }} on version ${{ matrix.unityVersion }}
@@ -11,29 +13,38 @@ jobs:
       fail-fast: false
       matrix:
         unityVersion:
-          - 2019.3.0f6
+          - 2019.4.14f1
         testMode:
           - playmode
           - editmode
     steps:
-      - uses: actions/checkout@v2
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           lfs: true
 
-      - uses: actions/cache@v1.1.0
+      # Cache
+      - name: Cache
+        uses: actions/cache@v2
         with:
-          path: ${{ env.PROJECT_ROOT }}/Library
-          key: Library-${{ env.PROJECT_ROOT }}
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: |
+            Library-
 
-      - uses: webbertakken/unity-test-runner@v1.4
+      # Test
+      - uses: game-ci/unity-test-runner@v2
         id: tests
         with:
-          projectPath: ${{ env.PROJECT_ROOT }}
+          projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
+          checkName: ${{ matrix.testMode }} Test Results
 
-      - uses: actions/upload-artifact@v1
+      # Upload
+      - uses: actions/upload-artifact@v2
         with:
           name: Test results for ${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.artifactsPath }}

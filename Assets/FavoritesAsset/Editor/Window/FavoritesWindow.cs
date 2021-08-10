@@ -21,9 +21,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
     class FavoritesWindow : BaseWindow {
 
         static Vector2 _scrollVec2;
+        const float TEXT_PACE = 20;
 
-        public override void OnGUI() {
-            DrawBG();
+        public override void OnGUI(Rect windowSize) {
+            DrawBG(windowSize.x, windowSize.y + (TEXT_PACE * 2), windowSize.width, windowSize.height - (TEXT_PACE * 2));
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
@@ -31,16 +32,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // アセット表示
             DrawAssetGUI();
 
-            GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true), GUILayout.Height(20)), $"{_manager.Data.Count} {LanguageData.GetText(_manager.Language, TextEnum.NumFav)}");
+            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true), GUILayout.Height(TEXT_PACE)), $"{_favorites.Data.Count} {LanguageData.GetText(_setting.Language, TextEnum.NumFav)}");
         }
 
-        void DrawBG() {
+        void DrawBG(float posX, float posY, float width, float height) {
             { // 左上
                 var style = GUI.skin.label;
                 var originalAlignment = style.alignment;
                 // 右下レイアウト
                 style.alignment = TextAnchor.LowerRight;
-                GUI.Label(new Rect(Position.width * 0f, Position.height * 0f, Position.width * 0.5f, Position.height * 0.5f),
+                GUI.Label(new Rect(width * 0f, posY, width * 0.5f, height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D)
                     );
                 style.alignment = originalAlignment;
@@ -51,7 +52,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.LowerLeft;
-                GUI.Label(new Rect(Position.width * 0.5f, Position.height * 0f, Position.width * 0.5f, Position.height * 0.5f),
+                GUI.Label(new Rect(width * 0.5f, posY, width * 0.5f, height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED)
                     );
                 style.alignment = originalAlignment;
@@ -62,7 +63,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.UpperRight;
-                GUI.Label(new Rect(Position.width * 0f, Position.height * 0.5f, Position.width * 0.5f, Position.height * 0.5f),
+                GUI.Label(new Rect(width * 0f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED)
                     );
                 style.alignment = originalAlignment;
@@ -73,7 +74,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var originalAlignment = style.alignment;
                 // 左下レイアウト
                 style.alignment = TextAnchor.UpperLeft;
-                GUI.Label(new Rect(Position.width * 0.5f, Position.height * 0.5f, Position.width * 0.5f, Position.height * 0.5f),
+                GUI.Label(new Rect(width * 0.5f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
                     EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D)
                     );
                 style.alignment = originalAlignment;
@@ -84,7 +85,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// ドラッグアンドドロップ
         /// </summary>
         void DragAndDropGUI() {
-            GUI.Box(GUILayoutUtility.GetRect(0, 20, GUILayout.ExpandWidth(true)), LanguageData.GetText(_manager.Language, TextEnum.DragAndDrop));
+            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true)), LanguageData.GetText(_setting.Language, TextEnum.DragAndDrop));
 
             if (!GetObjects(out List<string> objs, _root))
                 return;
@@ -93,7 +94,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 AddAssetToAssetPath(item);
             }
 
-            _manager.SaveFavoritesData();
+            _favorites.SaveFavoritesData();
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void DrawAssetGUI() {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
-            foreach (var info in _manager.Data) {
+            foreach (var info in _favorites.Data) {
                 // お気に入り登録したアセットを表示
                 if (DrawAssetRow(info))
                     break;
@@ -136,7 +137,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void AddAssetToAssetPath(string assetPath) {
             // AssetPathは保存済み
-            if (_manager.ExistsAssetPath(assetPath))
+            if (_favorites.ExistsAssetPath(assetPath))
                 return;
 
             // GUID を取得
@@ -146,7 +147,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
             // お気に入りに登録
-            _manager.Add(guid, assetPath, asset.name, asset.GetType().ToString());
+            _favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString());
         }
 
         /// <summary>
@@ -154,7 +155,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void AddAssetToGUID(string assetGuid) {
             // GUIDは保存済み
-            if (_manager.ExistsGUID(assetGuid))
+            if (_favorites.ExistsGUID(assetGuid))
                 return;
 
             // GUID からアセットパスを取得
@@ -164,7 +165,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
 
             // お気に入りに登録
-            _manager.Add(assetGuid, path, asset.name, asset.GetType().ToString());
+            _favorites.Add(assetGuid, path, asset.name, asset.GetType().ToString());
         }
 
         /// <summary>
@@ -172,8 +173,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="info"></param>
         void RemoveAsset(AssetInfo info) {
-            _manager.Remove(info);
-            _manager.SaveFavoritesData();
+            _favorites.Remove(info);
+            _favorites.SaveFavoritesData();
         }
 
         /// <summary>
