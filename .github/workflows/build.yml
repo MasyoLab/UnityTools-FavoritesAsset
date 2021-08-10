@@ -13,8 +13,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - .
         unityVersion:
           - 2019.4.14f1
     steps:
@@ -42,7 +40,7 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           buildMethod: CI.Builder.Build
 
-      #Upload
+      # Upload
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ env.FILE_NAME }}.unitypackage
