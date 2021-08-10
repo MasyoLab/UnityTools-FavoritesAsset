@@ -1,0 +1,65 @@
+name: release
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  FILE_NAME: "FavoritesAsset"
+jobs:
+  createUnityPackage:
+    name: Create UnityPackage for ${{ matrix.targetPlatform }} on version ${{ matrix.unityVersion }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        unityVersion:
+          - 2019.4.14f1
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      # Cache
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-Release
+          restore-keys: Library-
+
+      # Build
+      - name: Build package
+        id: build
+        uses: webbertakken/unity-builder@v2
+        with:
+          buildName: ${{ env.FILE_NAME }}.unitypackage
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          buildMethod: CI.Builder.Build
+          
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      # Upload Assets
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.FILE_NAME }}.unitypackage
+          asset_name: ${{ env.FILE_NAME }}.unitypackage
+          asset_content_type: application/zip
