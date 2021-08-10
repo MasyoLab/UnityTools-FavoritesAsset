@@ -39,6 +39,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 // データを複製
                 var assetInfos = _favorites.Data.ToList();
+                AssetInfo releaseTarget = null;
 
                 // 入れ替え時に呼び出す
                 void Changed(ReorderableList list) {
@@ -57,13 +58,23 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 void DrawFooter(Rect rect) {
                     EditorGUI.LabelField(rect, "");
+                    // フッターで解放する
+                    if (releaseTarget != null) {
+                        RemoveAsset(releaseTarget);
+                        assetInfos = _favorites.Data.ToList();
+                        _reorderableList.list = assetInfos;
+                        releaseTarget = null;
+                    }
+                }
+
+                void NoneElement(Rect rect) {
+                    EditorGUI.LabelField(rect, "");
                 }
 
                 void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
                     // お気に入り解除時に実行
                     if (DrawAsset(rect, index, isActive, isFocused)) {
-                        assetInfos = _favorites.Data.ToList();
-                        _reorderableList.list = assetInfos;
+                        releaseTarget = _favorites.Data[index];
                     }
                 }
 
@@ -72,7 +83,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     onChangedCallback = Changed,
                     drawHeaderCallback = DrawHeader,
                     drawFooterCallback = DrawFooter,
-                    drawNoneElementCallback = DrawFooter,
+                    drawNoneElementCallback = NoneElement,
                 };
                 _reorderableList.headerHeight = 0;
                 _reorderableList.footerHeight = 0;
@@ -174,7 +185,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             copyRect.x = rect.x + rect.width;
 
             // お気に入り除ボタン
-            return AssetDrawer.OnUnfavoriteButton(copyRect, assetInfo, RemoveAsset);
+            return AssetDrawer.OnUnfavoriteButton(copyRect, assetInfo);
         }
 
         /// <summary>
