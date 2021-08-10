@@ -51,13 +51,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.SourceCode), _linkLabel, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
-                Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/tree/develop");
+            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.LatestRelease), _linkLabel, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+                Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.LatestRelease), _linkLabel, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
-                Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases");
+            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.SourceCode), _linkLabel, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+                Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset");
             }
             Utils.MouseCursorLink();
 
