@@ -75,6 +75,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// Settings Icon
         /// </summary>
         public const string ICON_SETTINGS = "SettingsIcon";
+
+        public const int GUI_LAYOUT_HEIGHT = 22;
     }
 
     enum WindowEnum {

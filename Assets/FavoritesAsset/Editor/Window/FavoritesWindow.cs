@@ -21,8 +21,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     class FavoritesWindow : BaseWindow {
 
+        static GUIStyle _backgroundStyle = new GUIStyle(EditorStyles.label) {
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+        };
+        static GUIStyle _boxStyle = new GUIStyle(EditorStyles.toolbar) {
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = 12,
+        };
         static Vector2 _scrollVec2;
-        const float TEXT_PACE = 20;
         ReorderableList _reorderableList = null;
 
         public override void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
@@ -42,7 +50,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     EditorGUI.LabelField(rect, "");
 
                     // ヘッダーは最初に処理されるのでここでデータ数の確認
-                    if(assetInfos.Count != _favorites.Data.Count) {
+                    if (assetInfos.Count != _favorites.Data.Count) {
                         assetInfos = _favorites.Data.ToList();
                         _reorderableList.list = assetInfos;
                     }
@@ -54,26 +62,28 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
                     // お気に入り解除時に実行
-                    if(DrawAsset(rect, index, isActive, isFocused)) {
+                    if (DrawAsset(rect, index, isActive, isFocused)) {
                         assetInfos = _favorites.Data.ToList();
                         _reorderableList.list = assetInfos;
                     }
                 }
 
-                _reorderableList = new ReorderableList(assetInfos, typeof(GameObject)) {
+                _reorderableList = new ReorderableList(assetInfos, typeof(AssetInfo)) {
                     drawElementCallback = DrawElement,
                     onChangedCallback = Changed,
                     drawHeaderCallback = DrawHeader,
                     drawFooterCallback = DrawFooter,
+                    drawNoneElementCallback = DrawFooter,
                 };
                 _reorderableList.headerHeight = 0;
                 _reorderableList.footerHeight = 0;
+                _reorderableList.elementHeight = CONST.GUI_LAYOUT_HEIGHT;
                 _reorderableList.showDefaultBackground = false;
             }
         }
 
         public override void OnGUI(Rect windowSize) {
-            DrawBG(windowSize.x, windowSize.y + (TEXT_PACE * 2), windowSize.width, windowSize.height - (TEXT_PACE * 2));
+            DrawBG(windowSize.x, windowSize.y + (CONST.GUI_LAYOUT_HEIGHT * 2), windowSize.width, windowSize.height - (CONST.GUI_LAYOUT_HEIGHT * 2));
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
@@ -81,60 +91,46 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // アセット表示
             DrawAssetGUI();
 
-            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true), GUILayout.Height(TEXT_PACE)), $"{_favorites.Data.Count} {LanguageData.GetText(_setting.Language, TextEnum.NumFav)}");
+            GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
+                $"{_favorites.Data.Count} {LanguageData.GetText(_setting.Language, TextEnum.NumFav)}",
+                _boxStyle);
         }
 
         void DrawBG(float posX, float posY, float width, float height) {
-            { // 左上
-                var style = GUI.skin.label;
-                var originalAlignment = style.alignment;
+            {
                 // 右下レイアウト
-                style.alignment = TextAnchor.LowerRight;
+                _backgroundStyle.alignment = TextAnchor.LowerRight;
                 GUI.Label(new Rect(width * 0f, posY, width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D)
-                    );
-                style.alignment = originalAlignment;
+                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D), _backgroundStyle);
             }
-            { // 右上
-
-                var style = GUI.skin.label;
-                var originalAlignment = style.alignment;
+            {
                 // 左下レイアウト
-                style.alignment = TextAnchor.LowerLeft;
+                _backgroundStyle.alignment = TextAnchor.LowerLeft;
                 GUI.Label(new Rect(width * 0.5f, posY, width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED)
-                    );
-                style.alignment = originalAlignment;
+                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED), _backgroundStyle);
             }
-            { // 左下
-
-                var style = GUI.skin.label;
-                var originalAlignment = style.alignment;
+            {
                 // 左下レイアウト
-                style.alignment = TextAnchor.UpperRight;
+                _backgroundStyle.alignment = TextAnchor.UpperRight;
                 GUI.Label(new Rect(width * 0f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED)
-                    );
-                style.alignment = originalAlignment;
+                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED), _backgroundStyle);
             }
-            { // 右下
-
-                var style = GUI.skin.label;
-                var originalAlignment = style.alignment;
+            {
                 // 左下レイアウト
-                style.alignment = TextAnchor.UpperLeft;
+                _backgroundStyle.alignment = TextAnchor.UpperLeft;
                 GUI.Label(new Rect(width * 0.5f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D)
-                    );
-                style.alignment = originalAlignment;
+                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D), _backgroundStyle);
             }
+
+            _backgroundStyle.alignment = TextAnchor.MiddleCenter;
         }
 
         /// <summary>
         /// ドラッグアンドドロップ
         /// </summary>
         void DragAndDropGUI() {
-            GUI.Box(GUILayoutUtility.GetRect(0, TEXT_PACE, GUILayout.ExpandWidth(true)), LanguageData.GetText(_setting.Language, TextEnum.DragAndDrop));
+            GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
+                LanguageData.GetText(_setting.Language, TextEnum.DragAndDrop), _boxStyle);
 
             if (!GetObjects(out List<string> objs, _root))
                 return;
@@ -164,7 +160,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             float BUTTON_WIDTH = 30;
             var assetInfo = _favorites.Data[index];
             var copyRect = rect;
-            
+
             copyRect.width = BUTTON_WIDTH;
 
             // Ping を実行
@@ -179,7 +175,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             copyRect.x = rect.x + rect.width;
 
             // お気に入り除ボタン
-             return AssetDrawer.OnUnfavoriteButton(copyRect, assetInfo, RemoveAsset);
+            return AssetDrawer.OnUnfavoriteButton(copyRect, assetInfo, RemoveAsset);
         }
 
         /// <summary>

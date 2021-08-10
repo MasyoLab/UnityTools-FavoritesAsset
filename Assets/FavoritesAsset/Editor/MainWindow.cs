@@ -77,6 +77,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     _guiWindow = GetWindowClass<FavoritesWindow>();
                 }
+
+                GUILayout.FlexibleSpace();
             }
         }
 
