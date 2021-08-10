@@ -8,9 +8,6 @@
 
 namespace MasyoLab.Editor.FavoritesAsset {
 
-    /// <summary>
-    /// システム
-    /// </summary>
     class SystemManager {
         PtrLinker<FavoritesManager> _favorites = new PtrLinker<FavoritesManager>();
         public FavoritesManager Favorites => _favorites.Inst;

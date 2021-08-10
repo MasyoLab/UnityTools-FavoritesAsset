@@ -7,8 +7,8 @@
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
-    static class StringExtensions {
 
+    static class StringExtensions {
         public static string RemoveAtLast(this string self, string value) {
             return self.Remove(self.LastIndexOf(value), value.Length);
         }

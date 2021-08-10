@@ -31,5 +31,4 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public void SetInst(_Ty inst) => _ptr = inst;
     }
-
 }
