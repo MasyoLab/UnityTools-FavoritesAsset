@@ -67,7 +67,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         void DrawToolbar() {
-            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.MinWidth(1))) {
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar)) {
                 GUIContent content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.File));
                 if (GUILayout.Button(content, EditorStyles.toolbarDropDown)) {
                     OpenMenuA();
@@ -78,10 +78,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     _guiWindow = GetWindowClass<FavoritesWindow>();
                 }
 
-                content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Sort));
-                if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _guiWindow = GetWindowClass<SortWindow>();
-                }
+                GUILayout.FlexibleSpace();
             }
         }
 
@@ -127,11 +124,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 (call) => {
                     _guiWindow = GetWindowClass<FavoritesWindow>();
                 }, "item 1");
-
-            menu.AddItem(new GUIContent("Sort"), false,
-                (call) => {
-                    _guiWindow = GetWindowClass<SortWindow>();
-                }, "item 2");
 
             menu.ShowAsContext();
 

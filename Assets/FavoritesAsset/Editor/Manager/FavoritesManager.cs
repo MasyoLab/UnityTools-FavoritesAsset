@@ -88,14 +88,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// ソートデータを受け取る
         /// </summary>
         /// <param name="assetInfos"></param>
-        public void SortData(in List<AssetInfo> assetInfos) {
-            var newData = new List<AssetInfo>(_assetInfo.Inst.Ref.Count);
+        public void SortData(IReadOnlyList<AssetInfo> assetInfos) {
+            var newData = new List<AssetInfo>(assetInfos.Count);
 
             foreach (var item in assetInfos) {
-                var outItem = _assetInfo.Inst.Ref.Find(data => data.Guid == item.Guid);
-                if (outItem == null)
-                    continue;
-                newData.Add(outItem);
+                newData.Add(item);
             }
 
             _assetInfo.Inst.Ref.Clear();
