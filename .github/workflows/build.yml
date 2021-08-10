@@ -42,6 +42,7 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           buildMethod: CI.Builder.Build
 
+      #Upload
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ env.FILE_NAME }}.unitypackage
