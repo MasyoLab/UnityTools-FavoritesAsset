@@ -5,35 +5,37 @@ on:
       - release
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-  PROJECT_ROOT: .
+  FILE_NAME: "FavoritesAsset"
 jobs:
   createUnityPackage:
     name: Create UnityPackage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           lfs: true
 
-      - uses: actions/cache@v1.1.0
+      # Cache
+      - name: Cache
+        uses: actions/cache@v2
         with:
-          path: ${{ env.PROJECT_ROOT }}/Library
-          key: Library-${{ env.PROJECT_ROOT }}
+          path: Library
+          key: Library-Release
+          restore-keys: Library-
 
-      - name: Get Unity editor version
-        id: getUnityEditorVersion
-        uses: CumulusDS/get-yaml-paths-action@v0.1.0
+      # Build
+      - name: Build package
+        id: build
+        uses: game-ci/unity-builder@v2
         with:
-          file: ${{ env.PROJECT_ROOT }}/ProjectSettings/ProjectVersion.txt
-          versionOutput: m_EditorVersion
-
-      - uses: webbertakken/unity-builder@v1.0
-        with:
+          buildName: ${{ env.FILE_NAME }}.unitypackage
           unityVersion: ${{ steps.getUnityEditorVersion.outputs.versionOutput }}
-          projectPath: ${{ env.PROJECT_ROOT }}
           buildMethod: CI.Builder.Build
+          versioning: None
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: FavoritesAsset.unitypackage
           path: FavoritesAsset.unitypackage
