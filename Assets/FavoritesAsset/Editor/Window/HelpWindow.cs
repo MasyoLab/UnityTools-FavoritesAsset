@@ -11,6 +11,7 @@ using UnityEditor;
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
+
     class HelpWindow : BaseWindow {
 
         Vector2 _scrollVec2;

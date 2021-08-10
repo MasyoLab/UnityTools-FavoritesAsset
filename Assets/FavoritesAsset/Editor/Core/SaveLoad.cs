@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 
 //=========================================================
@@ -28,10 +27,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (string.IsNullOrEmpty(filePath))
                 return string.Empty;
 
-            if (!File.Exists(filePath))
+            if (!System.IO.File.Exists(filePath))
                 return string.Empty;
 
-            var reader = new StreamReader(filePath);
+            var reader = new System.IO.StreamReader(filePath);
             string jsonStr = reader.ReadLine();
             reader.Close();
 
@@ -69,8 +68,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public static string GetSaveDataPath(string fileName, string ext = CONST.JSON_EXT) {
             var filePath = $"{UnityEngine.Application.dataPath.RemoveAtLast(CONST.ASSETS)}{CONST.LIBRARY}/{CONST.FOLDER_NAME}";
 
-            if (!File.Exists(filePath)) {
-                Directory.CreateDirectory(filePath);
+            if (!System.IO.File.Exists(filePath)) {
+                System.IO.Directory.CreateDirectory(filePath);
             }
 
             return $"{filePath}/{fileName}.{ext}";

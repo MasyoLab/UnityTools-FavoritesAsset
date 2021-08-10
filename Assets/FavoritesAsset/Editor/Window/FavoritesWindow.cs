@@ -25,10 +25,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
         };
-        static GUIStyle _boxStyle = new GUIStyle(EditorStyles.toolbar) {
+        static GUIStyle _boxStyle = new GUIStyle(GUI.skin.textArea) {
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
-            fontSize = 12,
         };
         static Vector2 _scrollVec2;
         ReorderableList _reorderableList = null;
