@@ -29,6 +29,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 _favorites.RemoveAll();
                 _favorites.SaveFavoritesData();
+                (_root as MainWindow).Reload();
             }
 
             Utils.GUILine();
