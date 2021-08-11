@@ -9,7 +9,7 @@
 
 この機能を使用すると、アセットをお気に入り登録できます。
 
-![main window](https://user-images.githubusercontent.com/20793765/126061063-6d5ad988-dfde-416a-9735-d8986ffa70f4.jpg)
+![main window](https://user-images.githubusercontent.com/20793765/128970578-8a45c4ef-4705-453a-9d0a-ed19fc94da08.png)
 
 ----
 
@@ -25,6 +25,9 @@
 
 ```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git```
 
+### UnityPackage
+[Releases](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)から取得可能です。
+
 ----
 
 ### 使い方
@@ -36,17 +39,17 @@
 
 ### 登録
 アセットをドラッグ&ドロップすると、お気に入り登録できます。
-![fav assets action 1](https://user-images.githubusercontent.com/20793765/126061164-f7da02ab-9360-46e7-8431-dfa1736f8123.gif)
+![fav assets action 1](https://user-images.githubusercontent.com/20793765/128969135-38560720-8504-4cc2-b503-bd296f04a0ac.gif)
 
 ### アセットを Ping 、アセットを開く
 登録済みのアセットにはプロジェクトビューに対してのピングボタンと、アセットを開くためのボタンが追加されます。
-![fav assets action 2](https://user-images.githubusercontent.com/20793765/126061290-80599d54-3677-4c12-b8ce-ac187eaaf925.gif)
+![fav assets action 2](https://user-images.githubusercontent.com/20793765/128969150-67e8dfe0-786b-457c-bcd1-4b40dc0bcc1d.gif)
 
 ### お気に入りを解除
-![fav assets action 3](https://user-images.githubusercontent.com/20793765/126061474-c3674f57-4e92-48ec-add3-33c134382b59.gif)
+![fav assets action 3](https://user-images.githubusercontent.com/20793765/128969164-0b645776-a916-4d52-9e47-4b946eacfe8a.gif)
 
 ### ソート
-![fav assets action 4](https://user-images.githubusercontent.com/20793765/126061513-0eb3bd34-1864-4b35-8f94-1c262c21aeda.gif)
+![fav assets action 4](https://user-images.githubusercontent.com/20793765/128969180-fb09cea1-0103-4300-b010-fed0453d12f5.gif)
 
 License
 -------

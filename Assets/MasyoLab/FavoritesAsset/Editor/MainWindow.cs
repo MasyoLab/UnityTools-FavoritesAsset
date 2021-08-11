@@ -91,6 +91,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     _favorites.SetJsonData(SaveLoad.LoadFile(_setting.ImportTarget, (result) => {
                         _setting.ImportTarget = result;
                     }));
+                    Reload();
                 }, TextEnum.Import);
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
@@ -130,6 +131,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
             menu.AddItem(new GUIContent("SubMenu/MenuItem3"), false, call => { }, "item 3");
 
             menu.DropDown(new Rect(0, EditorStyles.toolbar.fixedHeight, 0f, 0f));
+        }
+
+        public void Reload() {
+            foreach (var item in _windows) {
+                item.Reload();
+            }
         }
     }
 }
