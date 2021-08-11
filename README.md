@@ -26,7 +26,7 @@
 ```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git```
 
 ### UnityPackage
-[最新のリリース](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)をご利用ください。
+[Releases](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)から取得可能です。
 
 ----
 
