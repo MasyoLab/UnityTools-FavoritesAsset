@@ -34,62 +34,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public override void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
             base.Init(manager, root);
-
-            if (_reorderableList == null) {
-
-                // データを複製
-                var assetInfos = _favorites.Data.ToList();
-                AssetInfo releaseTarget = null;
-
-                // 入れ替え時に呼び出す
-                void Changed(ReorderableList list) {
-                    _favorites.SortData(assetInfos);
-                }
-
-                void DrawHeader(Rect rect) {
-                    EditorGUI.LabelField(rect, "");
-
-                    // ヘッダーは最初に処理されるのでここでデータ数の確認
-                    if (assetInfos.Count != _favorites.Data.Count) {
-                        assetInfos = _favorites.Data.ToList();
-                        _reorderableList.list = assetInfos;
-                    }
-                }
-
-                void DrawFooter(Rect rect) {
-                    EditorGUI.LabelField(rect, "");
-                    // フッターで解放する
-                    if (releaseTarget != null) {
-                        RemoveAsset(releaseTarget);
-                        assetInfos = _favorites.Data.ToList();
-                        _reorderableList.list = assetInfos;
-                        releaseTarget = null;
-                    }
-                }
-
-                void NoneElement(Rect rect) {
-                    EditorGUI.LabelField(rect, "");
-                }
-
-                void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
-                    // お気に入り解除時に実行
-                    if (DrawAsset(rect, index, isActive, isFocused)) {
-                        releaseTarget = _favorites.Data[index];
-                    }
-                }
-
-                _reorderableList = new ReorderableList(assetInfos, typeof(AssetInfo)) {
-                    drawElementCallback = DrawElement,
-                    onChangedCallback = Changed,
-                    drawHeaderCallback = DrawHeader,
-                    drawFooterCallback = DrawFooter,
-                    drawNoneElementCallback = NoneElement,
-                };
-                _reorderableList.headerHeight = 0;
-                _reorderableList.footerHeight = 0;
-                _reorderableList.elementHeight = CONST.GUI_LAYOUT_HEIGHT;
-                _reorderableList.showDefaultBackground = false;
-            }
+            InitSortFunction();
         }
 
         public override void OnGUI(Rect windowSize) {
@@ -104,6 +49,69 @@ namespace MasyoLab.Editor.FavoritesAsset {
             GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
                 $"{_favorites.Data.Count} {LanguageData.GetText(_setting.Language, TextEnum.NumFav)}",
                 _boxStyle);
+        }
+
+        public override void Reload() {
+            _reorderableList = null;
+            InitSortFunction();
+        }
+
+        void InitSortFunction() {
+            if (_reorderableList != null)
+                return;
+
+            // データを複製
+            var assetInfos = _favorites.Data.ToList();
+            AssetInfo releaseTarget = null;
+
+            // 入れ替え時に呼び出す
+            void Changed(ReorderableList list) {
+                _favorites.SortData(assetInfos);
+            }
+
+            void DrawHeader(Rect rect) {
+                EditorGUI.LabelField(rect, "");
+
+                // ヘッダーは最初に処理されるのでここでデータ数の確認
+                if (assetInfos.Count != _favorites.Data.Count) {
+                    assetInfos = _favorites.Data.ToList();
+                    _reorderableList.list = assetInfos;
+                }
+            }
+
+            void DrawFooter(Rect rect) {
+                EditorGUI.LabelField(rect, "");
+                // フッターで解放する
+                if (releaseTarget != null) {
+                    RemoveAsset(releaseTarget);
+                    assetInfos = _favorites.Data.ToList();
+                    _reorderableList.list = assetInfos;
+                    releaseTarget = null;
+                }
+            }
+
+            void NoneElement(Rect rect) {
+                EditorGUI.LabelField(rect, "");
+            }
+
+            void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+                // お気に入り解除時に実行
+                if (DrawAsset(rect, index, isActive, isFocused)) {
+                    releaseTarget = _favorites.Data[index];
+                }
+            }
+
+            _reorderableList = new ReorderableList(assetInfos, typeof(AssetInfo)) {
+                drawElementCallback = DrawElement,
+                onChangedCallback = Changed,
+                drawHeaderCallback = DrawHeader,
+                drawFooterCallback = DrawFooter,
+                drawNoneElementCallback = NoneElement,
+            };
+            _reorderableList.headerHeight = 0;
+            _reorderableList.footerHeight = 0;
+            _reorderableList.elementHeight = CONST.GUI_LAYOUT_HEIGHT;
+            _reorderableList.showDefaultBackground = false;
         }
 
         void DrawBG(float posX, float posY, float width, float height) {

@@ -27,5 +27,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             _systemManager = manager;
             _root = root;
         }
+
+        public virtual void Reload() { }
     }
 }
