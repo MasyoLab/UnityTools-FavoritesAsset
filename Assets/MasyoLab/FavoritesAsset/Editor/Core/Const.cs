@@ -82,7 +82,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     enum WindowEnum {
         FavoritesWindow,
-        SortWindow,
         SettingWindow,
         HelpWindow,
         Max,
