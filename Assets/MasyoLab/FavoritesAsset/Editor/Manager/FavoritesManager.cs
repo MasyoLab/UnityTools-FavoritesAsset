@@ -23,7 +23,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         public IReadOnlyList<AssetInfo> Data => _assetInfo.Inst.Ref;
 
-        public string AssetDBJson => FavoritesJson.ToJson(_assetInfo.Inst);
+        public string AssetDBJson => FavoritesJsonExportData.ToJson(_assetInfo.Inst);
 
         public void Add(AssetInfo info) => _assetInfo.Inst.Ref.Add(info);
 
@@ -40,7 +40,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public bool ExistsAssetPath(string path) => _assetInfo.Inst.Ref.Exists(x => x.Path == path);
 
         public void SaveFavoritesData() {
-            SaveLoad.Save(AssetDBJson, SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
+            SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
         }
 
         static AssetInfoList LoadFavoritesData() {
@@ -103,7 +103,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public void SetJsonData(string jsonData) {
             if (jsonData == string.Empty)
                 return;
-            _assetInfo.SetInst(FavoritesJson.FromJson(jsonData).AssetDB);
+
+            _assetInfo.SetInst(FavoritesJsonExportData.FromJson(jsonData).AssetDB);
             SaveFavoritesData();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 //=========================================================
 //
@@ -107,6 +108,20 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Favorites));
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
                     GetWindowClass<FavoritesWindow>();
+                }
+
+                string[] bookmarkDatas = {
+                    "Default","Bs"
+                };
+                var pops = bookmarkDatas
+                    .Concat(new[] { "", "New..." }).ToArray();
+                int index = EditorGUILayout.Popup(0, pops);
+
+                if (index < bookmarkDatas.Length) {
+                }
+                else
+                {
+                    GetWindowClass<TabWindow>();
                 }
 
                 GUILayout.FlexibleSpace();

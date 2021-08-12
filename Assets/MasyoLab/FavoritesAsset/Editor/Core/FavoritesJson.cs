@@ -24,4 +24,23 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return JsonUtility.FromJson<FavoritesJson>(jsonData);
         }
     }
+
+    class FavoritesJsonExportData {
+        public AssetInfoList AssetDB;
+        public List<AssetInfoList> GroupData;
+
+        public static string ToJson(AssetInfoList assetInfo, params AssetInfoList[] group) {
+            var data = new FavoritesJsonExportData();
+            data.AssetDB = assetInfo;
+            data.GroupData = new List<AssetInfoList>();
+            if (group != null) {
+                data.GroupData.AddRange(group);
+            }
+            return JsonUtility.ToJson(data);
+        }
+
+        public static FavoritesJsonExportData FromJson(string jsonData) {
+            return JsonUtility.FromJson<FavoritesJsonExportData>(jsonData);
+        }
+    }
 }
