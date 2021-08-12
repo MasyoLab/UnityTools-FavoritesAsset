@@ -77,7 +77,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (_guiWindow == null) {
                 GetWindowClass<FavoritesWindow>();
             }
-            
+
             _guiWindow.OnGUI(new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight));
         }
 
@@ -111,7 +111,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 }
 
                 string[] bookmarkDatas = {
-                    "Default","Bs"
+                    CONST.DEFAULT,
                 };
                 var pops = bookmarkDatas
                     .Concat(new[] { "", "New..." }).ToArray();
@@ -119,8 +119,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 if (index < bookmarkDatas.Length) {
                 }
-                else
-                {
+                else {
                     GetWindowClass<TabWindow>();
                 }
 
