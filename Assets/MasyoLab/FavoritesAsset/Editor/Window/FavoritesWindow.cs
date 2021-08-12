@@ -227,12 +227,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // GUID を取得
             var guid = AssetDatabase.AssetPathToGUID(assetPath);
 
-            // アセットの情報
-            var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
-
             // お気に入りに登録
-            _favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString());
-            _favorites.SaveFavoritesData();
+            _favorites.Add(guid, assetPath, assetObject.name, assetObject.GetType().ToString());
         }
 
         /// <summary>
@@ -339,6 +335,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Event.current.Use();
 
             return DragAndDrop.paths;
+        }
+
+        public void Save() {
+            _favorites.SaveFavoritesData();
         }
     }
 }

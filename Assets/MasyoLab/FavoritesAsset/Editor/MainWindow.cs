@@ -14,7 +14,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     public class MainWindow : EditorWindow {
 
-        public static MainWindow Inst { get; private set; } = null;
+        static MainWindow Inst = null;
 
         List<BaseWindow> _windows = new List<BaseWindow>((int)WindowEnum.Max);
         BaseWindow _guiWindow = null;
@@ -42,8 +42,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
         static void RegisterSelection() {
             if (Selection.activeObject == null)
                 return;
+
             Init();
-            Inst.GetWindowClass<FavoritesWindow>().AddAssetToObject(Selection.activeObject);
+
+            var window = Inst.GetWindowClass<FavoritesWindow>();
+            foreach (var item in Selection.objects) {
+                window.AddAssetToObject(item);
+            }
+            window.Save();
         }
 
         /// <summary>
