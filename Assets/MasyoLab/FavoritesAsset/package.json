@@ -1,22 +1,22 @@
 {
-    "name": "com.masyo-lab.favorites-asset",
-    "version": "1.2.2",
-    "displayName": "Favorites Asset Window",
-    "unity": "2019.4",
-    "description": "This function allows you to bookmark (register as a favorite) resources.\nMIT License\nCopyright (c) 2021 MasyoLab",
-    "author": {
-        "name": "MasyoLab",
-        "email": "masyo.lab@gmail.com",
-        "url": "https://github.com/MasyoLab"
-    },
-    "keywords": [
-        "masyolab",
-        "masyo lab",
-        "favoritesasset",
-        "favorites asset",
-        "favorites",
-        "bookmark",
-        "fav"
-    ],
-    "dependencies": {}
+  "name": "com.masyo-lab.favorites-asset",
+  "displayName": "Favorites Asset Window",
+  "version": "1.2.2",
+  "unity": "2019.4",
+  "description": "This function allows you to bookmark (register as a favorite) resources.\nMIT License\nCopyright (c) 2021 MasyoLab",
+  "author": {
+    "name": "MasyoLab",
+    "email": "masyo.lab@gmail.com",
+    "url": "https://github.com/MasyoLab"
+  },
+  "keywords": [
+    "masyolab",
+    "masyo lab",
+    "favoritesasset",
+    "favorites asset",
+    "favorites",
+    "bookmark",
+    "fav"
+  ],
+  "dependencies": {}
 }
