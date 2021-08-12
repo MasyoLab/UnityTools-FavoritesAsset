@@ -27,6 +27,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const string FAVORITES_DATA = "FavoritesData";
         public static string FOLDER_NAME => $"{EDITOR_NAME}-{SHA256}";
         public static string JSON_DATA_NAME => $"{Application.productName}-{FAVORITES_DATA}";
+        public const string ADD_TO_FAVORITES_ASSET_WINDOW = "Assets/Add to Favorites Asset Window";
 
         /// <summary>
         /// アイコン：https://github.com/halak/unity-editor-icons

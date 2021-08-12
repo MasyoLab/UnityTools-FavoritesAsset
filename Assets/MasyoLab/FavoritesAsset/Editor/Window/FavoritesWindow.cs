@@ -21,14 +21,20 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     class FavoritesWindow : BaseWindow {
 
-        static GUIStyle _backgroundStyle = new GUIStyle(EditorStyles.label) {
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleCenter,
-        };
-        static GUIStyle _boxStyle = new GUIStyle(GUI.skin.textArea) {
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleCenter,
-        };
+        PtrLinker<GUIStyle> _backgroundStyle = new PtrLinker<GUIStyle>(() => {
+            return new GUIStyle(EditorStyles.label) {
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+            };
+        });
+
+        PtrLinker<GUIStyle> _boxStyle = new PtrLinker<GUIStyle>(() => {
+            return new GUIStyle(GUI.skin.textArea) {
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+            };
+        });
+
         static Vector2 _scrollVec2;
         ReorderableList _reorderableList = null;
 
@@ -38,7 +44,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public override void OnGUI(Rect windowSize) {
-            DrawBG(windowSize.x, windowSize.y + (CONST.GUI_LAYOUT_HEIGHT * 2), windowSize.width, windowSize.height - (CONST.GUI_LAYOUT_HEIGHT * 2));
+            //DrawBG(windowSize.x, windowSize.y + (CONST.GUI_LAYOUT_HEIGHT * 2), windowSize.width, windowSize.height - (CONST.GUI_LAYOUT_HEIGHT * 2));
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
@@ -48,7 +54,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
                 $"{_favorites.Data.Count} {LanguageData.GetText(_setting.Language, TextEnum.NumFav)}",
-                _boxStyle);
+                _boxStyle.Inst);
         }
 
         public override void Reload() {
@@ -115,32 +121,29 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         void DrawBG(float posX, float posY, float width, float height) {
-            {
-                // 右下レイアウト
-                _backgroundStyle.alignment = TextAnchor.LowerRight;
-                GUI.Label(new Rect(width * 0f, posY, width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D), _backgroundStyle);
-            }
-            {
-                // 左下レイアウト
-                _backgroundStyle.alignment = TextAnchor.LowerLeft;
-                GUI.Label(new Rect(width * 0.5f, posY, width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED), _backgroundStyle);
-            }
-            {
-                // 左下レイアウト
-                _backgroundStyle.alignment = TextAnchor.UpperRight;
-                GUI.Label(new Rect(width * 0f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED), _backgroundStyle);
-            }
-            {
-                // 左下レイアウト
-                _backgroundStyle.alignment = TextAnchor.UpperLeft;
-                GUI.Label(new Rect(width * 0.5f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
-                    EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D), _backgroundStyle);
-            }
+            var uiStyle = _backgroundStyle.Inst;
 
-            _backgroundStyle.alignment = TextAnchor.MiddleCenter;
+            // 右下レイアウト
+            uiStyle.alignment = TextAnchor.LowerRight;
+            GUI.Label(new Rect(width * 0f, posY, width * 0.5f, height * 0.5f),
+                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D), uiStyle);
+
+            // 左下レイアウト
+            uiStyle.alignment = TextAnchor.LowerLeft;
+            GUI.Label(new Rect(width * 0.5f, posY, width * 0.5f, height * 0.5f),
+                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED), uiStyle);
+
+            // 左下レイアウト
+            uiStyle.alignment = TextAnchor.UpperRight;
+            GUI.Label(new Rect(width * 0f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
+                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED), uiStyle);
+
+            // 左下レイアウト
+            uiStyle.alignment = TextAnchor.UpperLeft;
+            GUI.Label(new Rect(width * 0.5f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
+                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D), uiStyle);
+
+            uiStyle.alignment = TextAnchor.MiddleCenter;
         }
 
         /// <summary>
@@ -148,7 +151,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         void DragAndDropGUI() {
             GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
-                LanguageData.GetText(_setting.Language, TextEnum.DragAndDrop), _boxStyle);
+                LanguageData.GetText(_setting.Language, TextEnum.DragAndDrop), _boxStyle.Inst);
 
             if (!GetObjects(out List<string> objs, _root))
                 return;
@@ -212,6 +215,23 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             // お気に入りに登録
             _favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString());
+        }
+
+        /// <summary>
+        /// Objectでアセットを登録
+        /// </summary>
+        public void AddAssetToObject(Object assetObject) {
+            var assetPath = AssetDatabase.GetAssetPath(assetObject);
+
+            // AssetPathは保存済み
+            if (_favorites.ExistsAssetPath(assetPath))
+                return;
+
+            // GUID を取得
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+
+            // お気に入りに登録
+            _favorites.Add(guid, assetPath, assetObject.name, assetObject.GetType().ToString());
         }
 
         /// <summary>
@@ -318,6 +338,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Event.current.Use();
 
             return DragAndDrop.paths;
+        }
+
+        public void Save() {
+            _favorites.SaveFavoritesData();
         }
     }
 }
