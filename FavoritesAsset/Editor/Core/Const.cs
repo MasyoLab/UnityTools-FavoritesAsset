@@ -12,7 +12,7 @@ using UnityEngine;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     struct CONST {
-        public const string VERSION = "v1.2.1";
+        public const string VERSION = "v1.2.2";
         public const string EDITOR_NAME = "Favorites Asset";
         public const string EDITOR_WINDOW_NAME = "Favorites Asset Window";
         public const string MENU_ITEM = "Tools/" + EDITOR_WINDOW_NAME;
@@ -27,6 +27,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const string FAVORITES_DATA = "FavoritesData";
         public static string FOLDER_NAME => $"{EDITOR_NAME}-{SHA256}";
         public static string JSON_DATA_NAME => $"{Application.productName}-{FAVORITES_DATA}";
+        public const string ADD_TO_FAVORITES_ASSET_WINDOW = "Assets/Add to Favorites Asset Window";
 
         /// <summary>
         /// アイコン：https://github.com/halak/unity-editor-icons
