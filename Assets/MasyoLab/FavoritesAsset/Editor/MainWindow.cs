@@ -101,7 +101,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar)) {
                 GUIContent content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.File));
                 if (GUILayout.Button(content, EditorStyles.toolbarDropDown)) {
-                    OpenMenuA();
+                    OpenMenu();
                 }
 
                 content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Favorites));
@@ -113,7 +113,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
-        void OpenMenuA() {
+        void OpenMenu() {
             // Now create the menu, add items and show it
             var menu = new GenericMenu();
 

@@ -41,7 +41,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// 閉じるアイコン
         /// </summary>
-        public const string ICON_CLOSE = "winbtn_win_close@2x";
+        public const string ICON_CLOSE = "winbtn_win_close";
 
         /// <summary>
         /// FolderAdded
