@@ -38,7 +38,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public override void OnGUI(Rect windowSize) {
-            DrawBG(windowSize.x, windowSize.y + (CONST.GUI_LAYOUT_HEIGHT * 2), windowSize.width, windowSize.height - (CONST.GUI_LAYOUT_HEIGHT * 2));
+            //DrawBG(windowSize.x, windowSize.y + (CONST.GUI_LAYOUT_HEIGHT * 2), windowSize.width, windowSize.height - (CONST.GUI_LAYOUT_HEIGHT * 2));
 
             // ドラッグアンドドロップ
             DragAndDropGUI();
