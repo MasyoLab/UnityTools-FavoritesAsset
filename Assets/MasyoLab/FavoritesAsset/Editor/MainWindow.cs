@@ -13,6 +13,9 @@ using UnityEditor;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     public class MainWindow : EditorWindow {
+
+        public static MainWindow Inst { get; private set; } = null;
+
         List<BaseWindow> _windows = new List<BaseWindow>((int)WindowEnum.Max);
         BaseWindow _guiWindow = null;
 
@@ -29,6 +32,26 @@ namespace MasyoLab.Editor.FavoritesAsset {
         static void Init() {
             var window = GetWindow<MainWindow>(CONST.EDITOR_WINDOW_NAME);
             window.titleContent.image = EditorGUIUtility.IconContent(CONST.FAVORITE_ICON).image;
+            Inst = window;
+        }
+
+        /// <summary>
+        /// エディタ上で選択しているアセットを登録
+        /// </summary>
+        [MenuItem(CONST.ADD_TO_FAVORITES_ASSET_WINDOW, false, 10001)]
+        static void RegisterSelection() {
+            if (Selection.activeObject == null)
+                return;
+            Init();
+            Inst.GetWindowClass<FavoritesWindow>().AddAssetToObject(Selection.activeObject);
+        }
+
+        /// <summary>
+        /// RegisterSelectionのValidateメソッド
+        /// </summary>
+        [MenuItem(CONST.ADD_TO_FAVORITES_ASSET_WINDOW, true)]
+        static bool ValidateRegisterSelection() {
+            return Selection.activeObject != null;
         }
 
         /// <summary>
@@ -45,7 +68,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         void UpdateGUIAction() {
             if (_guiWindow == null) {
-                _guiWindow = GetWindowClass<FavoritesWindow>();
+                GetWindowClass<FavoritesWindow>();
             }
             
             _guiWindow.OnGUI(new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight));
@@ -57,12 +80,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 if (win == null)
                     continue;
                 win.Init(_systemManager, this);
+                _guiWindow = win;
                 return win;
             }
 
             var newWin = new _Ty();
             newWin.Init(_systemManager, this);
             _windows.Add(newWin);
+            _guiWindow = newWin;
             return newWin;
         }
 
@@ -75,7 +100,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
                 content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Favorites));
                 if (GUILayout.Button(content, EditorStyles.toolbarButton)) {
-                    _guiWindow = GetWindowClass<FavoritesWindow>();
+                    GetWindowClass<FavoritesWindow>();
                 }
 
                 GUILayout.FlexibleSpace();
@@ -105,12 +130,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Setting)), false,
                 (call) => {
-                    _guiWindow = GetWindowClass<SettingWindow>();
+                    GetWindowClass<SettingWindow>();
                 }, TextEnum.Setting);
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Help)), false,
                 (call) => {
-                    _guiWindow = GetWindowClass<HelpWindow>();
+                    GetWindowClass<HelpWindow>();
                 }, TextEnum.Help);
 
 
@@ -123,7 +148,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent("Favorites"), false,
                 (call) => {
-                    _guiWindow = GetWindowClass<FavoritesWindow>();
+                    GetWindowClass<FavoritesWindow>();
                 }, "item 1");
 
             menu.ShowAsContext();

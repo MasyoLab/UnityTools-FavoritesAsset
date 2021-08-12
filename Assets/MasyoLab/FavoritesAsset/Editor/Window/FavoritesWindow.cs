@@ -215,6 +215,27 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         /// <summary>
+        /// Objectでアセットを登録
+        /// </summary>
+        public void AddAssetToObject(Object assetObject) {
+            var assetPath = AssetDatabase.GetAssetPath(assetObject);
+
+            // AssetPathは保存済み
+            if (_favorites.ExistsAssetPath(assetPath))
+                return;
+
+            // GUID を取得
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+
+            // アセットの情報
+            var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+
+            // お気に入りに登録
+            _favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString());
+            _favorites.SaveFavoritesData();
+        }
+
+        /// <summary>
         /// GUIDでアセットを登録
         /// </summary>
         void AddAssetToGUID(string assetGuid) {
