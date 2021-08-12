@@ -23,7 +23,7 @@
 
 表示された入力フィールドに次の文字列を貼り付けるとインストールできます。
 
-```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git```
+```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/FavoritesAsset```
 
 ### UnityPackage
 [Releases](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases)から取得可能です。
