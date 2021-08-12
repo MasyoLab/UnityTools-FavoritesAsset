@@ -5,7 +5,6 @@ on:
       - '**'        # matches every branch
       - '!master'   # excludes master
       - '!release'  # excludes release
-      - '!develop'  # excludes develop
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
