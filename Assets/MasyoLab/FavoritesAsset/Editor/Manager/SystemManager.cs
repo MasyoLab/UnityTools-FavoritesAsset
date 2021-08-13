@@ -14,5 +14,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         PtrLinker<SettingManager> _setting = new PtrLinker<SettingManager>();
         public SettingManager Setting => _setting.Inst;
+
+        PtrLinker<GroupManager> _group = new PtrLinker<GroupManager>();
+        public GroupManager Group => _group.Inst;
     }
 }

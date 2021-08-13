@@ -43,7 +43,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     [System.Serializable]
     class AssetInfoList {
-        public string Name = CONST.DEFAULT;
         public List<AssetInfo> Ref = new List<AssetInfo>();
     }
 }

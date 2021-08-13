@@ -25,6 +25,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         SystemManager _manager => _systemManager.Inst;
         FavoritesManager _favorites => _manager.Favorites;
         SettingManager _setting => _manager.Setting;
+        GroupManager _group => _manager.Group;
 
         /// <summary>
         /// ウィンドウを追加
@@ -75,18 +76,23 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         void UpdateGUIAction() {
             if (_guiWindow == null) {
-                GetWindowClass<FavoritesWindow>();
+                GetWindowClass<GroupWindow>();
             }
 
             _guiWindow.OnGUI(new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight));
         }
 
         _Ty GetWindowClass<_Ty>() where _Ty : BaseWindow, new() {
+            if(_guiWindow as _Ty != null) {
+                return _guiWindow as _Ty;
+            }
+
             foreach (var item in _windows) {
                 _Ty win = item as _Ty;
                 if (win == null)
                     continue;
                 win.Init(_systemManager, this);
+                _guiWindow?.Close();
                 _guiWindow = win;
                 return win;
             }
@@ -94,6 +100,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var newWin = new _Ty();
             newWin.Init(_systemManager, this);
             _windows.Add(newWin);
+            _guiWindow?.Close();
             _guiWindow = newWin;
             return newWin;
         }
@@ -110,17 +117,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     GetWindowClass<FavoritesWindow>();
                 }
 
-                string[] bookmarkDatas = {
-                    CONST.DEFAULT,
-                };
-                var pops = bookmarkDatas
-                    .Concat(new[] { "", "New..." }).ToArray();
-                int index = EditorGUILayout.Popup(0, pops);
+                int index = EditorGUILayout.Popup(0, _group.GroupStr);
 
-                if (index < bookmarkDatas.Length) {
+                if (index < _group.GroupStr.Length - 1) {
                 }
-                else {
-                    GetWindowClass<TabWindow>();
+                else if (index == _group.GroupStr.Length - 1) {
+                    GetWindowClass<GroupWindow>();
                 }
 
                 GUILayout.FlexibleSpace();

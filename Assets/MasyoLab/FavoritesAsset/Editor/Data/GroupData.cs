@@ -12,7 +12,17 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     [System.Serializable]
     class GroupData {
-        public string SelectGroup = string.Empty;
-        public List<string> GroupList = null;
+        public string GroupName = string.Empty;
+        public string GUID = Utils.NewGuid();
+        public bool IsNull => string.IsNullOrWhiteSpace(GroupName);
+        [System.NonSerialized]
+        public int Index = 0;
+    }
+
+    [System.Serializable]
+    class GroupDB {
+        public string SelectGroupGUID = string.Empty;
+        public List<GroupData> Data = new List<GroupData>();
+        public List<GroupData> Reserved = new List<GroupData>();
     }
 }

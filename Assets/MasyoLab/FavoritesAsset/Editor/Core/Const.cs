@@ -25,6 +25,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const string LIBRARY = "Library";
         public const string SETTING_DATA = "SettingData";
         public const string FAVORITES_DATA = "FavoritesData";
+        public const string GROUP_DATA = "GroupData";
         public static string FOLDER_NAME => $"{DEVELOPER}@{EDITOR_NAME}";
         public static string JSON_DATA_NAME => $"{Application.productName}-{FAVORITES_DATA}";
         public const string ADD_TO_FAVORITES_ASSET_WINDOW = "Assets/Add to Favorites Asset Window";
