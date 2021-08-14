@@ -12,6 +12,7 @@ using UnityEditor;
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
+
     class GroupManager {
         PtrLinker<GroupDB> _groupDB = new PtrLinker<GroupDB>(Load);
         public GroupDB GroupDB => _groupDB.Inst;
@@ -20,8 +21,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
         string[] _groupStr = null;
         public string[] GroupStr => GetGroupStr();
 
-        int _index = 0;
-        public int Index => _index;
+        int _index = -1;
+        int Index {
+            set => _index = value;
+            get {
+                if (_index == -1) {
+                    for (int i = 0; i < GroupDB.Data.Count; i++) {
+                        GroupDB.Data[i].Index = i;
+                    }
+                    SelectGroupByGUID();
+                }
+                return _index;
+            }
+        }
 
         public string SelectGroupFileName => GroupDB.SelectGroupGUID == string.Empty ? CONST.FAVORITES_DATA : GroupDB.SelectGroupGUID;
 
@@ -83,7 +95,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
         string[] GetGroupStr() {
             if (_groupStr != null)
                 return _groupStr;
-
             return UpdateGroupStr();
         }
 
@@ -112,19 +123,25 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public bool SelectGroupGUI() {
-            var selectIndex = EditorGUILayout.Popup(_index, GroupStr);
+            var selectIndex = EditorGUILayout.Popup(Index, GroupStr);
+            var isSave = selectIndex != Index;
 
             if (selectIndex == 0) {
                 GroupDB.SelectGroupGUID = string.Empty;
-                _index = selectIndex;
+                Index = selectIndex;
             }
             else if (selectIndex == GroupStr.Length - 1) {
                 return true;
             }
             else {
                 GroupDB.SelectGroupGUID = GroupDB.Data[selectIndex - 1].GUID;
-                _index = selectIndex;
+                Index = selectIndex;
             }
+
+            if (isSave) {
+                Save();
+            }
+
             return false;
         }
 
@@ -140,11 +157,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             if (groupData == null) {
                 GroupDB.SelectGroupGUID = string.Empty;
-                _index = 0;
+                Index = 0;
                 return;
             }
 
-            _index = groupData.Index + 1;
+            Index = groupData.Index + 1;
         }
     }
 }
