@@ -164,5 +164,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             Index = groupData.Index + 1;
         }
+
+        public string GetGroupNameByGUID(string guid) {
+            var groupData = GroupDB.Data.Find(v => v.GUID == guid);
+            if (groupData == null) {
+                return CONST.DEFAULT;
+            }
+            return groupData.GroupName;
+        }
     }
 }

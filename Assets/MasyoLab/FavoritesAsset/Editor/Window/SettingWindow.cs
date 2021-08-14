@@ -25,6 +25,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Utils.GUILine();
 
             // お気に入り全解除
+            GUILayout.Label($"Select : {_group.GetGroupNameByGUID(_group.SelectGroupFileName)}");
             var content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.UnlockAll));
             if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 _favorites.RemoveAll();
