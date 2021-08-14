@@ -55,6 +55,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             void DrawHeader(Rect rect) {
                 EditorGUI.LabelField(rect, "グループリスト");
+                if (groupDatas.Count != _group.GroupDB.Data.Count) {
+                    groupDatas = _group.GroupDB.Data.ToList();
+                    _reorderableList.list = groupDatas;
+                }
             }
 
             // 入れ替え時に呼び出す

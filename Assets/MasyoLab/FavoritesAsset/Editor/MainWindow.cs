@@ -83,7 +83,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         _Ty GetWindowClass<_Ty>() where _Ty : BaseWindow, new() {
-            if(_guiWindow as _Ty != null) {
+            if (_guiWindow as _Ty != null) {
                 return _guiWindow as _Ty;
             }
 
@@ -117,11 +117,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     GetWindowClass<FavoritesWindow>();
                 }
 
-                int index = EditorGUILayout.Popup(0, _group.GroupStr);
-
-                if (index < _group.GroupStr.Length - 1) {
-                }
-                else if (index == _group.GroupStr.Length - 1) {
+                if (_group.SelectGroupGUI()) {
                     GetWindowClass<GroupWindow>();
                 }
 
@@ -135,15 +131,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Import)), false,
                 (call) => {
-                    _favorites.SetJsonData(SaveLoad.LoadFile(_setting.ImportTarget, (result) => {
+                    var importJson = SaveLoad.LoadFile(_setting.ImportTarget, (result) => {
                         _setting.ImportTarget = result;
-                    }));
+                    });
+                    var importData = FavoritesJsonExportData.FromJson(importJson);
+                    _favorites.SetImportData(importData);
+                    _group.SetImportData(importData);
                     Reload();
                 }, TextEnum.Import);
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
                 (call) => {
-                    SaveLoad.SaveFile(_favorites.AssetDBJson, _setting.ExportTarget, (result) => {
+                    var exportJson = FavoritesJsonExportData.ToJson(_favorites.AssetInfoList, _group.GroupDB, null);
+                    SaveLoad.SaveFile(exportJson, _setting.ExportTarget, (result) => {
                         _setting.ExportTarget = result;
                     });
                 }, TextEnum.Export);

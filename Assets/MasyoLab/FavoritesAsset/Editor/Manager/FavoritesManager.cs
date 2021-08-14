@@ -17,13 +17,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     class FavoritesManager {
         PtrLinker<AssetInfoList> _assetInfo = new PtrLinker<AssetInfoList>(LoadFavoritesData);
+        public AssetInfoList AssetInfoList => _assetInfo.Inst;
 
         /// <summary>
         /// データ
         /// </summary>
         public IReadOnlyList<AssetInfo> Data => _assetInfo.Inst.Ref;
-
-        public string AssetDBJson => FavoritesJsonExportData.ToJson(_assetInfo.Inst);
 
         public void Add(AssetInfo info) => _assetInfo.Inst.Ref.Add(info);
 
@@ -100,11 +99,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
             SaveFavoritesData();
         }
 
-        public void SetJsonData(string jsonData) {
-            if (jsonData == string.Empty)
+        public void SetImportData(FavoritesJsonExportData importData) {
+            if (importData == null)
                 return;
 
-            _assetInfo.SetInst(FavoritesJsonExportData.FromJson(jsonData).AssetDB);
+            _assetInfo.SetInst(importData.AssetDB);
             SaveFavoritesData();
         }
     }

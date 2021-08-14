@@ -24,5 +24,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public string SelectGroupGUID = string.Empty;
         public List<GroupData> Data = new List<GroupData>();
         public List<GroupData> Reserved = new List<GroupData>();
+
+        public void Set(GroupDB groupDB) {
+            SelectGroupGUID = groupDB.SelectGroupGUID;
+            Data = groupDB.Data;
+            Reserved = groupDB.Reserved;
+        }
     }
 }

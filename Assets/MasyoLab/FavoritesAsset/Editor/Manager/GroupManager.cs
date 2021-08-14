@@ -20,6 +20,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         string[] _groupStr = null;
         public string[] GroupStr => GetGroupStr();
 
+        int _index = 0;
+        public int Index => _index;
+
+        public string SelectGroupFileName => GroupDB.SelectGroupGUID == string.Empty ? CONST.FAVORITES_DATA : GroupDB.SelectGroupGUID;
+
         public void Save() {
             SaveLoad.Save(JsonUtility.ToJson(_groupDB.Inst), SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
         }
@@ -35,11 +40,22 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return assets;
         }
 
+        public void SetImportData(FavoritesJsonExportData importData) {
+            if (importData == null)
+                return;
+
+            GroupDB.Set(importData.GroupDB);
+            SelectGroupByGUID();
+            UpdateGroupStr();
+            Save();
+        }
+
         public void Remove(int index) {
             var data = GroupDB.Data[index];
             data.GroupName = string.Empty;
             GroupDB.Reserved.Add(data);
             GroupDB.Data.RemoveAt(index);
+            SelectGroupByGUID();
             UpdateGroupStr();
         }
 
@@ -60,10 +76,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public void Sort() {
-            GroupDB.Data.Sort((itemA, itemB) => itemA.Index - itemB.Index);
-            foreach (var item in GroupDB.Data) {
-                item.Index = 0;
-            }
+            SelectGroupByGUID(true);
             UpdateGroupStr();
         }
 
@@ -96,6 +109,42 @@ namespace MasyoLab.Editor.FavoritesAsset {
             _groupStrList.Add("Add New FavoriteGroup ...");
 
             return _groupStr = _groupStrList.ToArray();
+        }
+
+        public bool SelectGroupGUI() {
+            var selectIndex = EditorGUILayout.Popup(_index, GroupStr);
+
+            if (selectIndex == 0) {
+                GroupDB.SelectGroupGUID = string.Empty;
+                _index = selectIndex;
+            }
+            else if (selectIndex == GroupStr.Length - 1) {
+                return true;
+            }
+            else {
+                GroupDB.SelectGroupGUID = GroupDB.Data[selectIndex - 1].GUID;
+                _index = selectIndex;
+            }
+            return false;
+        }
+
+        void SelectGroupByGUID(bool isSort = false) {
+            var groupData = GroupDB.Data.Find(v => v.GUID == GroupDB.SelectGroupGUID);
+
+            if (isSort) {
+                GroupDB.Data.Sort((itemA, itemB) => itemA.Index - itemB.Index);
+                for (int i = 0; i < GroupDB.Data.Count; i++) {
+                    GroupDB.Data[i].Index = i;
+                }
+            }
+
+            if (groupData == null) {
+                GroupDB.SelectGroupGUID = string.Empty;
+                _index = 0;
+                return;
+            }
+
+            _index = groupData.Index + 1;
         }
     }
 }

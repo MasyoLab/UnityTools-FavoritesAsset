@@ -28,14 +28,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
     class FavoritesJsonExportData {
         public AssetInfoList AssetDB;
         public List<AssetInfoList> GroupData;
+        public GroupDB GroupDB;
 
-        public static string ToJson(AssetInfoList assetInfo, params AssetInfoList[] group) {
+        public static string ToJson(AssetInfoList assetInfo, GroupDB groupDB, params AssetInfoList[] group) {
             var data = new FavoritesJsonExportData();
             data.AssetDB = assetInfo;
             data.GroupData = new List<AssetInfoList>();
             if (group != null) {
                 data.GroupData.AddRange(group);
             }
+            data.GroupDB = groupDB;
             return JsonUtility.ToJson(data);
         }
 
