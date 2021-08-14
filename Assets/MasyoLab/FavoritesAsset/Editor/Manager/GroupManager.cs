@@ -35,6 +35,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public string SelectGroupFileName => GroupDB.SelectGroupGUID == string.Empty ? CONST.FAVORITES_DATA : GroupDB.SelectGroupGUID;
 
+        public UnityEngine.Events.UnityAction<string> RemoveEvent;
+
         public void Save() {
             SaveLoad.Save(JsonUtility.ToJson(_groupDB.Inst), SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
         }
@@ -62,11 +64,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public void Remove(int index) {
             var data = GroupDB.Data[index];
+            var guid = data.GUID;
             data.GroupName = string.Empty;
             GroupDB.Reserved.Add(data);
             GroupDB.Data.RemoveAt(index);
             SelectGroupByGUID();
             UpdateGroupStr();
+            RemoveEvent?.Invoke(guid);
         }
 
         public GroupData AddData() {

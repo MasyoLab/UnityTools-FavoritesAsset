@@ -76,7 +76,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         void UpdateGUIAction() {
             if (_guiWindow == null) {
-                GetWindowClass<GroupWindow>();
+                GetWindowClass<FavoritesWindow>();
             }
 
             _guiWindow.OnGUI(new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight));

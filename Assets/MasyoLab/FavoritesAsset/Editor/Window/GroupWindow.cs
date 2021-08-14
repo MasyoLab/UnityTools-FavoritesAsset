@@ -83,6 +83,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
                 var item = groupDatas[index];
+                rect.height -= 2;
+                rect.y += 1;
                 var newText = GUI.TextArea(rect, item.GroupName, _textArea.Inst);
                 if (newText != item.GroupName) {
                     item.GroupName = newText;
