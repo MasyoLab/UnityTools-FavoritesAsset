@@ -38,6 +38,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         License,
         LatestRelease,
         Link,
+        AddNewFavoriteGroup,
+        FavoriteGroup,
+        FavoriteGroupIsEmpty,
     }
 
     struct LanguageData {
@@ -64,6 +67,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "License",
             "Latest release",
             "Link",
+            "Add New FavoriteGroup...",
+            "FavoriteGroup",
+            "FavoriteGroup is empty",
         };
 
         static readonly string[] TEXT_JP ={
@@ -84,6 +90,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "ライセンス",
             "最新のリリース",
             "リンク",
+            "お気に入りグループを追加...",
+            "お気に入りグループ",
+            "お気に入りグループは空です",
         };
 
         public static string GetText(LanguageEnum lang, TextEnum text) {

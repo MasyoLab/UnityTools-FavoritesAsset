@@ -16,14 +16,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// お気に入りマネージャー
     /// </summary>
     class FavoritesManager {
-        PtrLinker<AssetInfoList> _assetInfo = new PtrLinker<AssetInfoList>(LoadFavoritesData);
 
-        /// <summary>
-        /// データ
-        /// </summary>
+        PtrLinker<GroupManager> _groupManager = null;
+        Dictionary<string, PtrLinker<AssetInfoList>> _assetInfoDict = new Dictionary<string, PtrLinker<AssetInfoList>>();
+        PtrLinker<AssetInfoList> _assetInfo => SelectFavoritesGroup();
+
+        //PtrLinker<AssetInfoList> _assetInfo = new PtrLinker<AssetInfoList>(LoadFavoritesData);
         public IReadOnlyList<AssetInfo> Data => _assetInfo.Inst.Ref;
-
-        public string AssetDBJson => FavoritesJson.ToJson(_assetInfo.Inst);
+        public AssetInfoList AssetInfoList => SelectFavoritesGroup(CONST.FAVORITES_DATA).Inst;
 
         public void Add(AssetInfo info) => _assetInfo.Inst.Ref.Add(info);
 
@@ -40,18 +40,29 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public bool ExistsAssetPath(string path) => _assetInfo.Inst.Ref.Exists(x => x.Path == path);
 
         public void SaveFavoritesData() {
-            SaveLoad.Save(AssetDBJson, SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
+            //SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
+            SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(_groupManager.Inst.SelectGroupFileName));
         }
 
         static AssetInfoList LoadFavoritesData() {
-            string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
+            return LoadFavoritesData(CONST.FAVORITES_DATA);
+        }
+        static AssetInfoList LoadFavoritesData(string fileName) {
+            string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(fileName));
+            AssetInfoList data;
+            string guid = fileName == CONST.FAVORITES_DATA ? string.Empty : fileName;
 
             // json から読み込む
             var assets = JsonUtility.FromJson<AssetInfoList>(jsonData);
             if (assets == null) {
-                return new AssetInfoList();
+                data = new AssetInfoList();
+                data.Guid = guid;
+                return data;
             }
-            return FavoritesJson.FromJson(jsonData).AssetDB;
+
+            data = FavoritesJson.FromJson(jsonData).AssetDB;
+            data.Guid = guid;
+            return data;
         }
 
         /// <summary>
@@ -100,11 +111,58 @@ namespace MasyoLab.Editor.FavoritesAsset {
             SaveFavoritesData();
         }
 
-        public void SetJsonData(string jsonData) {
-            if (jsonData == string.Empty)
+        public void SetImportData(FavoritesJsonExportData importData) {
+            if (importData == null)
                 return;
-            _assetInfo.SetInst(FavoritesJson.FromJson(jsonData).AssetDB);
-            SaveFavoritesData();
+
+            //_assetInfo.SetInst(importData.AssetDB);
+            //SaveFavoritesData();
+
+            _assetInfoDict.Clear();
+            _assetInfoDict.Add(CONST.FAVORITES_DATA, new PtrLinker<AssetInfoList>(() => {
+                return importData.AssetDB;
+            }));
+            foreach (var item in importData.GroupData) {
+                _assetInfoDict.Add(item.Guid, new PtrLinker<AssetInfoList>(() => {
+                    return item;
+                }));
+            }
+
+            foreach (var item in _assetInfoDict) {
+                SaveLoad.Save(FavoritesJson.ToJson(item.Value.Inst), SaveLoad.GetSaveDataPath(item.Key));
+            }
+        }
+
+        public void SetGroupManager(PtrLinker<GroupManager> groupManager) {
+            _groupManager = groupManager;
+            _groupManager.Inst.RemoveEvent = (guid) => {
+                _assetInfoDict.Remove(guid);
+                SaveLoad.Save("{}", SaveLoad.GetSaveDataPath(guid));
+            };
+        }
+
+        public PtrLinker<AssetInfoList> SelectFavoritesGroup(string guid) {
+            if (_assetInfoDict.ContainsKey(guid)) {
+                return _assetInfoDict[guid];
+            }
+
+            var favData = new PtrLinker<AssetInfoList>(() => {
+                return LoadFavoritesData(guid);
+            });
+            _assetInfoDict.Add(guid, favData);
+            return favData;
+        }
+
+        public PtrLinker<AssetInfoList> SelectFavoritesGroup() {
+            return SelectFavoritesGroup(_groupManager.Inst.SelectGroupFileName);
+        }
+
+        public List<AssetInfoList> GetFavoriteGroups() {
+            var returnData = new List<AssetInfoList>(_groupManager.Inst.GroupDB.Data.Count);
+            foreach (var item in _groupManager.Inst.GroupDB.Data) {
+                returnData.Add(SelectFavoritesGroup(item.GUID).Inst);
+            }
+            return returnData;
         }
     }
 }
