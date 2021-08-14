@@ -117,7 +117,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     GetWindowClass<FavoritesWindow>();
                 }
 
-                if (_group.SelectGroupGUI()) {
+                var selectIndex = EditorGUILayout.Popup(_group.Index, _group.GroupStr);
+                if (_group.SelectGroupByIndex(selectIndex)) {
                     GetWindowClass<GroupWindow>();
                 }
 

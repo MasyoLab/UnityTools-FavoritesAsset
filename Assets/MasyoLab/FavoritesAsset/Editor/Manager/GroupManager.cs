@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEditor;
 
 //=========================================================
 //
@@ -22,8 +20,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public string[] GroupStr => GetGroupStr();
 
         int _index = -1;
-        int Index {
-            set => _index = value;
+        public int Index {
+            private set => _index = value;
             get {
                 if (_index == -1) {
                     for (int i = 0; i < GroupDB.Data.Count; i++) {
@@ -122,8 +120,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return _groupStr = _groupStrList.ToArray();
         }
 
-        public bool SelectGroupGUI() {
-            var selectIndex = EditorGUILayout.Popup(Index, GroupStr);
+        public bool SelectGroupByIndex(int selectIndex) {
             var isSave = selectIndex != Index;
 
             if (selectIndex == 0) {
