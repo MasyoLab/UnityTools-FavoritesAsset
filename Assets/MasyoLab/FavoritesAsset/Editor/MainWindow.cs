@@ -150,6 +150,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 }, TextEnum.Export);
 
             menu.AddSeparator("");
+            menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup)), false,
+                (call) => {
+                    GetWindowClass<GroupWindow>();
+                }, TextEnum.FavoriteGroup);
+            menu.AddSeparator("");
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Setting)), false,
                 (call) => {
