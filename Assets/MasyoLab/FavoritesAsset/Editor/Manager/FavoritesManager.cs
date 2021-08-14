@@ -133,7 +133,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
-
         public void SetGroupManager(PtrLinker<GroupManager> groupManager) {
             _groupManager = groupManager;
             _groupManager.Inst.RemoveEvent = (guid) => {

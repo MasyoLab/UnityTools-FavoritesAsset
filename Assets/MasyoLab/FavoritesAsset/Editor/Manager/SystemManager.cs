@@ -24,6 +24,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             _group = new PtrLinker<GroupManager>();
             
             _favorites.Inst.SetGroupManager(_group);
+            _group.Inst.SetSettingManager(_setting);
         }
     }
 }

@@ -37,6 +37,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public UnityEngine.Events.UnityAction<string> RemoveEvent;
 
+        PtrLinker<SettingManager> _settingManager = null;
+
         public void Save() {
             SaveLoad.Save(JsonUtility.ToJson(_groupDB.Inst), SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
         }
@@ -119,7 +121,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             _groupStrList.Add("");
-            _groupStrList.Add("Add New FavoriteGroup ...");
+            _groupStrList.Add(LanguageData.GetText(_settingManager.Inst.Language, TextEnum.AddNewFavoriteGroup));
 
             return _groupStr = _groupStrList.ToArray();
         }
@@ -171,6 +173,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return CONST.DEFAULT;
             }
             return groupData.GroupName;
+        }
+
+        public void SetSettingManager(PtrLinker<SettingManager> settingManager) {
+            _settingManager = settingManager;
         }
     }
 }

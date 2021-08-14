@@ -54,7 +54,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var groupDatas = _group.GroupDB.Data.ToList();
 
             void DrawHeader(Rect rect) {
-                EditorGUI.LabelField(rect, "グループリスト");
+                EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup));
                 if (groupDatas.Count != _group.GroupDB.Data.Count) {
                     groupDatas = _group.GroupDB.Data.ToList();
                     _reorderableList.list = groupDatas;
@@ -94,7 +94,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             void NoneElement(Rect rect) {
-                EditorGUI.LabelField(rect, "お気に入りグループがありません");
+                EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroupIsEmpty));
             }
 
             _reorderableList = new ReorderableList(groupDatas, typeof(AssetInfo)) {
