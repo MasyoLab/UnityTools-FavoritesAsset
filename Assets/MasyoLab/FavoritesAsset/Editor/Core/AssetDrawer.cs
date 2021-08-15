@@ -25,8 +25,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <param name="info"></param>
         /// <param name="onAction"></param>
         static void DrawingSetting(AssetData info, UnityAction<GUIContent, GUIStyle> onAction = null) {
-            // 名前を使う
-            var content = new GUIContent(info.Name, AssetDatabase.GetCachedIcon(info.Path));
+            GUIContent content;
+
+            var assetIcon = AssetDatabase.GetCachedIcon(info.Path);
+            if (assetIcon == null) {
+                assetIcon = EditorGUIUtility.IconContent(CONST.ICON_ERRORICON).image;
+                content = new GUIContent($"(missing asset) {info.Name}", assetIcon);
+            }
+            else {
+                content = new GUIContent(info.Name, assetIcon);
+            }
 
             var style = _buttonStyle.Inst;
             var originalAlignment = style.alignment;
