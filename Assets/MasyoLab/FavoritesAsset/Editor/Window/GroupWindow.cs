@@ -20,13 +20,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
         Vector2 _scrollVec2;
         bool _isUpdate = false;
 
-        PtrLinker<GUIStyle> _textArea = new PtrLinker<GUIStyle>(() => {
-            return new GUIStyle(EditorStyles.textArea) {
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleLeft,
-            };
-        });
-
         public override void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
             base.Init(manager, root);
             InitGroupGUI();
@@ -46,12 +39,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
             _group.Save();
         }
 
-        void InitGroupGUI() {
-            if (_reorderableList != null)
-                return;
+        public override void Reload() {
+            base.Reload();
+            InitGroupGUI();
+        }
 
+        void InitGroupGUI() {
+            
             // データを複製
             var groupDatas = _group.GroupDB.Data.ToList();
+
+            if (_reorderableList == null) {
+                _reorderableList = new ReorderableList(groupDatas, typeof(AssetData));
+            }
 
             void DrawHeader(Rect rect) {
                 EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup));
@@ -85,7 +85,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var item = groupDatas[index];
                 rect.height -= 2;
                 rect.y += 1;
-                var newText = GUI.TextArea(rect, item.GroupName, _textArea.Inst);
+                var newText = EditorGUI.TextArea(rect, item.GroupName);
                 if (newText != item.GroupName) {
                     item.GroupName = newText;
                     _group.UpdateGroupNameList();
@@ -97,14 +97,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroupIsEmpty));
             }
 
-            _reorderableList = new ReorderableList(groupDatas, typeof(AssetData)) {
-                drawElementCallback = DrawElement,
-                onChangedCallback = Changed,
-                drawHeaderCallback = DrawHeader,
-                onAddCallback = AddCallback,
-                onRemoveCallback = RemoveCallback,
-                drawNoneElementCallback = NoneElement,
-            };
+            _reorderableList.list = groupDatas;
+            _reorderableList.drawElementCallback = DrawElement;
+            _reorderableList.onChangedCallback = Changed;
+            _reorderableList.drawHeaderCallback = DrawHeader;
+            _reorderableList.onAddCallback = AddCallback;
+            _reorderableList.onRemoveCallback = RemoveCallback;
+            _reorderableList.drawNoneElementCallback = NoneElement;
         }
     }
 }
