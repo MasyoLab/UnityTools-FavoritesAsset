@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 //=========================================================
 //
@@ -15,15 +16,15 @@ namespace MasyoLab.Editor.FavoritesAsset {
     public class MainWindow : EditorWindow {
 
         static MainWindow Inst = null;
+        static PtrLinker<SystemManager> _systemManager = new PtrLinker<SystemManager>();
 
         List<BaseWindow> _windows = new List<BaseWindow>((int)WindowEnum.Max);
         BaseWindow _guiWindow = null;
 
-        static PtrLinker<SystemManager> _systemManager = new PtrLinker<SystemManager>();
-
         SystemManager _manager => _systemManager.Inst;
         FavoritesManager _favorites => _manager.Favorites;
         SettingManager _setting => _manager.Setting;
+        GroupManager _group => _manager.Group;
 
         /// <summary>
         /// ウィンドウを追加
@@ -76,16 +77,21 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (_guiWindow == null) {
                 GetWindowClass<FavoritesWindow>();
             }
-            
+
             _guiWindow.OnGUI(new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight));
         }
 
         _Ty GetWindowClass<_Ty>() where _Ty : BaseWindow, new() {
+            if (_guiWindow as _Ty != null) {
+                return _guiWindow as _Ty;
+            }
+
             foreach (var item in _windows) {
                 _Ty win = item as _Ty;
                 if (win == null)
                     continue;
                 win.Init(_systemManager, this);
+                _guiWindow?.Close();
                 _guiWindow = win;
                 return win;
             }
@@ -93,6 +99,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var newWin = new _Ty();
             newWin.Init(_systemManager, this);
             _windows.Add(newWin);
+            _guiWindow?.Close();
             _guiWindow = newWin;
             return newWin;
         }
@@ -109,6 +116,20 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     GetWindowClass<FavoritesWindow>();
                 }
 
+                var selectIndex = EditorGUILayout.Popup(_group.Index, _group.GroupNames);
+                switch (_group.SelectGroupByIndex(selectIndex)) {
+                    case GroupSelectEventEnum.Unselect:
+                        break;
+                    case GroupSelectEventEnum.Select:
+                        Reload();
+                        break;
+                    case GroupSelectEventEnum.Open:
+                        GetWindowClass<GroupWindow>();
+                        break;
+                    default:
+                        break;
+                }
+
                 GUILayout.FlexibleSpace();
             }
         }
@@ -119,19 +140,29 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Import)), false,
                 (call) => {
-                    _favorites.SetJsonData(SaveLoad.LoadFile(_setting.ImportTarget, (result) => {
-                        _setting.ImportTarget = result;
-                    }));
+                    var importJson = SaveLoad.LoadFile(_setting.ImportTarget, (directory) => {
+                        _setting.ImportTarget = directory;
+                    });
+                    var importData = FavoritesJsonExportData.FromJson(importJson);
+                    _favorites.SetImportData(importData);
+                    _group.SetImportData(importData);
                     Reload();
+                    GetWindowClass<FavoritesWindow>();
                 }, TextEnum.Import);
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
                 (call) => {
-                    SaveLoad.SaveFile(_favorites.AssetDBJson, _setting.ExportTarget, (result) => {
-                        _setting.ExportTarget = result;
+                    var exportJson = FavoritesJsonExportData.ToJson(_favorites.AssetInfoList, _group.GroupDB, _favorites.GetFavoriteList());
+                    SaveLoad.SaveFile(exportJson, _setting.ExportTarget, (directory) => {
+                        _setting.ExportTarget = directory;
                     });
                 }, TextEnum.Export);
 
+            menu.AddSeparator("");
+            menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup)), false,
+                (call) => {
+                    GetWindowClass<GroupWindow>();
+                }, TextEnum.FavoriteGroup);
             menu.AddSeparator("");
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Setting)), false,

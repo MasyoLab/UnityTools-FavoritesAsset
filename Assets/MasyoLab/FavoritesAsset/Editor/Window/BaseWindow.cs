@@ -19,6 +19,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         protected SystemManager _manager => _systemManager.Inst;
         protected FavoritesManager _favorites => _manager.Favorites;
         protected SettingManager _setting => _manager.Setting;
+        protected GroupManager _group => _manager.Group;
 
         protected EditorWindow _root { private set; get; } = null;
 
@@ -29,5 +30,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public virtual void Reload() { }
+        public virtual void Close() { }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine.Events;
 
 //=========================================================
 //
@@ -37,7 +38,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return jsonStr;
         }
 
-        public static void SaveFile(string jsonData, string directory, UnityEngine.Events.UnityAction<string> result = null) {
+        public static void SaveFile(string jsonData, string directory, UnityAction<string> returnDirectory = null) {
             directory = directory == string.Empty ? CONST.ASSETS : directory;
 
             // ファイルパス
@@ -45,11 +46,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            result?.Invoke(CreateDirectoryFromFilePath(filePath));
+            returnDirectory?.Invoke(CreateDirectoryFromFilePath(filePath));
             Save(jsonData, filePath);
         }
 
-        public static string LoadFile(string directory, UnityEngine.Events.UnityAction<string> result = null) {
+        public static string LoadFile(string directory, UnityAction<string> returnDirectory = null) {
             directory = directory == string.Empty ? CONST.ASSETS : directory;
 
             // ファイルパス
@@ -57,7 +58,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (string.IsNullOrEmpty(filePath))
                 return string.Empty;
 
-            result?.Invoke(CreateDirectoryFromFilePath(filePath));
+            returnDirectory?.Invoke(CreateDirectoryFromFilePath(filePath));
             return Load(filePath);
         }
 

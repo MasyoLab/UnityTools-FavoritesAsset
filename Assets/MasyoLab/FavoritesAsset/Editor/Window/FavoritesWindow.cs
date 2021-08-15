@@ -21,13 +21,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// </summary>
     class FavoritesWindow : BaseWindow {
 
-        PtrLinker<GUIStyle> _backgroundStyle = new PtrLinker<GUIStyle>(() => {
-            return new GUIStyle(EditorStyles.label) {
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter,
-            };
-        });
-
         PtrLinker<GUIStyle> _boxStyle = new PtrLinker<GUIStyle>(() => {
             return new GUIStyle(GUI.skin.textArea) {
                 fontStyle = FontStyle.Bold,
@@ -44,8 +37,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public override void OnGUI(Rect windowSize) {
-            //DrawBG(windowSize.x, windowSize.y + (CONST.GUI_LAYOUT_HEIGHT * 2), windowSize.width, windowSize.height - (CONST.GUI_LAYOUT_HEIGHT * 2));
-
             // ドラッグアンドドロップ
             DragAndDropGUI();
 
@@ -58,30 +49,31 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public override void Reload() {
-            _reorderableList = null;
             InitSortFunction();
         }
 
         void InitSortFunction() {
-            if (_reorderableList != null)
-                return;
-
             // データを複製
-            var assetInfos = _favorites.Data.ToList();
-            AssetInfo releaseTarget = null;
+            var assetDatas = _favorites.Data.ToList();
+
+            if (_reorderableList == null) {
+                _reorderableList = new ReorderableList(assetDatas, typeof(AssetData));
+            }
+
+            AssetData releaseTarget = null;
 
             // 入れ替え時に呼び出す
             void Changed(ReorderableList list) {
-                _favorites.SortData(assetInfos);
+                _favorites.SortData(assetDatas);
             }
 
             void DrawHeader(Rect rect) {
                 EditorGUI.LabelField(rect, "");
 
                 // ヘッダーは最初に処理されるのでここでデータ数の確認
-                if (assetInfos.Count != _favorites.Data.Count) {
-                    assetInfos = _favorites.Data.ToList();
-                    _reorderableList.list = assetInfos;
+                if (assetDatas.Count != _favorites.Data.Count) {
+                    assetDatas = _favorites.Data.ToList();
+                    _reorderableList.list = assetDatas;
                 }
             }
 
@@ -90,8 +82,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 // フッターで解放する
                 if (releaseTarget != null) {
                     RemoveAsset(releaseTarget);
-                    assetInfos = _favorites.Data.ToList();
-                    _reorderableList.list = assetInfos;
+                    assetDatas = _favorites.Data.ToList();
+                    _reorderableList.list = assetDatas;
                     releaseTarget = null;
                 }
             }
@@ -107,43 +99,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 }
             }
 
-            _reorderableList = new ReorderableList(assetInfos, typeof(AssetInfo)) {
-                drawElementCallback = DrawElement,
-                onChangedCallback = Changed,
-                drawHeaderCallback = DrawHeader,
-                drawFooterCallback = DrawFooter,
-                drawNoneElementCallback = NoneElement,
-            };
+            _reorderableList.list = assetDatas;
+
+            _reorderableList.drawElementCallback = DrawElement;
+            _reorderableList.onChangedCallback = Changed;
+            _reorderableList.drawHeaderCallback = DrawHeader;
+            _reorderableList.drawFooterCallback = DrawFooter;
+            _reorderableList.drawNoneElementCallback = NoneElement;
+
             _reorderableList.headerHeight = 0;
             _reorderableList.footerHeight = 0;
             _reorderableList.elementHeight = CONST.GUI_LAYOUT_HEIGHT;
             _reorderableList.showDefaultBackground = false;
-        }
-
-        void DrawBG(float posX, float posY, float width, float height) {
-            var uiStyle = _backgroundStyle.Inst;
-
-            // 右下レイアウト
-            uiStyle.alignment = TextAnchor.LowerRight;
-            GUI.Label(new Rect(width * 0f, posY, width * 0.5f, height * 0.5f),
-                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED_D), uiStyle);
-
-            // 左下レイアウト
-            uiStyle.alignment = TextAnchor.LowerLeft;
-            GUI.Label(new Rect(width * 0.5f, posY, width * 0.5f, height * 0.5f),
-                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FILE_ADDED), uiStyle);
-
-            // 左下レイアウト
-            uiStyle.alignment = TextAnchor.UpperRight;
-            GUI.Label(new Rect(width * 0f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
-                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED), uiStyle);
-
-            // 左下レイアウト
-            uiStyle.alignment = TextAnchor.UpperLeft;
-            GUI.Label(new Rect(width * 0.5f, posY + (height * 0.5f), width * 0.5f, height * 0.5f),
-                EditorGUIUtility.IconContent(CONST.ICON_COLLAB_FOLDER_ADDED_D), uiStyle);
-
-            uiStyle.alignment = TextAnchor.MiddleCenter;
         }
 
         /// <summary>
@@ -179,24 +146,24 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <returns></returns>
         bool DrawAsset(Rect rect, int index, bool isActive, bool isFocused) {
             float BUTTON_WIDTH = 30;
-            var assetInfo = _favorites.Data[index];
+            var assetData = _favorites.Data[index];
             var copyRect = rect;
 
             copyRect.width = BUTTON_WIDTH;
 
             // Ping を実行
-            AssetDrawer.OnPingObjectButton(copyRect, assetInfo);
+            AssetDrawer.OnPingObjectButton(copyRect, assetData);
 
             rect.x += BUTTON_WIDTH;
             rect.width -= BUTTON_WIDTH * 2;
 
             // アセットを開くボタン
-            AssetDrawer.OnAssetButton(rect, assetInfo, OpenAsset);
+            AssetDrawer.OnAssetButton(rect, assetData, OpenAsset);
 
             copyRect.x = rect.x + rect.width;
 
             // お気に入り除ボタン
-            return AssetDrawer.OnUnfavoriteButton(copyRect, assetInfo);
+            return AssetDrawer.OnUnfavoriteButton(copyRect, assetData);
         }
 
         /// <summary>
@@ -256,7 +223,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// お気に入りを解除
         /// </summary>
         /// <param name="info"></param>
-        void RemoveAsset(AssetInfo info) {
+        void RemoveAsset(AssetData info) {
             _favorites.Remove(info);
             _favorites.SaveFavoritesData();
         }
@@ -265,7 +232,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// アセットを開く
         /// </summary>
         /// <param name="info"></param>
-        void OpenAsset(AssetInfo info) {
+        void OpenAsset(AssetData info) {
             // シーンアセットを開こうとしている
             if (Path.GetExtension(info.Path).Equals(CONST.UNITY_EXT)) {
                 // シーンの保存を促す

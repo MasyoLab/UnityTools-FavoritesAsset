@@ -13,7 +13,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     struct CONST {
         public const string DEVELOPER = "MasyoLab";
-        public const string VERSION = "v1.2.3";
+        public const string VERSION = "v1.3.0";
         public const string EDITOR_NAME = "Favorites Asset";
         public const string EDITOR_WINDOW_NAME = "Favorites Asset Window";
         public const string MENU_ITEM = "Tools/" + EDITOR_WINDOW_NAME;
@@ -25,6 +25,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const string LIBRARY = "Library";
         public const string SETTING_DATA = "SettingData";
         public const string FAVORITES_DATA = "FavoritesData";
+        public const string GROUP_DATA = "GroupData";
         public static string FOLDER_NAME => $"{DEVELOPER}@{EDITOR_NAME}";
         public static string JSON_DATA_NAME => $"{Application.productName}-{FAVORITES_DATA}";
         public const string ADD_TO_FAVORITES_ASSET_WINDOW = "Assets/Add to Favorites Asset Window";
@@ -78,6 +79,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// Settings Icon
         /// </summary>
         public const string ICON_SETTINGS = "SettingsIcon";
+
+        /// <summary>
+        /// エラーアイコン
+        /// </summary>
+        public const string ICON_ERRORICON = "d_console.erroricon";
 
         public const int GUI_LAYOUT_HEIGHT = 22;
     }

@@ -14,7 +14,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// アセットリスト
     /// </summary>
     [System.Serializable]
-    class AssetInfo {
+    class AssetData {
         /// <summary>
         /// アセットのGUID
         /// </summary>
@@ -32,8 +32,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         public string Type = string.Empty;
 
-        public AssetInfo() { }
-        public AssetInfo(string guid, string path, string name, string type) {
+        [System.NonSerialized]
+        public int Index = 0;
+
+        public AssetData() { }
+        public AssetData(string guid, string path, string name, string type) {
             Guid = guid;
             Path = path;
             Name = name;
@@ -42,7 +45,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
     }
 
     [System.Serializable]
-    class AssetInfoList {
-        public List<AssetInfo> Ref = new List<AssetInfo>();
+    class AssetDB {
+        public string Guid = string.Empty;
+        public List<AssetData> Ref = new List<AssetData>();
     }
 }

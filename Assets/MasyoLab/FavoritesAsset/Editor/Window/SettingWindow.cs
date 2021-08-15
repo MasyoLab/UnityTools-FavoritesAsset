@@ -20,20 +20,31 @@ namespace MasyoLab.Editor.FavoritesAsset {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
 
             EditorGUI.BeginChangeCheck();
-            _setting.Language = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(_setting.Language, TextEnum.Language), (int)_setting.Language, LanguageData.LANGUAGE);
+            {
+                var newLanguage = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(_setting.Language, TextEnum.Language), (int)_setting.Language, LanguageData.LANGUAGE);
+                var isUpdate = _setting.Language != newLanguage;
+                _setting.Language = newLanguage;
+                if (isUpdate) {
+                    _group.UpdateGroupNameList();
+                }
+            }
             EditorGUI.EndChangeCheck();
+
             Utils.GUILine();
 
-            // お気に入り全解除
-            var content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.UnlockAll));
-            if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
-                _favorites.RemoveAll();
-                _favorites.SaveFavoritesData();
-                (_root as MainWindow).Reload();
+            {
+                // お気に入り全解除
+                GUILayout.Label($"{LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup)} : " +
+                    $"{_group.GetGroupNameByGUID(_group.SelectGroupFileName)}");
+                var content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.UnlockAll));
+                if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+                    _favorites.RemoveAll();
+                    _favorites.SaveFavoritesData();
+                    (_root as MainWindow).Reload();
+                }
             }
 
             Utils.GUILine();
-
             GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ImportAndExportTarget));
 
             GUILayout.BeginHorizontal();

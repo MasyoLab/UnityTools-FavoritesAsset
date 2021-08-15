@@ -40,5 +40,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public static void GUILine() {
             GUILayout.Box("", GUILayout.ExpandWidth(true), GUILayout.Height(1));
         }
+
+        public static string NewGuid() {
+            return System.Guid.NewGuid().ToString("N");
+        }
     }
 }
