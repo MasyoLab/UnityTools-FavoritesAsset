@@ -147,6 +147,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     _favorites.SetImportData(importData);
                     _group.SetImportData(importData);
                     Reload();
+                    GetWindowClass<FavoritesWindow>();
                 }, TextEnum.Import);
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
