@@ -80,6 +80,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         public const string ICON_SETTINGS = "SettingsIcon";
 
+        /// <summary>
+        /// エラーアイコン
+        /// </summary>
+        public const string ICON_ERRORICON = "d_console.erroricon";
+
         public const int GUI_LAYOUT_HEIGHT = 22;
     }
 
