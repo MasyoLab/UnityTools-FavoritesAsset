@@ -18,44 +18,44 @@ namespace MasyoLab.Editor.FavoritesAsset {
     class FavoritesManager {
 
         PtrLinker<GroupManager> _groupManager = null;
-        Dictionary<string, PtrLinker<AssetInfoList>> _assetInfoDict = new Dictionary<string, PtrLinker<AssetInfoList>>();
-        PtrLinker<AssetInfoList> _assetInfo => SelectFavoritesGroup();
+        Dictionary<string, PtrLinker<AssetDB>> _assetDBDict = new Dictionary<string, PtrLinker<AssetDB>>();
+        PtrLinker<AssetDB> _assetDB => SelectFavoritesData();
 
-        //PtrLinker<AssetInfoList> _assetInfo = new PtrLinker<AssetInfoList>(LoadFavoritesData);
-        public IReadOnlyList<AssetInfo> Data => _assetInfo.Inst.Ref;
-        public AssetInfoList AssetInfoList => SelectFavoritesGroup(CONST.FAVORITES_DATA).Inst;
+        //PtrLinker<AssetDB> _assetDB = new PtrLinker<AssetDB>(LoadFavoritesData);
+        public IReadOnlyList<AssetData> Data => _assetDB.Inst.Ref;
+        public AssetDB AssetInfoList => SelectFavoritesData(CONST.FAVORITES_DATA).Inst;
 
-        public void Add(AssetInfo info) => _assetInfo.Inst.Ref.Add(info);
+        public void Add(AssetData info) => _assetDB.Inst.Ref.Add(info);
 
         public void Add(string guid, string path, string name, string type) {
-            _assetInfo.Inst.Ref.Add(new AssetInfo(guid, path, name, type));
+            _assetDB.Inst.Ref.Add(new AssetData(guid, path, name, type));
         }
 
-        public void Remove(AssetInfo info) => _assetInfo.Inst.Ref.Remove(info);
+        public void Remove(AssetData info) => _assetDB.Inst.Ref.Remove(info);
 
-        public void RemoveAll() => _assetInfo.Inst.Ref.RemoveRange(0, _assetInfo.Inst.Ref.Count);
+        public void RemoveAll() => _assetDB.Inst.Ref.RemoveRange(0, _assetDB.Inst.Ref.Count);
 
-        public bool ExistsGUID(string guid) => _assetInfo.Inst.Ref.Exists(x => x.Guid == guid);
+        public bool ExistsGUID(string guid) => _assetDB.Inst.Ref.Exists(x => x.Guid == guid);
 
-        public bool ExistsAssetPath(string path) => _assetInfo.Inst.Ref.Exists(x => x.Path == path);
+        public bool ExistsAssetPath(string path) => _assetDB.Inst.Ref.Exists(x => x.Path == path);
 
         public void SaveFavoritesData() {
             //SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
-            SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(_groupManager.Inst.SelectGroupFileName));
+            SaveLoad.Save(FavoritesJson.ToJson(_assetDB.Inst), SaveLoad.GetSaveDataPath(_groupManager.Inst.SelectGroupFileName));
         }
 
-        static AssetInfoList LoadFavoritesData() {
+        static AssetDB LoadFavoritesData() {
             return LoadFavoritesData(CONST.FAVORITES_DATA);
         }
-        static AssetInfoList LoadFavoritesData(string fileName) {
+        static AssetDB LoadFavoritesData(string fileName) {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(fileName));
-            AssetInfoList data;
+            AssetDB data;
             string guid = fileName == CONST.FAVORITES_DATA ? string.Empty : fileName;
 
             // json から読み込む
-            var assets = JsonUtility.FromJson<AssetInfoList>(jsonData);
+            var assets = JsonUtility.FromJson<AssetDB>(jsonData);
             if (assets == null) {
-                data = new AssetInfoList();
+                data = new AssetDB();
                 data.Guid = guid;
                 return data;
             }
@@ -99,18 +99,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// ソートデータを受け取る
         /// </summary>
         /// <param name="assetInfos"></param>
-        public void SortData(IReadOnlyList<AssetInfo> assetInfos) {
-            var newData = new List<AssetInfo>(assetInfos.Count);
-
-            foreach (var item in assetInfos) {
-                newData.Add(item);
+        public void SortData(IReadOnlyList<AssetData> assetInfos) {
+            for (int i = 0; i < assetInfos.Count; i++) {
+                assetInfos[i].Index = i;
             }
-
-            _assetInfo.Inst.Ref.Clear();
-            _assetInfo.Inst.Ref.AddRange(newData);
+            _assetDB.Inst.Ref.Sort((itemA, itemB) => itemA.Index - itemB.Index);
             SaveFavoritesData();
         }
 
+        /// <summary>
+        /// インポート
+        /// </summary>
+        /// <param name="importData"></param>
         public void SetImportData(FavoritesJsonExportData importData) {
             if (importData == null)
                 return;
@@ -118,49 +118,55 @@ namespace MasyoLab.Editor.FavoritesAsset {
             //_assetInfo.SetInst(importData.AssetDB);
             //SaveFavoritesData();
 
-            _assetInfoDict.Clear();
-            _assetInfoDict.Add(CONST.FAVORITES_DATA, new PtrLinker<AssetInfoList>(() => {
+            _assetDBDict.Clear();
+            _assetDBDict.Add(CONST.FAVORITES_DATA, new PtrLinker<AssetDB>(() => {
                 return importData.AssetDB;
             }));
             foreach (var item in importData.GroupData) {
-                _assetInfoDict.Add(item.Guid, new PtrLinker<AssetInfoList>(() => {
+                _assetDBDict.Add(item.Guid, new PtrLinker<AssetDB>(() => {
                     return item;
                 }));
             }
 
-            foreach (var item in _assetInfoDict) {
+            foreach (var item in _assetDBDict) {
                 SaveLoad.Save(FavoritesJson.ToJson(item.Value.Inst), SaveLoad.GetSaveDataPath(item.Key));
             }
         }
 
         public void SetGroupManager(PtrLinker<GroupManager> groupManager) {
             _groupManager = groupManager;
+            // グループ削除時の処理を追加
             _groupManager.Inst.RemoveEvent = (guid) => {
-                _assetInfoDict.Remove(guid);
+                _assetDBDict.Remove(guid);
                 SaveLoad.Save("{}", SaveLoad.GetSaveDataPath(guid));
             };
         }
 
-        public PtrLinker<AssetInfoList> SelectFavoritesGroup(string guid) {
-            if (_assetInfoDict.ContainsKey(guid)) {
-                return _assetInfoDict[guid];
+        /// <summary>
+        /// お気に入りデータを切り替える
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        PtrLinker<AssetDB> SelectFavoritesData(string guid) {
+            if (_assetDBDict.ContainsKey(guid)) {
+                return _assetDBDict[guid];
             }
 
-            var favData = new PtrLinker<AssetInfoList>(() => {
+            var favData = new PtrLinker<AssetDB>(() => {
                 return LoadFavoritesData(guid);
             });
-            _assetInfoDict.Add(guid, favData);
+            _assetDBDict.Add(guid, favData);
             return favData;
         }
 
-        public PtrLinker<AssetInfoList> SelectFavoritesGroup() {
-            return SelectFavoritesGroup(_groupManager.Inst.SelectGroupFileName);
+        PtrLinker<AssetDB> SelectFavoritesData() {
+            return SelectFavoritesData(_groupManager.Inst.SelectGroupFileName);
         }
 
-        public List<AssetInfoList> GetFavoriteGroups() {
-            var returnData = new List<AssetInfoList>(_groupManager.Inst.GroupDB.Data.Count);
+        public List<AssetDB> GetFavoriteList() {
+            var returnData = new List<AssetDB>(_groupManager.Inst.GroupDB.Data.Count);
             foreach (var item in _groupManager.Inst.GroupDB.Data) {
-                returnData.Add(SelectFavoritesGroup(item.GUID).Inst);
+                returnData.Add(SelectFavoritesData(item.GUID).Inst);
             }
             return returnData;
         }

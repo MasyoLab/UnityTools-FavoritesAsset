@@ -16,11 +16,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
     public class MainWindow : EditorWindow {
 
         static MainWindow Inst = null;
+        static PtrLinker<SystemManager> _systemManager = new PtrLinker<SystemManager>();
 
         List<BaseWindow> _windows = new List<BaseWindow>((int)WindowEnum.Max);
         BaseWindow _guiWindow = null;
-
-        static PtrLinker<SystemManager> _systemManager = new PtrLinker<SystemManager>();
 
         SystemManager _manager => _systemManager.Inst;
         FavoritesManager _favorites => _manager.Favorites;
@@ -117,9 +116,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
                     GetWindowClass<FavoritesWindow>();
                 }
 
-                var selectIndex = EditorGUILayout.Popup(_group.Index, _group.GroupStr);
-                if (_group.SelectGroupByIndex(selectIndex)) {
-                    GetWindowClass<GroupWindow>();
+                var selectIndex = EditorGUILayout.Popup(_group.Index, _group.GroupNames);
+                switch (_group.SelectGroupByIndex(selectIndex)) {
+                    case GroupSelectEventEnum.Unselect:
+                        break;
+                    case GroupSelectEventEnum.Select:
+                        Reload();
+                        break;
+                    case GroupSelectEventEnum.Open:
+                        GetWindowClass<GroupWindow>();
+                        break;
+                    default:
+                        break;
                 }
 
                 GUILayout.FlexibleSpace();
@@ -132,8 +140,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Import)), false,
                 (call) => {
-                    var importJson = SaveLoad.LoadFile(_setting.ImportTarget, (result) => {
-                        _setting.ImportTarget = result;
+                    var importJson = SaveLoad.LoadFile(_setting.ImportTarget, (directory) => {
+                        _setting.ImportTarget = directory;
                     });
                     var importData = FavoritesJsonExportData.FromJson(importJson);
                     _favorites.SetImportData(importData);
@@ -143,9 +151,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
                 (call) => {
-                    var exportJson = FavoritesJsonExportData.ToJson(_favorites.AssetInfoList, _group.GroupDB, _favorites.GetFavoriteGroups());
-                    SaveLoad.SaveFile(exportJson, _setting.ExportTarget, (result) => {
-                        _setting.ExportTarget = result;
+                    var exportJson = FavoritesJsonExportData.ToJson(_favorites.AssetInfoList, _group.GroupDB, _favorites.GetFavoriteList());
+                    SaveLoad.SaveFile(exportJson, _setting.ExportTarget, (directory) => {
+                        _setting.ExportTarget = directory;
                     });
                 }, TextEnum.Export);
 

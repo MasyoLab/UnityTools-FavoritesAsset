@@ -12,11 +12,11 @@ using UnityEngine;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     class FavoritesJson {
-        public AssetInfoList AssetDB;
+        public AssetDB AssetDB;
 
-        public static string ToJson(AssetInfoList assetInfo) {
+        public static string ToJson(AssetDB assetDB) {
             return JsonUtility.ToJson(new FavoritesJson {
-                AssetDB = assetInfo,
+                AssetDB = assetDB,
             });
         }
 
@@ -26,14 +26,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
     }
 
     class FavoritesJsonExportData {
-        public AssetInfoList AssetDB;
-        public List<AssetInfoList> GroupData;
+        public AssetDB AssetDB;
+        public List<AssetDB> GroupData;
         public GroupDB GroupDB;
 
-        public static string ToJson(AssetInfoList assetInfo, GroupDB groupDB, List<AssetInfoList> groups) {
+        public static string ToJson(AssetDB assetDB, GroupDB groupDB, List<AssetDB> assetDBList) {
             var data = new FavoritesJsonExportData();
-            data.AssetDB = assetInfo;
-            data.GroupData = groups;
+            data.AssetDB = assetDB;
+            data.GroupData = assetDBList;
             data.GroupDB = groupDB;
             return JsonUtility.ToJson(data);
         }

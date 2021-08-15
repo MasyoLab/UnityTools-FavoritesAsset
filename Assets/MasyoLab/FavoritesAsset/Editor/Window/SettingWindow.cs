@@ -25,7 +25,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var isUpdate = _setting.Language != newLanguage;
                 _setting.Language = newLanguage;
                 if (isUpdate) {
-                    _group.UpdateGroupStr();
+                    _group.UpdateGroupNameList();
                 }
             }
             EditorGUI.EndChangeCheck();
@@ -45,7 +45,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             Utils.GUILine();
-
             GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ImportAndExportTarget));
 
             GUILayout.BeginHorizontal();
