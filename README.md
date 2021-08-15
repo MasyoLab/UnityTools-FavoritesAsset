@@ -9,7 +9,7 @@
 
 この機能を使用すると、アセットをお気に入り登録できます。
 
-![main window](https://user-images.githubusercontent.com/20793765/128970578-8a45c4ef-4705-453a-9d0a-ed19fc94da08.png)
+![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
 
 ----
 
