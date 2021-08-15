@@ -88,7 +88,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var newText = GUI.TextArea(rect, item.GroupName, _textArea.Inst);
                 if (newText != item.GroupName) {
                     item.GroupName = newText;
-                    _group.UpdateGroupStr();
+                    _group.UpdateGroupNameList();
                     _isUpdate = true;
                 }
             }
@@ -97,7 +97,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroupIsEmpty));
             }
 
-            _reorderableList = new ReorderableList(groupDatas, typeof(AssetInfo)) {
+            _reorderableList = new ReorderableList(groupDatas, typeof(AssetData)) {
                 drawElementCallback = DrawElement,
                 onChangedCallback = Changed,
                 drawHeaderCallback = DrawHeader,

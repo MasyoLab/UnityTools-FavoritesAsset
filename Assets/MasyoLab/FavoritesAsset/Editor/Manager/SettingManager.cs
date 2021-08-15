@@ -13,42 +13,41 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     class SettingManager {
 
-        PtrLinker<SettingData> _data = new PtrLinker<SettingData>(LoadSettingData);
-
-        public SettingData Data => _data.Inst;
+        PtrLinker<SettingData> _settingData = new PtrLinker<SettingData>(LoadSettingData);
+        public SettingData Data => _settingData.Inst;
 
         public LanguageEnum Language {
-            get => _data.Inst.Language;
+            get => Data.Language;
             set {
-                if (_data.Inst.Language != value) {
-                    _data.Inst.Language = value;
+                if (Data.Language != value) {
+                    Data.Language = value;
                     SaveSettingData();
                 }
             }
         }
 
         public string ImportTarget {
-            get => _data.Inst.ImportTarget;
+            get => Data.ImportTarget;
             set {
-                if (_data.Inst.ImportTarget != value) {
-                    _data.Inst.ImportTarget = value;
+                if (Data.ImportTarget != value) {
+                    Data.ImportTarget = value;
                     SaveSettingData();
                 }
             }
         }
 
         public string ExportTarget {
-            get => _data.Inst.ExportTarget;
+            get => Data.ExportTarget;
             set {
-                if (_data.Inst.ExportTarget != value) {
-                    _data.Inst.ExportTarget = value;
+                if (Data.ExportTarget != value) {
+                    Data.ExportTarget = value;
                     SaveSettingData();
                 }
             }
         }
 
         public void SaveSettingData() {
-            SaveLoad.Save(JsonUtility.ToJson(_data.Inst), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
+            SaveLoad.Save(JsonUtility.ToJson(Data), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
         }
 
         static SettingData LoadSettingData() {
