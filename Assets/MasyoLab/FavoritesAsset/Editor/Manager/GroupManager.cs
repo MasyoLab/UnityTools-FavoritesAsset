@@ -123,6 +123,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // 予約済みリストから取得
             if (GroupDB.Reserved.Count != 0) {
                 var data = GroupDB.Reserved[0];
+                RemoveEvent?.Invoke(data.GUID);
                 GroupDB.Data.Add(data);
                 GroupDB.Reserved.RemoveAt(0);
                 UpdateGroupNameList();
