@@ -9,7 +9,7 @@
 
 この機能を使用すると、アセットをお気に入り登録できます。
 
-![main window](https://user-images.githubusercontent.com/20793765/128970578-8a45c4ef-4705-453a-9d0a-ed19fc94da08.png)
+![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
 
 ----
 
@@ -37,19 +37,40 @@
 
 注意：アクセス方法は、今後の更新で変更する可能性があります。
 
-### 登録
+### お気に入り登録
 アセットをドラッグ&ドロップすると、お気に入り登録できます。
-![fav assets action 1](https://user-images.githubusercontent.com/20793765/128969135-38560720-8504-4cc2-b503-bd296f04a0ac.gif)
+
+![fav assets action 1](https://user-images.githubusercontent.com/20793765/129484724-dda7322e-3049-4762-996c-79ea88906584.gif)
 
 ### アセットを Ping 、アセットを開く
 登録済みのアセットにはプロジェクトビューに対してのピングボタンと、アセットを開くためのボタンが追加されます。
+
 ![fav assets action 2](https://user-images.githubusercontent.com/20793765/128969150-67e8dfe0-786b-457c-bcd1-4b40dc0bcc1d.gif)
 
 ### お気に入りを解除
-![fav assets action 3](https://user-images.githubusercontent.com/20793765/128969164-0b645776-a916-4d52-9e47-4b946eacfe8a.gif)
+![fav assets action 3](https://user-images.githubusercontent.com/20793765/129485099-4ff09124-6fce-4e92-b19b-4126705b7295.gif)
 
-### ソート
-![fav assets action 4](https://user-images.githubusercontent.com/20793765/128969180-fb09cea1-0103-4300-b010-fed0453d12f5.gif)
+### お気に入りのソート
+![fav assets action 4](https://user-images.githubusercontent.com/20793765/129485130-48589e20-bcfd-4566-9fb1-8129edb0fbc5.gif)
+
+### お気に入りグループを追加
+![group1](https://user-images.githubusercontent.com/20793765/129485493-c3330196-2e44-49e8-90ca-e27f73f7a7da.gif)
+
+### お気に入りグループの並び替え
+![group2](https://user-images.githubusercontent.com/20793765/129485503-44fa42e1-ed14-49cb-8e88-71eb6a986da1.gif)
+
+### お気に入りグループの削除
+削除すると、お気に入り登録の内容も削除されます。
+
+![group3](https://user-images.githubusercontent.com/20793765/129485516-11db3948-205c-4e42-a047-d254f96d1bba.gif)
+
+### メニュー
+![menu](https://user-images.githubusercontent.com/20793765/129485564-7c825a2e-f8b0-4cba-9bbd-a18b1411ef49.png)
+
+インポート/エクスポート対象には、以下のデータが含まれています。
+- お気に入りデータ
+- お気に入りグループ
+- 最後に開いていたお気に入りグループ
 
 License
 -------

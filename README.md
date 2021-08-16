@@ -60,7 +60,6 @@
 ![group2](https://user-images.githubusercontent.com/20793765/129485503-44fa42e1-ed14-49cb-8e88-71eb6a986da1.gif)
 
 ### お気に入りグループの削除
-
 削除すると、お気に入り登録の内容も削除されます。
 
 ![group3](https://user-images.githubusercontent.com/20793765/129485516-11db3948-205c-4e42-a047-d254f96d1bba.gif)
