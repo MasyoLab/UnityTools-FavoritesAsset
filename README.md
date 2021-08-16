@@ -37,7 +37,7 @@
 
 注意：アクセス方法は、今後の更新で変更する可能性があります。
 
-### 登録
+### お気に入り登録
 アセットをドラッグ&ドロップすると、お気に入り登録できます。
 
 ![fav assets action 1](https://user-images.githubusercontent.com/20793765/129484724-dda7322e-3049-4762-996c-79ea88906584.gif)
@@ -50,7 +50,7 @@
 ### お気に入りを解除
 ![fav assets action 3](https://user-images.githubusercontent.com/20793765/129485099-4ff09124-6fce-4e92-b19b-4126705b7295.gif)
 
-### ソート
+### お気に入りのソート
 ![fav assets action 4](https://user-images.githubusercontent.com/20793765/129485130-48589e20-bcfd-4566-9fb1-8129edb0fbc5.gif)
 
 ### お気に入りグループを追加
