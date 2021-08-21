@@ -85,7 +85,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var item = groupDatas[index];
                 rect.height -= 2;
                 rect.y += 1;
-                var newText = EditorGUI.TextArea(rect, item.GroupName);
+                var newText = EditorGUI.TextField(rect, item.GroupName);
                 if (newText != item.GroupName) {
                     item.GroupName = newText;
                     _group.UpdateGroupNameList();

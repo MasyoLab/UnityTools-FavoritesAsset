@@ -5,7 +5,6 @@
 [![Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
-[![Coverage Status](https://coveralls.io/repos/github/MasyoLab/UnityTools-FavoritesAsset/badge.svg?branch=master)](https://coveralls.io/github/MasyoLab/UnityTools-FavoritesAsset?branch=master)
 
 This function allows you to bookmark (register as a favorite) resources.
 
@@ -58,7 +57,7 @@ Registered assets can have a focus button for the Project view and an open butto
 ![group2](https://user-images.githubusercontent.com/20793765/129485503-44fa42e1-ed14-49cb-8e88-71eb6a986da1.gif)
 
 ### Deleting a favorite group
-削除すると、お気に入り登録の内容も削除されます。
+When you delete a bookmark, the contents of the bookmark are also deleted.
 
 ![group3](https://user-images.githubusercontent.com/20793765/129485516-11db3948-205c-4e42-a047-d254f96d1bba.gif)
 
