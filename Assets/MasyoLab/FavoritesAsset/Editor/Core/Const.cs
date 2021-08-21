@@ -13,7 +13,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     struct CONST {
         public const string DEVELOPER = "MasyoLab";
-        public const string VERSION = "v1.3.0";
+        public const string VERSION = "v1.3.1";
         public const string EDITOR_NAME = "Favorites Asset";
         public const string EDITOR_WINDOW_NAME = "Favorites Asset Window";
         public const string MENU_ITEM = "Tools/" + EDITOR_WINDOW_NAME;

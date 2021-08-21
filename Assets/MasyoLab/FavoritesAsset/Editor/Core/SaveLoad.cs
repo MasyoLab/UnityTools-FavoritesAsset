@@ -20,7 +20,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             // 保存処理
             System.IO.File.WriteAllText(filePath, jsonData);
-            AssetDatabase.Refresh();
         }
 
         public static string Load(string filePath) {
