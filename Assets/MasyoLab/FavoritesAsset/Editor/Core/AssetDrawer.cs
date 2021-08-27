@@ -98,9 +98,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT))) {
                 // アセットの情報
                 var asset = AssetDatabase.LoadAssetAtPath<Object>(data.Path);
+                var oldActiveObject = Selection.activeObject;
                 Selection.activeObject = asset;
                 EditorGUIUtility.PingObject(asset);
                 EditorUtility.FocusProjectWindow();
+                Selection.activeObject = oldActiveObject;
             }
         }
 
@@ -115,9 +117,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (GUI.Button(rect, content)) {
                 // アセットの情報
                 var asset = AssetDatabase.LoadAssetAtPath<Object>(data.Path);
+                var oldActiveObject = Selection.activeObject;
                 Selection.activeObject = asset;
                 EditorGUIUtility.PingObject(asset);
                 EditorUtility.FocusProjectWindow();
+                Selection.activeObject = oldActiveObject;
             }
         }
 
