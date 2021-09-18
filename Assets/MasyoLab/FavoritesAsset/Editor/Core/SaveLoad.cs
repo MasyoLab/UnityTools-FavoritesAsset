@@ -37,19 +37,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return jsonStr;
         }
 
-        public static void SaveFile(string jsonData, string directory, UnityAction<string> returnDirectory = null) {
+        public static void SaveFile(string jsonData, string directory, string filename, UnityAction<FileInfo> unityAction = null) {
             directory = directory == string.Empty ? CONST.ASSETS : directory;
 
             // ファイルパス
-            var filePath = EditorUtility.SaveFilePanel(CONST.SAVE, directory, CONST.JSON_DATA_NAME, CONST.JSON_EXT);
+            var filePath = EditorUtility.SaveFilePanel(CONST.SAVE, directory, filename, CONST.JSON_EXT);
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            returnDirectory?.Invoke(CreateDirectoryFromFilePath(filePath));
+            unityAction?.Invoke(CreateDirectoryFromFilePath(filePath));
             Save(jsonData, filePath);
         }
 
-        public static string LoadFile(string directory, UnityAction<string> returnDirectory = null) {
+        public static string LoadFile(string directory, UnityAction<FileInfo> unityAction = null) {
             directory = directory == string.Empty ? CONST.ASSETS : directory;
 
             // ファイルパス
@@ -57,7 +57,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (string.IsNullOrEmpty(filePath))
                 return string.Empty;
 
-            returnDirectory?.Invoke(CreateDirectoryFromFilePath(filePath));
+            unityAction?.Invoke(CreateDirectoryFromFilePath(filePath));
             return Load(filePath);
         }
 
@@ -80,11 +80,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        static string CreateDirectoryFromFilePath(string filePath) {
+        static FileInfo CreateDirectoryFromFilePath(string filePath) {
             var index = filePath.LastIndexOf("/");
             if (index == -1)
-                return string.Empty;
-            return filePath.RemoveAtLast(filePath.Substring(index));
+                return FileInfo.Empty;
+            var filename = filePath.Substring(index);
+            return new FileInfo(filePath.RemoveAtLast(filename), filename.Replace("/", ""));
         }
     }
 }
