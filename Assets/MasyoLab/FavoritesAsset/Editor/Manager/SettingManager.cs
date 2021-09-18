@@ -26,21 +26,21 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
-        public string ImportTarget {
-            get => Data.ImportTarget;
+        public string IOTarget {
+            get => Data.IOTarget;
             set {
-                if (Data.ImportTarget != value) {
-                    Data.ImportTarget = value;
+                if (Data.IOTarget != value) {
+                    Data.IOTarget = value;
                     SaveSettingData();
                 }
             }
         }
 
-        public string ExportTarget {
-            get => Data.ExportTarget;
+        public string IOFileName {
+            get => Data.IOFileName;
             set {
-                if (Data.ExportTarget != value) {
-                    Data.ExportTarget = value;
+                if (Data.IOFileName != value) {
+                    Data.IOFileName = value;
                     SaveSettingData();
                 }
             }
