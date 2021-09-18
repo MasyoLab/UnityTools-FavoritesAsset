@@ -53,7 +53,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Utils.MouseCursorLink();
 
             if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.License), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
-                Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE");
+                Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md");
             }
             Utils.MouseCursorLink();
 
