@@ -51,7 +51,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             {
                 GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ExportTarget));
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(_setting.ExportTarget);
+                EditorGUILayout.TextField(_setting.IOTarget);
                 EditorGUI.EndDisabledGroup();
             }
             GUILayout.EndHorizontal();
@@ -60,7 +60,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
             {
                 GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ImportTarget));
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(_setting.ImportTarget);
+                EditorGUILayout.TextField(_setting.IOTarget);
+                EditorGUI.EndDisabledGroup();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.Filename));
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.TextField(_setting.IOFileName);
                 EditorGUI.EndDisabledGroup();
             }
             GUILayout.EndHorizontal();

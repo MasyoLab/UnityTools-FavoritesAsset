@@ -139,9 +139,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Import)), false,
                 (call) => {
-                    var importJson = SaveLoad.LoadFile(_setting.ImportTarget, (directory) => {
-                        _setting.ImportTarget = directory;
-                    });
+                    var importJson = SaveLoad.LoadFile(_setting.IOTarget);
                     var importData = FavoritesJsonExportData.FromJson(importJson);
                     _favorites.SetImportData(importData);
                     _group.SetImportData(importData);
@@ -152,8 +150,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
             menu.AddItem(new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.Export)), false,
                 (call) => {
                     var exportJson = FavoritesJsonExportData.ToJson(_favorites.AssetInfoList, _group.GroupDB, _favorites.GetFavoriteList());
-                    SaveLoad.SaveFile(exportJson, _setting.ExportTarget, (directory) => {
-                        _setting.ExportTarget = directory;
+                    SaveLoad.SaveFile(exportJson, _setting.IOTarget, _setting.IOFileName, result => {
+                        _setting.IOTarget = result.FolderDirectory;
+                        _setting.IOFileName = result.Filename;
                     });
                 }, TextEnum.Export);
 
