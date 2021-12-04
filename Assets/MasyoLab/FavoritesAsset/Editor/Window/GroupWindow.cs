@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,13 +20,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
         Vector2 _scrollVec2;
         bool _isUpdate = false;
 
-        public override void Init(PtrLinker<SystemManager> manager, EditorWindow root) {
-            base.Init(manager, root);
+        public override void Init(IPipeline pipeline) {
+            base.Init(pipeline);
             InitGroupGUI();
             _isUpdate = false;
         }
 
-        public override void OnGUI(Rect windowSize) {
+        public override void OnGUI() {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
             _reorderableList.DoLayoutList();
             GUILayout.EndScrollView();
@@ -36,7 +36,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             base.Close();
             if (_isUpdate == false)
                 return;
-            _group.Save();
+            _pipeline.Group.Save();
         }
 
         public override void Reload() {
@@ -45,18 +45,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         void InitGroupGUI() {
-            
+
             // データを複製
-            var groupDatas = _group.GroupDB.Data.ToList();
+            var groupDatas = _pipeline.Group.GroupDB.Data.ToList();
 
             if (_reorderableList == null) {
                 _reorderableList = new ReorderableList(groupDatas, typeof(AssetData));
             }
 
             void DrawHeader(Rect rect) {
-                EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup));
-                if (groupDatas.Count != _group.GroupDB.Data.Count) {
-                    groupDatas = _group.GroupDB.Data.ToList();
+                EditorGUI.LabelField(rect, LanguageData.GetText(_pipeline.Setting.Language, TextEnum.FavoriteGroup));
+                if (groupDatas.Count != _pipeline.Group.GroupDB.Data.Count) {
+                    groupDatas = _pipeline.Group.GroupDB.Data.ToList();
                     _reorderableList.list = groupDatas;
                 }
             }
@@ -66,19 +66,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 for (int i = 0; i < groupDatas.Count; i++) {
                     groupDatas[i].Index = i;
                 }
-                _group.Sort();
+                _pipeline.Group.Sort();
                 _isUpdate = true;
             }
 
             void AddCallback(ReorderableList list) {
-                groupDatas.Add(_group.AddData());
-                _group.Save();
+                groupDatas.Add(_pipeline.Group.AddData());
+                _pipeline.Group.Save();
             }
 
             void RemoveCallback(ReorderableList list) {
                 groupDatas.RemoveAt(list.index);
-                _group.Remove(list.index);
-                _group.Save();
+                _pipeline.Group.Remove(list.index);
+                _pipeline.Group.Save();
             }
 
             void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
@@ -88,13 +88,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 var newText = EditorGUI.TextField(rect, item.GroupName);
                 if (newText != item.GroupName) {
                     item.GroupName = newText;
-                    _group.UpdateGroupNameList();
+                    _pipeline.Group.UpdateGroupNameList();
                     _isUpdate = true;
                 }
             }
 
             void NoneElement(Rect rect) {
-                EditorGUI.LabelField(rect, LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroupIsEmpty));
+                EditorGUI.LabelField(rect, LanguageData.GetText(_pipeline.Setting.Language, TextEnum.FavoriteGroupIsEmpty));
             }
 
             _reorderableList.list = groupDatas;

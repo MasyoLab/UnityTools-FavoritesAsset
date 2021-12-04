@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -15,15 +15,22 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// <summary>
     /// お気に入りマネージャー
     /// </summary>
-    class FavoritesManager {
+    class FavoritesManager : BaseManager {
 
-        PtrLinker<GroupManager> _groupManager = null;
         Dictionary<string, PtrLinker<AssetDB>> _assetDBDict = new Dictionary<string, PtrLinker<AssetDB>>();
         PtrLinker<AssetDB> _assetDB => SelectFavoritesData();
 
         //PtrLinker<AssetDB> _assetDB = new PtrLinker<AssetDB>(LoadFavoritesData);
         public IReadOnlyList<AssetData> Data => _assetDB.Inst.Ref;
         public AssetDB AssetInfoList => SelectFavoritesData(CONST.FAVORITES_DATA).Inst;
+
+        public FavoritesManager(IPipeline pipeline) : base(pipeline) {
+            // グループ削除時の処理を追加
+            pipeline.Group.RemoveEvent = (guid) => {
+                _assetDBDict.Remove(guid);
+                SaveLoad.Save("{}", SaveLoad.GetSaveDataPath(guid));
+            };
+        }
 
         public void Add(AssetData info) => _assetDB.Inst.Ref.Add(info);
 
@@ -41,7 +48,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public void SaveFavoritesData() {
             //SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
-            SaveLoad.Save(FavoritesJson.ToJson(_assetDB.Inst), SaveLoad.GetSaveDataPath(_groupManager.Inst.SelectGroupFileName));
+            SaveLoad.Save(FavoritesJson.ToJson(_assetDB.Inst), SaveLoad.GetSaveDataPath(_pipeline.Group.SelectGroupFileName));
         }
 
         static AssetDB LoadFavoritesData() {
@@ -133,15 +140,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
-        public void SetGroupManager(PtrLinker<GroupManager> groupManager) {
-            _groupManager = groupManager;
-            // グループ削除時の処理を追加
-            _groupManager.Inst.RemoveEvent = (guid) => {
-                _assetDBDict.Remove(guid);
-                SaveLoad.Save("{}", SaveLoad.GetSaveDataPath(guid));
-            };
-        }
-
         /// <summary>
         /// お気に入りデータを切り替える
         /// </summary>
@@ -160,12 +158,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         PtrLinker<AssetDB> SelectFavoritesData() {
-            return SelectFavoritesData(_groupManager.Inst.SelectGroupFileName);
+            return SelectFavoritesData(_pipeline.Group.SelectGroupFileName);
         }
 
         public List<AssetDB> GetFavoriteList() {
-            var returnData = new List<AssetDB>(_groupManager.Inst.GroupDB.Data.Count);
-            foreach (var item in _groupManager.Inst.GroupDB.Data) {
+            var returnData = new List<AssetDB>(_pipeline.Group.GroupDB.Data.Count);
+            foreach (var item in _pipeline.Group.GroupDB.Data) {
                 returnData.Add(SelectFavoritesData(item.GUID).Inst);
             }
             return returnData;

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 
 //=========================================================
 //
@@ -11,16 +7,11 @@ using UnityEditor;
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
-
-    class BaseWindow {
-
+    class BaseManager {
         protected IPipeline _pipeline = null;
 
-        public virtual void OnGUI() { }
-        public virtual void Init(IPipeline pipeline) {
+        public BaseManager(IPipeline pipeline) {
             _pipeline = pipeline;
         }
-        public virtual void Reload() { }
-        public virtual void Close() { }
     }
 }
