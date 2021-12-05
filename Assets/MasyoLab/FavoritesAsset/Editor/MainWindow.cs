@@ -55,26 +55,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
         BaseWindow _guiWindow = null;
         Pipeline _pipeline = new Pipeline();
 
-        /*
-        SystemManager _manager => _systemManager.Inst;
-        FavoritesManager _favorites => _manager.Favorites;
-        SettingManager _setting => _manager.Setting;
-        GroupManager _group => _manager.Group;
-        */
-
         /// <summary>
         /// ウィンドウを追加
         /// </summary>
         [MenuItem(CONST.MENU_ITEM)]
-        static void Create() {
+        static void Init() {
             var window = GetWindow<MainWindow>(CONST.EDITOR_WINDOW_NAME);
             window.titleContent.image = EditorGUIUtility.IconContent(CONST.FAVORITE_ICON).image;
             Inst = window;
-            window.Init();
-        }
-
-        public void Init() {
-            _pipeline.Root = this;
         }
 
         /// <summary>
@@ -85,7 +73,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (Selection.activeObject == null)
                 return;
 
-            Create();
+            Init();
 
             var window = Inst.GetWindowClass<FavoritesWindow>();
             foreach (var item in Selection.objects) {
@@ -106,6 +94,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// GUI 描画
         /// </summary>
         void OnGUI() {
+            _pipeline.Root = this;
             DrawToolbar();
             UpdateGUIAction();
         }
@@ -118,7 +107,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
             if (_guiWindow == null) {
                 GetWindowClass<FavoritesWindow>();
             }
-            _pipeline.WindowSize.Set(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight);
+
+            _pipeline.WindowSize = new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight);
             _guiWindow.OnGUI();
         }
 
