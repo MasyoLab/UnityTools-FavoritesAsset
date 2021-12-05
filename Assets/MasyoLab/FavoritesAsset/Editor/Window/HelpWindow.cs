@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -38,31 +38,31 @@ namespace MasyoLab.Editor.FavoritesAsset {
             };
         });
 
-        public override void OnGUI(Rect windowSize) {
+        public override void OnGUI() {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
 
             GUILayout.Label(CONST.EDITOR_WINDOW_NAME, _headerStyle.Inst, GUILayout.ExpandWidth(true));
             GUILayout.Label(CONST.VERSION, _headerStyle.Inst, GUILayout.ExpandWidth(true));
             Utils.GUILine();
 
-            GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.Link), _h1.Inst, GUILayout.ExpandWidth(true));
+            GUILayout.Label(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.Link), _h1.Inst, GUILayout.ExpandWidth(true));
 
             if (GUILayout.Button("Readme", _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/README.md");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.License), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.License), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.LatestRelease), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.LatestRelease), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_setting.Language, TextEnum.SourceCode), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.SourceCode), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset");
             }
             Utils.MouseCursorLink();

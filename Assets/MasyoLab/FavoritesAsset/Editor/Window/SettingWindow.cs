@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -16,16 +16,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         Vector2 _scrollVec2;
 
-        public override void OnGUI(Rect windowSize) {
+        public override void OnGUI() {
             _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
 
             EditorGUI.BeginChangeCheck();
             {
-                var newLanguage = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(_setting.Language, TextEnum.Language), (int)_setting.Language, LanguageData.LANGUAGE);
-                var isUpdate = _setting.Language != newLanguage;
-                _setting.Language = newLanguage;
+                var newLanguage = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.Language), (int)_pipeline.Setting.Language, LanguageData.LANGUAGE);
+                var isUpdate = _pipeline.Setting.Language != newLanguage;
+                _pipeline.Setting.Language = newLanguage;
                 if (isUpdate) {
-                    _group.UpdateGroupNameList();
+                    _pipeline.Group.UpdateGroupNameList();
                 }
             }
             EditorGUI.EndChangeCheck();
@@ -34,42 +34,42 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             {
                 // お気に入り全解除
-                GUILayout.Label($"{LanguageData.GetText(_setting.Language, TextEnum.FavoriteGroup)} : " +
-                    $"{_group.GetGroupNameByGUID(_group.SelectGroupFileName)}");
-                var content = new GUIContent(LanguageData.GetText(_setting.Language, TextEnum.UnlockAll));
+                GUILayout.Label($"{LanguageData.GetText(_pipeline.Setting.Language, TextEnum.FavoriteGroup)} : " +
+                    $"{_pipeline.Group.GetGroupNameByGUID(_pipeline.Group.SelectGroupFileName)}");
+                var content = new GUIContent(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.UnlockAll));
                 if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
-                    _favorites.RemoveAll();
-                    _favorites.SaveFavoritesData();
-                    (_root as MainWindow).Reload();
+                    _pipeline.Favorites.RemoveAll();
+                    _pipeline.Favorites.SaveFavoritesData();
+                    (_pipeline.Root as MainWindow).Reload();
                 }
             }
 
             Utils.GUILine();
-            GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ImportAndExportTarget));
+            GUILayout.Label(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.ImportAndExportTarget));
 
             GUILayout.BeginHorizontal();
             {
-                GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ExportTarget));
+                GUILayout.Label(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.ExportTarget));
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(_setting.IOTarget);
+                EditorGUILayout.TextField(_pipeline.Setting.IOTarget);
                 EditorGUI.EndDisabledGroup();
             }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             {
-                GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.ImportTarget));
+                GUILayout.Label(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.ImportTarget));
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(_setting.IOTarget);
+                EditorGUILayout.TextField(_pipeline.Setting.IOTarget);
                 EditorGUI.EndDisabledGroup();
             }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             {
-                GUILayout.Label(LanguageData.GetText(_setting.Language, TextEnum.Filename));
+                GUILayout.Label(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.Filename));
                 EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextField(_setting.IOFileName);
+                EditorGUILayout.TextField(_pipeline.Setting.IOFileName);
                 EditorGUI.EndDisabledGroup();
             }
             GUILayout.EndHorizontal();

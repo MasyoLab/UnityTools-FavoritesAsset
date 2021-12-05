@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace MasyoLab.Editor.FavoritesAsset {
 
-    class SettingManager {
+    class SettingManager : BaseManager {
 
         PtrLinker<SettingData> _settingData = new PtrLinker<SettingData>(LoadSettingData);
         public SettingData Data => _settingData.Inst;
@@ -45,6 +45,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 }
             }
         }
+
+        public SettingManager(IPipeline pipeline) : base(pipeline) { }
 
         public void SaveSettingData() {
             SaveLoad.Save(JsonUtility.ToJson(Data), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));

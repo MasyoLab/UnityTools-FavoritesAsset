@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,7 +21,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         Open,
     }
 
-    class GroupManager {
+    class GroupManager : BaseManager {
         PtrLinker<GroupDB> _groupDB = new PtrLinker<GroupDB>(Load);
         public GroupDB GroupDB => _groupDB.Inst;
 
@@ -65,7 +65,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         public UnityAction<string> RemoveEvent;
 
-        PtrLinker<SettingManager> _settingManager = null;
+        public GroupManager(IPipeline pipeline) : base(pipeline) { }
 
         public void Save() {
             SaveLoad.Save(JsonUtility.ToJson(GroupDB), SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
@@ -179,7 +179,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             _groupNameList.Add("");
-            _groupNameList.Add(LanguageData.GetText(_settingManager.Inst.Language, TextEnum.AddNewFavoriteGroup));
+            _groupNameList.Add(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.AddNewFavoriteGroup));
 
             return _groupNames = _groupNameList.ToArray();
         }
@@ -246,10 +246,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return CONST.DEFAULT;
             }
             return groupData.GroupName;
-        }
-
-        public void SetSettingManager(PtrLinker<SettingManager> settingManager) {
-            _settingManager = settingManager;
         }
     }
 }
