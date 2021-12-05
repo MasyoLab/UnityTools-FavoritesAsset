@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -97,7 +97,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // ボタン
             if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT))) {
                 // アセットの情報
-                var asset = AssetDatabase.LoadAssetAtPath<Object>(data.Path);
+                var asset = data.GetObject();
                 var oldActiveObject = Selection.activeObject;
                 Selection.activeObject = asset;
                 EditorGUIUtility.PingObject(asset);
@@ -116,7 +116,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // ボタン
             if (GUI.Button(rect, content)) {
                 // アセットの情報
-                var asset = AssetDatabase.LoadAssetAtPath<Object>(data.Path);
+                var asset = data.GetObject();
                 var oldActiveObject = Selection.activeObject;
                 Selection.activeObject = asset;
                 EditorGUIUtility.PingObject(asset);

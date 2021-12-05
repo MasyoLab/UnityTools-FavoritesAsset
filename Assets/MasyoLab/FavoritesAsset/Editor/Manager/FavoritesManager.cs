@@ -34,17 +34,17 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public void Add(AssetData info) => _assetDB.Inst.Ref.Add(info);
 
-        public void Add(string guid, string path, string name, string type) {
-            _assetDB.Inst.Ref.Add(new AssetData(guid, path, name, type));
+        public void Add(string guid, string path, string name, string type, long localId) {
+            _assetDB.Inst.Ref.Add(new AssetData(guid, path, name, type, localId));
         }
 
         public void Remove(AssetData info) => _assetDB.Inst.Ref.Remove(info);
 
         public void RemoveAll() => _assetDB.Inst.Ref.RemoveRange(0, _assetDB.Inst.Ref.Count);
 
-        public bool ExistsGUID(string guid) => _assetDB.Inst.Ref.Exists(x => x.Guid == guid);
+        public bool ExistsGUID(string guid, long localId) => _assetDB.Inst.Ref.Exists(x => x.Guid == guid && x.LocalId == localId);
 
-        public bool ExistsAssetPath(string path) => _assetDB.Inst.Ref.Exists(x => x.Path == path);
+        public bool ExistsAssetPath(string path, long localId) => _assetDB.Inst.Ref.Exists(x => x.Path == path && x.LocalId == localId);
 
         public void SaveFavoritesData() {
             //SaveLoad.Save(FavoritesJson.ToJson(_assetInfo.Inst), SaveLoad.GetSaveDataPath(CONST.FAVORITES_DATA));
@@ -79,22 +79,30 @@ namespace MasyoLab.Editor.FavoritesAsset {
             bool isUpdate = false;
 
             foreach (var item in Data) {
+                // アセット
+                var assetData = item.GetObject();
+                if (assetData == null)
+                    continue;
+
+                var oldPath = item.Path;
+                var oldLocalid = item.LocalId;
+
                 // GUIDでパスを取得
                 var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
                 if (newPath == string.Empty)
                     continue;
 
+                // ローカルID
+                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetData, out string guid, out long localid)) {
+                    item.LocalId = localid;
+                }
+
                 item.Path = newPath;
-
-                // アセットの情報
-                var assetData = AssetDatabase.LoadAssetAtPath<Object>(item.Path);
-                if (assetData == null)
-                    continue;
-
                 item.Name = assetData.name;
                 item.Type = assetData.GetType().ToString();
 
-                isUpdate = isUpdate ? isUpdate : item.Path != newPath;
+                // 更新判定
+                isUpdate = isUpdate ? isUpdate : (oldPath != item.Path || oldLocalid != item.LocalId);
             }
 
             if (isUpdate) {

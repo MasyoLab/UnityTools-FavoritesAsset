@@ -120,11 +120,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
             GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
                 LanguageData.GetText(_pipeline.Setting.Language, TextEnum.DragAndDrop), _boxStyle.Inst);
 
-            if (!GetObjects(out List<string> objs, _pipeline.Root))
+            if (!GetObjects(out List<UnityEngine.Object> objs, _pipeline.Root))
                 return;
 
             foreach (var item in objs) {
-                AddAssetToAssetPath(item);
+                AddAssetToObject(item);
             }
 
             _pipeline.Favorites.SaveFavoritesData();
@@ -169,6 +169,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// ファイルパスでアセットを登録
         /// </summary>
+        /*
         void AddAssetToAssetPath(string assetPath) {
             // AssetPathは保存済み
             if (_pipeline.Favorites.ExistsAssetPath(assetPath))
@@ -180,30 +181,47 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // アセットの情報
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
+            if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string oguid, out long localid)) { }
+
             // お気に入りに登録
-            _pipeline.Favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString());
+            _pipeline.Favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString(), localid);
         }
+        */
 
         /// <summary>
         /// Objectでアセットを登録
         /// </summary>
         public void AddAssetToObject(Object assetObject) {
-            var assetPath = AssetDatabase.GetAssetPath(assetObject);
-
-            // AssetPathは保存済み
-            if (_pipeline.Favorites.ExistsAssetPath(assetPath))
+            if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetObject, out string guid, out long localid))
                 return;
 
-            // GUID を取得
-            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+            // Assetは保存済み
+            if (_pipeline.Favorites.ExistsGUID(guid, localid))
+                return;
+
+            var assetPath = AssetDatabase.GetAssetPath(assetObject);
+
+            // SubAssets が1つしか無い場合
+            var assetDatas = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
+            if (assetDatas.Length == 1) {
+                if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetDatas[0], out string sbuGuid, out long sbuLocalid))
+                    return;
+                // Assetは保存済み
+                if (_pipeline.Favorites.ExistsGUID(sbuGuid, sbuLocalid))
+                    return;
+                guid = sbuGuid;
+                localid = sbuLocalid;
+                assetObject = assetDatas[0];
+            }
 
             // お気に入りに登録
-            _pipeline.Favorites.Add(guid, assetPath, assetObject.name, assetObject.GetType().ToString());
+            _pipeline.Favorites.Add(guid, assetPath, assetObject.name, assetObject.GetType().ToString(), localid);
         }
 
         /// <summary>
         /// GUIDでアセットを登録
         /// </summary>
+        /*
         void AddAssetToGUID(string assetGuid) {
             // GUIDは保存済み
             if (_pipeline.Favorites.ExistsGUID(assetGuid))
@@ -215,9 +233,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
             // アセットの情報
             var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
 
+            if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string oguid, out long localid)) { }
+
             // お気に入りに登録
-            _pipeline.Favorites.Add(assetGuid, path, asset.name, asset.GetType().ToString());
+            _pipeline.Favorites.Add(assetGuid, path, asset.name, asset.GetType().ToString(), localid);
         }
+        */
 
         /// <summary>
         /// お気に入りを解除
@@ -243,15 +264,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return;
             }
 
-            var asset = AssetDatabase.LoadAssetAtPath<Object>(info.Path);
             // アセットを開く
-            AssetDatabase.OpenAsset(asset);
+            AssetDatabase.OpenAsset(info.GetObject());
         }
 
         /// <summary>
         /// ドラッグ&ドロップでオブジェクトを取得
         /// </summary>
-        public static bool GetObjects(out List<string> targetList, EditorWindow window, Rect? rect = null) {
+        public static bool GetObjects(out List<UnityEngine.Object> targetList, EditorWindow window, Rect? rect = null) {
             targetList = null;
 
             // ドラックドロップされたオブジェクトがなければ終わり
@@ -274,7 +294,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <param name="widthMin"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        private static string[] GetObjects(EditorWindow window, Rect? rect = null) {
+        private static UnityEngine.Object[] GetObjects(EditorWindow window, Rect? rect = null) {
             var ev = Event.current;
 
             // エリアが指定されていれば範囲内か確認
@@ -304,7 +324,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             //イベントを使用済みにする
             Event.current.Use();
 
-            return DragAndDrop.paths;
+            return DragAndDrop.objectReferences;
         }
 
         public void Save() {
