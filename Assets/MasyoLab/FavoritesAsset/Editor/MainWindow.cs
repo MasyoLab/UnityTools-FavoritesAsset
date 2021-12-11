@@ -18,6 +18,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             FavoritesManager _favorites = null;
             SettingManager _setting = null;
             GroupManager _group = null;
+            DragManager _dragManager = null;
 
             public FavoritesManager Favorites {
                 get {
@@ -43,6 +44,15 @@ namespace MasyoLab.Editor.FavoritesAsset {
                         _group = new GroupManager(this);
                     }
                     return _group;
+                }
+            }
+
+            public DragManager DragManager {
+                get {
+                    if (_dragManager == null) {
+                        _dragManager = new DragManager(this);
+                    }
+                    return _dragManager;
                 }
             }
 
@@ -90,11 +100,30 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return Selection.activeObject != null;
         }
 
+        private void OnEnable() {
+            _pipeline.Root = this;
+            _pipeline.DragManager.OnEnable();
+            foreach (var baseWindow in _windows) {
+                baseWindow.OnEnable();
+            }
+        }
+
+        private void OnDestroy() {
+            foreach (var baseWindow in _windows) {
+                baseWindow.OnDestroy();
+            }
+        }
+
+        private void OnDisable() {
+            foreach (var baseWindow in _windows) {
+                baseWindow.OnDisable();
+            }
+        }
+
         /// <summary>
         /// GUI 描画
         /// </summary>
         void OnGUI() {
-            _pipeline.Root = this;
             DrawToolbar();
             UpdateGUIAction();
         }
