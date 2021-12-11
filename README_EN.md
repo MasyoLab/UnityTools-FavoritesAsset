@@ -1,4 +1,4 @@
-# Favorites Asset Window
+﻿# Favorites Asset Window
 
 [![](https://img.shields.io/badge/Licenses-MIT-brightgreen)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE)
 [![Release](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/release.yml/badge.svg)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/release.yml)
@@ -72,4 +72,4 @@ The following data is included in the import/export target.
 License
 -------
 
-This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE) for more information.
+This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md) for more information.
