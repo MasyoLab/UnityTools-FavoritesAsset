@@ -1,6 +1,6 @@
 ﻿# Favorites Asset Window
 
-[![](https://img.shields.io/badge/Licenses-MIT-brightgreen)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE)
+[![](https://img.shields.io/badge/Licenses-MIT-brightgreen)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md)
 [![Release](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/release.yml/badge.svg)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/release.yml)
 [![Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml/badge.svg)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/test.yml)
 
