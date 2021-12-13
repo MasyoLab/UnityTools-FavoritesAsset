@@ -19,6 +19,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             SettingManager _setting = null;
             GroupManager _group = null;
             DragManager _dragManager = null;
+            TextureManager _texture = null;
 
             public FavoritesManager Favorites {
                 get {
@@ -53,6 +54,15 @@ namespace MasyoLab.Editor.FavoritesAsset {
                         _dragManager = new DragManager(this);
                     }
                     return _dragManager;
+                }
+            }
+
+            public TextureManager Texture {
+                get {
+                    if (_texture == null) {
+                        _texture = new TextureManager(this);
+                    }
+                    return _texture;
                 }
             }
 

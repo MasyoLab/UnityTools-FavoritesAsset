@@ -161,7 +161,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             rect.width -= BUTTON_WIDTH * 2;
 
             // アセットを開くボタン
-            AssetDrawer.OnAssetButton(rect, assetData, OpenAsset);
+            AssetDrawer.OnAssetButton(_pipeline, rect, assetData, OpenAsset);
 
             copyRect.x = rect.x + rect.width;
 

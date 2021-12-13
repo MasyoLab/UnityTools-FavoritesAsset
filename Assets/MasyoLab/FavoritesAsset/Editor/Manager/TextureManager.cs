@@ -7,7 +7,7 @@ using UnityEditor;
 namespace MasyoLab.Editor.FavoritesAsset {
     class TextureManager : BaseManager {
 
-        Dictionary<string, IReadOnlyList<Texture2D>> _textureDict = new Dictionary<string, IReadOnlyList<Texture2D>>();
+        Dictionary<string, IReadOnlyList<Texture>> _textureDict = new Dictionary<string, IReadOnlyList<Texture>>();
 
         public TextureManager(IPipeline pipeline) : base(pipeline) { }
 
@@ -27,7 +27,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         static Texture2D TrimTexture(string name, Texture2D source, Rect uvRect, Vector2Int destSize) {
             var currentRT = RenderTexture.active;
-            var tempRT = RenderTexture.GetTemporary(destSize.x, destSize.y);
+
+            var tempRT = RenderTexture.GetTemporary(destSize.x, destSize.y, 24);
 
             // RenderTexure.activeを差し変えておく
             RenderTexture.active = tempRT;
@@ -36,7 +37,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Graphics.Blit(source, tempRT, uvRect.size, uvRect.min);
 
             // RenderTexture.activeの情報をテクスチャに書き込む
-            var texture = new Texture2D(destSize.x, destSize.y);
+            var texture = new Texture2D(destSize.x, destSize.y, TextureFormat.RGBA32, false);
             texture.ReadPixels(new Rect(0, 0, destSize.x, destSize.y), 0, 0);
             texture.name = name;
             texture.Apply();
@@ -57,7 +58,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return null;
             }
 
-            var sprites = new List<Texture2D>(objects.Length);
+            if (objects.Length == 1) {
+                return AssetDatabase.GetCachedIcon(assetData.Path);
+            }
+
+            var sprites = new List<Texture>(objects.Length);
             foreach (var item in objects) {
                 var sprite = item as Sprite;
                 if (sprite == null)

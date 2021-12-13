@@ -24,10 +24,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="info"></param>
         /// <param name="onAction"></param>
-        static void DrawingSetting(AssetData info, UnityAction<GUIContent, GUIStyle> onAction = null) {
+        static void DrawingSetting(IPipeline pipeline, AssetData info, UnityAction<GUIContent, GUIStyle> onAction = null) {
             GUIContent content;
 
-            var assetIcon = AssetDatabase.GetCachedIcon(info.Path);
+            var assetIcon = pipeline.Texture.LoadAssetIcon(info);
             if (assetIcon == null) {
                 assetIcon = EditorGUIUtility.IconContent(CONST.ICON_ERRORICON).image;
                 content = new GUIContent($"(missing asset) {info.Name}", assetIcon);
@@ -54,8 +54,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// アセットを開くボタン
         /// </summary>
         /// <param name="data"></param>
-        public static void OnAssetButton(Rect rect, AssetData data, UnityAction<AssetData> onButtonAction = null) {
-            DrawingSetting(data, (content, style) => {
+        public static void OnAssetButton(IPipeline pipeline, Rect rect, AssetData data, UnityAction<AssetData> onButtonAction = null) {
+            DrawingSetting(pipeline, data, (content, style) => {
                 if (GUI.Button(rect, content, style)) {
                     onButtonAction?.Invoke(data);
                 }
@@ -66,8 +66,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// アセットを開くボタン
         /// </summary>
         /// <param name="data"></param>
-        public static void OnAssetButton(EditorWindow win, AssetData data, UnityAction<AssetData> onButtonAction = null) {
-            DrawingSetting(data, (content, style) => {
+        public static void OnAssetButton(IPipeline pipeline, EditorWindow win, AssetData data, UnityAction<AssetData> onButtonAction = null) {
+            DrawingSetting(pipeline, data, (content, style) => {
                 float width = win.position.width - 100f;
                 if (GUILayout.Button(content, style, GUILayout.MaxWidth(width), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT))) {
                     onButtonAction?.Invoke(data);
@@ -79,8 +79,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// アセットを開くボタン
         /// </summary>
         /// <param name="data"></param>
-        public static void OnAssetButton(AssetData data, UnityAction<AssetData> onButtonAction = null) {
-            DrawingSetting(data, (content, style) => {
+        public static void OnAssetButton(IPipeline pipeline, AssetData data, UnityAction<AssetData> onButtonAction = null) {
+            DrawingSetting(pipeline, data, (content, style) => {
                 if (GUILayout.Button(content, style, GUILayout.ExpandWidth(true), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT))) {
                     onButtonAction?.Invoke(data);
                 }
