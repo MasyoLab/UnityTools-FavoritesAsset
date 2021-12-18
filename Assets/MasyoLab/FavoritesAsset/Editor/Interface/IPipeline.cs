@@ -14,7 +14,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
         SettingManager Setting { get; }
         GroupManager Group { get; }
         EditorWindow Root { get; }
-        DragManager DragManager { get; }
         Rect WindowSize { get; }
     }
 }
