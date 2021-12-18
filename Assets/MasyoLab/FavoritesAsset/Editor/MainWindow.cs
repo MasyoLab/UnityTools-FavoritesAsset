@@ -90,11 +90,29 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return Selection.activeObject != null;
         }
 
+        private void OnEnable() {
+            _pipeline.Root = this;
+            foreach (var baseWindow in _windows) {
+                baseWindow.OnEnable();
+            }
+        }
+
+        private void OnDestroy() {
+            foreach (var baseWindow in _windows) {
+                baseWindow.OnDestroy();
+            }
+        }
+
+        private void OnDisable() {
+            foreach (var baseWindow in _windows) {
+                baseWindow.OnDisable();
+            }
+        }
+
         /// <summary>
         /// GUI 描画
         /// </summary>
         void OnGUI() {
-            _pipeline.Root = this;
             DrawToolbar();
             UpdateGUIAction();
         }
@@ -137,7 +155,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         void DrawToolbar() {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar)) {
-                GUIContent content = new GUIContent(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.File));
+                GUIContent content = new GUIContent(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.Menu));
                 if (GUILayout.Button(content, EditorStyles.toolbarDropDown)) {
                     OpenMenu();
                 }
