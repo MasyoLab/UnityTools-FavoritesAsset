@@ -93,9 +93,6 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
 
             void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
-                // クリック時に実行
-                _pipeline.DragManager.OnMouseDownEvent(rect, index);
-
                 // お気に入り解除時に実行
                 if (DrawAsset(rect, index, isActive, isFocused)) {
                     releaseTarget = _pipeline.Favorites.Data[index];
