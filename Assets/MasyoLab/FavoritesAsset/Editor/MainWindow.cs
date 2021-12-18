@@ -155,7 +155,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         void DrawToolbar() {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar)) {
-                GUIContent content = new GUIContent(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.File));
+                GUIContent content = new GUIContent(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.Menu));
                 if (GUILayout.Button(content, EditorStyles.toolbarDropDown)) {
                     OpenMenu();
                 }
