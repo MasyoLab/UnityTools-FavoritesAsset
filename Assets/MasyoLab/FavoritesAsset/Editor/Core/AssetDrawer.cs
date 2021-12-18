@@ -27,7 +27,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         static void DrawingSetting(IPipeline pipeline, AssetData info, UnityAction<GUIContent, GUIStyle> onAction = null) {
             GUIContent content;
 
-            var assetIcon = pipeline.Texture.LoadAssetIcon(info);
+            var assetIcon = AssetDatabase.GetCachedIcon(info.Path);
             if (assetIcon == null) {
                 assetIcon = EditorGUIUtility.IconContent(CONST.ICON_ERRORICON).image;
                 content = new GUIContent($"(missing asset) {info.Name}", assetIcon);
@@ -42,9 +42,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             var originalTextColor = style.normal.textColor;
 
             style.alignment = TextAnchor.MiddleLeft;
-
             onAction?.Invoke(content, style);
-
             style.alignment = originalAlignment;
             style.fontStyle = originalFontStyle;
             style.normal.textColor = originalTextColor;
