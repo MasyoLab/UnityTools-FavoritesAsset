@@ -1,4 +1,4 @@
-
+#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -15,3 +15,4 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public string IOFileName = string.Empty;
     }
 }
+#endif

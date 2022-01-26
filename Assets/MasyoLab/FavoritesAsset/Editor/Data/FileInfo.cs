@@ -1,4 +1,4 @@
-
+#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -18,3 +18,4 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
     }
 }
+#endif
