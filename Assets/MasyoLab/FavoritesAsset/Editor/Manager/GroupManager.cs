@@ -23,36 +23,37 @@ namespace MasyoLab.Editor.FavoritesAsset {
     }
 
     class GroupManager : BaseManager {
-        PtrLinker<GroupDB> _groupDB = new PtrLinker<GroupDB>(Load);
-        public GroupDB GroupDB => _groupDB.Inst;
+        private PtrLinker<GroupDB> m_groupDB = new PtrLinker<GroupDB>(Load);
+        public GroupDB GroupDB => m_groupDB.Inst;
 
         /// <summary>
         /// グループ名リスト
         /// </summary>
-        List<string> _groupNameList = null;
+        private List<string> m_groupNameList = null;
         /// <summary>
         /// グループ名リスト(中継)
         /// </summary>
-        string[] _groupNames = null;
+        private string[] m_groupNames = null;
         /// <summary>
         /// グループ名
         /// </summary>
         public string[] GroupNames => GetGroupName();
 
-        int _index = -1;
+        private int m_index = -1;
+
         /// <summary>
         /// 選択中のグループID
         /// </summary>
         public int Index {
-            private set => _index = value;
+            private set => m_index = value;
             get {
-                if (_index == -1) {
+                if (m_index == -1) {
                     for (int i = 0; i < GroupDB.Data.Count; i++) {
                         GroupDB.Data[i].Index = i;
                     }
                     SelectGroupByGUID();
                 }
-                return _index;
+                return m_index;
             }
         }
 
@@ -72,7 +73,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             SaveLoad.Save(JsonUtility.ToJson(GroupDB), SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
         }
 
-        static GroupDB Load() {
+        private static GroupDB Load() {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
 
             // json から読み込む
@@ -88,8 +89,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="importData"></param>
         public void SetImportData(FavoritesJsonExportData importData) {
-            if (importData == null)
+            if (importData == null) {
                 return;
+            }
 
             GroupDB.Set(importData.GroupDB);
             SelectGroupByGUID();
@@ -151,9 +153,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// グループ名
         /// </summary>
         /// <returns></returns>
-        string[] GetGroupName() {
-            if (_groupNames != null)
-                return _groupNames;
+        private string[] GetGroupName() {
+            if (m_groupNames != null) {
+                return m_groupNames;
+            }
             return UpdateGroupNameList();
         }
 
@@ -162,27 +165,28 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <returns></returns>
         public string[] UpdateGroupNameList() {
-            if (_groupNameList == null) {
-                _groupNameList = new List<string>();
+            if (m_groupNameList == null) {
+                m_groupNameList = new List<string>();
             }
 
             int index = 0;
 
-            _groupNameList.Clear();
-            _groupNameList.Add($"{index}: {CONST.DEFAULT}");
+            m_groupNameList.Clear();
+            m_groupNameList.Add($"{index}: {CONST.DEFAULT}");
             index++;
 
             foreach (var item in GroupDB.Data) {
-                if (item.IsNull)
+                if (item.IsNull) {
                     continue;
-                _groupNameList.Add($"{index}: {item.GroupName}");
+                }
+                m_groupNameList.Add($"{index}: {item.GroupName}");
                 index++;
             }
 
-            _groupNameList.Add("");
-            _groupNameList.Add(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.AddNewFavoriteGroup));
+            m_groupNameList.Add("");
+            m_groupNameList.Add(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.AddNewFavoriteGroup));
 
-            return _groupNames = _groupNameList.ToArray();
+            return m_groupNames = m_groupNameList.ToArray();
         }
 
         /// <summary>
@@ -217,7 +221,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// GUIDで選択中のグループを切り替える
         /// </summary>
         /// <param name="isSort"></param>
-        void SelectGroupByGUID(bool isSort = false) {
+        private void SelectGroupByGUID(bool isSort = false) {
             var groupData = GroupDB.Data.Find(v => v.GUID == GroupDB.SelectGroupGUID);
 
             if (isSort) {

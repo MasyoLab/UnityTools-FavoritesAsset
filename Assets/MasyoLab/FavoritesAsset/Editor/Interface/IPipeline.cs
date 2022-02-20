@@ -10,6 +10,7 @@ using UnityEngine;
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
+
     interface IPipeline {
         FavoritesManager Favorites { get; }
         SettingManager Setting { get; }

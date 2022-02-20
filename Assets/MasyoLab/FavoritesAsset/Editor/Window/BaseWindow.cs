@@ -15,10 +15,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     class BaseWindow {
 
-        protected IPipeline _pipeline = null;
+        protected IPipeline m_pipeline = null;
 
         public virtual void Init(IPipeline pipeline) {
-            _pipeline = pipeline;
+            m_pipeline = pipeline;
         }
 
         public virtual void OnGUI() { }

@@ -7,11 +7,12 @@
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
+
     class BaseManager {
-        protected IPipeline _pipeline = null;
+        protected IPipeline m_pipeline = null;
 
         public BaseManager(IPipeline pipeline) {
-            _pipeline = pipeline;
+            m_pipeline = pipeline;
         }
     }
 }

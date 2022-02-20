@@ -54,13 +54,15 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public Object GetObject() {
             // GUIDでパスを取得
             var assetPath = AssetDatabase.GUIDToAssetPath(Guid);
-            if (assetPath == string.Empty)
+            if (assetPath == string.Empty) {
                 return null;
+            }
 
             // アセットを取得
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
-            if (asset == null)
+            if (asset == null) {
                 return null;
+            }
 
             // 登録したデータが SubAssets
             var assetDatas = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
@@ -68,8 +70,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 foreach (var obj in assetDatas) {
                     // SubAssets なら localID で識別
                     if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(obj, out string guid, out long localid)) {
-                        if (LocalId != localid)
+                        if (LocalId != localid) {
                             continue;
+                        }
                         asset = obj;
                         break;
                     }

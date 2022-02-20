@@ -14,10 +14,12 @@ using UnityEngine.Events;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     struct SaveLoad {
+
         public static void Save(string jsonData, string filePath) {
             // パス無し
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath)) {
                 return;
+            }
 
             // 保存処理
             System.IO.File.WriteAllText(filePath, jsonData);
@@ -25,11 +27,13 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public static string Load(string filePath) {
             // パス無し
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath)) {
                 return string.Empty;
+            }
 
-            if (!System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(filePath)) {
                 return string.Empty;
+            }
 
             var reader = new System.IO.StreamReader(filePath);
             string jsonStr = reader.ReadLine();
@@ -43,8 +47,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             // ファイルパス
             var filePath = EditorUtility.SaveFilePanel(CONST.SAVE, directory, filename, CONST.JSON_EXT);
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath)) {
                 return;
+            }
 
             unityAction?.Invoke(CreateDirectoryFromFilePath(filePath));
             Save(jsonData, filePath);
@@ -55,8 +60,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             // ファイルパス
             var filePath = EditorUtility.OpenFilePanel(CONST.LOAD, directory, CONST.JSON_EXT);
-            if (string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath)) {
                 return string.Empty;
+            }
 
             unityAction?.Invoke(CreateDirectoryFromFilePath(filePath));
             return Load(filePath);
@@ -81,10 +87,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        static FileInfo CreateDirectoryFromFilePath(string filePath) {
+        private static FileInfo CreateDirectoryFromFilePath(string filePath) {
             var index = filePath.LastIndexOf("/");
-            if (index == -1)
+            if (index == -1) {
                 return FileInfo.Empty;
+            }
+
             var filename = filePath.Substring(index);
             return new FileInfo(filePath.RemoveAtLast(filename), filename.Replace("/", ""));
         }

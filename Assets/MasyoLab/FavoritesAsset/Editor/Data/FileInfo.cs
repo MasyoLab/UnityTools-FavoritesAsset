@@ -7,6 +7,7 @@
 //=========================================================
 
 namespace MasyoLab.Editor.FavoritesAsset {
+
     public class FileInfo {
         public string FolderDirectory = string.Empty;
         public string Filename = CONST.JSON_DATA_NAME;

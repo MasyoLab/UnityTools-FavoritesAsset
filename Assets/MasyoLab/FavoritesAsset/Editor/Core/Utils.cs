@@ -17,8 +17,9 @@ using UnityEditor;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     struct Utils {
+
         public static string GetSHA256HashString(string value) {
-            SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();
+            var provider = new SHA256CryptoServiceProvider();
             return string.Join("", provider.ComputeHash(Encoding.UTF8.GetBytes(value)).Select(x => $"{x:x2}"));
         }
 

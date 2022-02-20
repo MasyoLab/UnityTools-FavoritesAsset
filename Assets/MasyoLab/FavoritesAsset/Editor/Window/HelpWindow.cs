@@ -15,9 +15,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     class HelpWindow : BaseWindow {
 
-        Vector2 _scrollVec2;
+        private Vector2 m_scrollVec2 = Vector2.zero;
 
-        PtrLinker<GUIStyle> _headerStyle = new PtrLinker<GUIStyle>(() => {
+        private PtrLinker<GUIStyle> m_headerStyle = new PtrLinker<GUIStyle>(() => {
             return new GUIStyle(EditorStyles.label) {
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
@@ -25,14 +25,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
             };
         });
 
-        PtrLinker<GUIStyle> _h1 = new PtrLinker<GUIStyle>(() => {
+        private PtrLinker<GUIStyle> m_h1 = new PtrLinker<GUIStyle>(() => {
             return new GUIStyle(EditorStyles.label) {
                 fontStyle = FontStyle.Bold,
                 fontSize = 18
             };
         });
 
-        PtrLinker<GUIStyle> _linkLabel = new PtrLinker<GUIStyle>(() => {
+        private PtrLinker<GUIStyle> m_linkLabel = new PtrLinker<GUIStyle>(() => {
             return new GUIStyle(EditorStyles.linkLabel) {
                 fontStyle = FontStyle.Bold,
                 fontSize = 15
@@ -40,30 +40,30 @@ namespace MasyoLab.Editor.FavoritesAsset {
         });
 
         public override void OnGUI() {
-            _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
+            m_scrollVec2 = GUILayout.BeginScrollView(m_scrollVec2);
 
-            GUILayout.Label(CONST.EDITOR_WINDOW_NAME, _headerStyle.Inst, GUILayout.ExpandWidth(true));
-            GUILayout.Label(CONST.VERSION, _headerStyle.Inst, GUILayout.ExpandWidth(true));
+            GUILayout.Label(CONST.EDITOR_WINDOW_NAME, m_headerStyle.Inst, GUILayout.ExpandWidth(true));
+            GUILayout.Label(CONST.VERSION, m_headerStyle.Inst, GUILayout.ExpandWidth(true));
             Utils.GUILine();
 
-            GUILayout.Label(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.Link), _h1.Inst, GUILayout.ExpandWidth(true));
+            GUILayout.Label(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.Link), m_h1.Inst, GUILayout.ExpandWidth(true));
 
-            if (GUILayout.Button("Readme", _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button("Readme", m_linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/README.md");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.License), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.License), m_linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.LatestRelease), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.LatestRelease), m_linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases");
             }
             Utils.MouseCursorLink();
 
-            if (GUILayout.Button(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.SourceCode), _linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+            if (GUILayout.Button(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.SourceCode), m_linkLabel.Inst, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
                 Utils.OpenURL("https://github.com/MasyoLab/UnityTools-FavoritesAsset");
             }
             Utils.MouseCursorLink();

@@ -14,8 +14,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     class SettingManager : BaseManager {
 
-        PtrLinker<SettingData> _settingData = new PtrLinker<SettingData>(LoadSettingData);
-        public SettingData Data => _settingData.Inst;
+        private PtrLinker<SettingData> m_settingData = new PtrLinker<SettingData>(LoadSettingData);
+        public SettingData Data => m_settingData.Inst;
 
         public LanguageEnum Language {
             get => Data.Language;
@@ -53,7 +53,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
             SaveLoad.Save(JsonUtility.ToJson(Data), SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
         }
 
-        static SettingData LoadSettingData() {
+        private static SettingData LoadSettingData() {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.SETTING_DATA));
 
             // json から読み込む

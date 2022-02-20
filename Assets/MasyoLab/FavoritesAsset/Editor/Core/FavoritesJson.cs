@@ -13,7 +13,7 @@ using UnityEngine;
 namespace MasyoLab.Editor.FavoritesAsset {
 
     class FavoritesJson {
-        public AssetDB AssetDB;
+        public AssetDB AssetDB = null;
 
         public static string ToJson(AssetDB assetDB) {
             return JsonUtility.ToJson(new FavoritesJson {
@@ -27,9 +27,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
     }
 
     class FavoritesJsonExportData {
-        public AssetDB AssetDB;
-        public List<AssetDB> GroupData;
-        public GroupDB GroupDB;
+        public AssetDB AssetDB = null;
+        public List<AssetDB> GroupData = null;
+        public GroupDB GroupDB = null;
 
         public static string ToJson(AssetDB assetDB, GroupDB groupDB, List<AssetDB> assetDBList) {
             var data = new FavoritesJsonExportData();

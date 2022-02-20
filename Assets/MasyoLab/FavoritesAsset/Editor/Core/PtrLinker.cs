@@ -10,26 +10,27 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
     class PtrLinker<_Ty> where _Ty : new() {
 
-        System.Func<_Ty> _initFunc;
+        private System.Func<_Ty> m_initFunc = null;
+        private _Ty m_ptr = default;
 
         public PtrLinker() {
-            _initFunc = () => new _Ty();
-        }
-        public PtrLinker(System.Func<_Ty> initFunc) {
-            _initFunc = initFunc;
+            m_initFunc = () => new _Ty();
         }
 
-        _Ty _ptr = default;
+        public PtrLinker(System.Func<_Ty> initFunc) {
+            m_initFunc = initFunc;
+        }
+
         public _Ty Inst {
             get {
-                if (_ptr == null) {
-                    _ptr = _initFunc();
+                if (m_ptr == null) {
+                    m_ptr = m_initFunc();
                 }
-                return _ptr;
+                return m_ptr;
             }
         }
 
-        public void SetInst(_Ty inst) => _ptr = inst;
+        public void SetInst(_Ty inst) => m_ptr = inst;
     }
 }
 #endif
