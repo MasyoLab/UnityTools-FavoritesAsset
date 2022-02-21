@@ -13,7 +13,7 @@ using UnityEditor;
 
 namespace MasyoLab.Editor.FavoritesAsset {
 
-    public class MainWindow : EditorWindow {
+    class MainWindow : EditorWindow {
 
         private class Pipeline : IPipeline {
 
@@ -53,8 +53,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         private static MainWindow Inst = null;
-        private List<BaseWindow> m_windows = new List<BaseWindow>((int)WindowEnum.Max);
-        private BaseWindow m_guiWindow = null;
+        private List<BaseWindow> m_windowList = new List<BaseWindow>((int)WindowEnum.Max);
+        private BaseWindow m_window = null;
         private Pipeline m_pipeline = new Pipeline();
 
         /// <summary>
@@ -95,19 +95,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         private void OnEnable() {
             m_pipeline.Root = this;
-            foreach (var baseWindow in m_windows) {
+            foreach (var baseWindow in m_windowList) {
                 baseWindow.OnEnable();
             }
         }
 
         private void OnDestroy() {
-            foreach (var baseWindow in m_windows) {
+            foreach (var baseWindow in m_windowList) {
                 baseWindow.OnDestroy();
             }
         }
 
         private void OnDisable() {
-            foreach (var baseWindow in m_windows) {
+            foreach (var baseWindow in m_windowList) {
                 baseWindow.OnDisable();
             }
         }
@@ -125,36 +125,38 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         private void UpdateGUIAction() {
-            if (m_guiWindow == null) {
+            if (m_window == null) {
                 GetWindowClass<FavoritesWindow>();
             }
 
             m_pipeline.WindowSize = new Rect(0, EditorStyles.toolbar.fixedHeight, position.width, position.height - EditorStyles.toolbar.fixedHeight);
-            m_guiWindow.OnGUI();
+            m_window.OnGUI();
         }
 
         private _Ty GetWindowClass<_Ty>() where _Ty : BaseWindow, new() {
-            if (m_guiWindow as _Ty != null) {
-                return m_guiWindow as _Ty;
+            if (m_window as _Ty != null) {
+                return m_window as _Ty;
             }
 
-            foreach (var item in m_windows) {
-                _Ty win = item as _Ty;
-                if (win == null) {
+            _Ty window = default;
+
+            foreach (var item in m_windowList) {
+                window = item as _Ty;
+                if (window == null) {
                     continue;
                 }
-                win.Init(m_pipeline);
-                m_guiWindow?.Close();
-                m_guiWindow = win;
-                return win;
+                window.Init(m_pipeline);
+                m_window?.Close();
+                m_window = window;
+                return window;
             }
 
-            var newWin = new _Ty();
-            newWin.Init(m_pipeline);
-            m_windows.Add(newWin);
-            m_guiWindow?.Close();
-            m_guiWindow = newWin;
-            return newWin;
+            window = new _Ty();
+            window.Init(m_pipeline);
+            m_windowList.Add(window);
+            m_window?.Close();
+            m_window = window;
+            return window;
         }
 
         private void DrawToolbar() {
@@ -241,7 +243,7 @@ namespace MasyoLab.Editor.FavoritesAsset {
         }
 
         public void Reload() {
-            foreach (var item in m_windows) {
+            foreach (var item in m_windowList) {
                 item.Reload();
             }
         }
