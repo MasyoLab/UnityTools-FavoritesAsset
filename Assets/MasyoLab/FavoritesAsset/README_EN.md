@@ -8,7 +8,7 @@
 
 This function allows you to bookmark (register as a favorite) resources.
 
-![main window](https://user-images.githubusercontent.com/20793765/128970578-8a45c4ef-4705-453a-9d0a-ed19fc94da08.png)
+![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
 
 ----
 
@@ -37,7 +37,7 @@ Note : The access method may change with future expansion.
 ### Add to Favorites
 You can bookmark assets by dragging and dropping them.
 
-![fav assets action 1](https://user-images.githubusercontent.com/20793765/128969135-38560720-8504-4cc2-b503-bd296f04a0ac.gif)
+![fav assets action 1](https://user-images.githubusercontent.com/20793765/129484724-dda7322e-3049-4762-996c-79ea88906584.gif)
 
 ### Ping asset. Open asset.
 Registered assets can have a focus button for the Project view and an open button for the asset.
@@ -45,10 +45,10 @@ Registered assets can have a focus button for the Project view and an open butto
 ![fav assets action 2](https://user-images.githubusercontent.com/20793765/128969150-67e8dfe0-786b-457c-bcd1-4b40dc0bcc1d.gif)
 
 ### Unlock favorites
-![fav assets action 3](https://user-images.githubusercontent.com/20793765/128969164-0b645776-a916-4d52-9e47-4b946eacfe8a.gif)
+![fav assets action 3](https://user-images.githubusercontent.com/20793765/129485099-4ff09124-6fce-4e92-b19b-4126705b7295.gif)
 
 ### Sort Favorites
-![fav assets action 4](https://user-images.githubusercontent.com/20793765/128969180-fb09cea1-0103-4300-b010-fed0453d12f5.gif)
+![fav assets action 4](https://user-images.githubusercontent.com/20793765/129485130-48589e20-bcfd-4566-9fb1-8129edb0fbc5.gif)
 
 ### Add a favorite group
 ![group1](https://user-images.githubusercontent.com/20793765/129485493-c3330196-2e44-49e8-90ca-e27f73f7a7da.gif)
