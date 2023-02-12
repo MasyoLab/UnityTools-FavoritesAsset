@@ -20,7 +20,9 @@ Install
 
 In the package manager, press “Add package from git URL...” and paste the following string into the input field that comes up.
 
-```https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/FavoritesAsset```
+```
+https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/FavoritesAsset
+```
 
 ### UnityPackage
 It is available from [Releases](https://github.com/MasyoLab/UnityTools-FavoritesAsset/releases).
