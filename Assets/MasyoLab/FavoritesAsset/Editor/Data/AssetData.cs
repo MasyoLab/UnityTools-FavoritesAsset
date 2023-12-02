@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,13 +11,14 @@ using UnityEditor;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
+namespace MasyoLab.Editor.FavoritesAsset
+{
     /// <summary>
     /// アセットリスト
     /// </summary>
     [System.Serializable]
-    class AssetData {
+    class AssetData
+    {
         /// <summary>
         /// アセットのGUID
         /// </summary>
@@ -43,7 +44,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public int Index = 0;
 
         public AssetData() { }
-        public AssetData(string guid, string path, string name, string type, long localId) {
+        public AssetData(string guid, string path, string name, string type, long localId)
+        {
             Guid = guid;
             Path = path;
             Name = name;
@@ -51,26 +53,33 @@ namespace MasyoLab.Editor.FavoritesAsset {
             LocalId = localId;
         }
 
-        public Object GetObject() {
+        public Object GetObject()
+        {
             // GUIDでパスを取得
             var assetPath = AssetDatabase.GUIDToAssetPath(Guid);
-            if (assetPath == string.Empty) {
+            if (assetPath == string.Empty)
+            {
                 return null;
             }
 
             // アセットを取得
             var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
-            if (asset == null) {
+            if (asset == null)
+            {
                 return null;
             }
 
             // 登録したデータが SubAssets
             var assetDatas = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
-            if (assetDatas.Length != 0) {
-                foreach (var obj in assetDatas) {
+            if (assetDatas.Length != 0)
+            {
+                foreach (var obj in assetDatas)
+                {
                     // SubAssets なら localID で識別
-                    if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(obj, out string guid, out long localid)) {
-                        if (LocalId != localid) {
+                    if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(obj, out string guid, out long localid))
+                    {
+                        if (LocalId != localid)
+                        {
                             continue;
                         }
                         asset = obj;
@@ -83,7 +92,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
     }
 
     [System.Serializable]
-    class AssetDB {
+    class AssetDB
+    {
         public string Guid = string.Empty;
         public List<AssetData> Ref = new List<AssetData>();
     }

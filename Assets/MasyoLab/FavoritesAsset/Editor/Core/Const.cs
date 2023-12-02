@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +10,12 @@ using UnityEngine;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
-    struct CONST {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    struct CONST
+    {
         public const string DEVELOPER = "MasyoLab";
-        public const string VERSION = "v1.3.5";
+        public const string VERSION = "ver 1.4.0";
         public const string EDITOR_NAME = "Favorites Asset";
         public const string EDITOR_WINDOW_NAME = "Favorites Asset Window";
         public const string MENU_ITEM = "Tools/" + EDITOR_WINDOW_NAME;
@@ -89,7 +90,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         public const int GUI_LAYOUT_HEIGHT = 22;
     }
 
-    enum WindowEnum {
+    enum WindowEnum
+    {
         FavoritesWindow,
         SettingWindow,
         HelpWindow,

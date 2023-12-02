@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,21 +11,23 @@ using UnityEditor;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    class SettingWindow : BaseWindow
+    {
+        private Vector2 m_scrollVec = Vector2.zero;
 
-    class SettingWindow : BaseWindow {
-
-        private Vector2 m_scrollVec2 = Vector2.zero;
-
-        public override void OnGUI() {
-            m_scrollVec2 = GUILayout.BeginScrollView(m_scrollVec2);
+        public override void OnGUI()
+        {
+            m_scrollVec = GUILayout.BeginScrollView(m_scrollVec);
 
             EditorGUI.BeginChangeCheck();
             {
                 var newLanguage = (LanguageEnum)EditorGUILayout.Popup(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.Language), (int)m_pipeline.Setting.Language, LanguageData.LANGUAGE);
                 var isUpdate = m_pipeline.Setting.Language != newLanguage;
                 m_pipeline.Setting.Language = newLanguage;
-                if (isUpdate) {
+                if (isUpdate)
+                {
                     m_pipeline.Group.UpdateGroupNameList();
                 }
             }
@@ -38,7 +40,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 GUILayout.Label($"{LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.FavoriteGroup)} : " +
                     $"{m_pipeline.Group.GetGroupNameByGUID(m_pipeline.Group.SelectGroupFileName)}");
                 var content = new GUIContent(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.UnlockAll));
-                if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false))) {
+                if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
+                {
                     m_pipeline.Favorites.RemoveAll();
                     m_pipeline.Favorites.SaveFavoritesData();
                     (m_pipeline.Root as MainWindow).Reload();

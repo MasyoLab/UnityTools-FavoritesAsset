@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -6,14 +6,16 @@
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
-    class FileInfo {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    class FileInfo
+    {
         public string FolderDirectory = string.Empty;
         public string Filename = CONST.JSON_DATA_NAME;
         public static FileInfo Empty = new FileInfo(string.Empty, string.Empty);
 
-        public FileInfo(string folderDirectory, string filename) {
+        public FileInfo(string folderDirectory, string filename)
+        {
             FolderDirectory = folderDirectory;
             Filename = filename;
         }

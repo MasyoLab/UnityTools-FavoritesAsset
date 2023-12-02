@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -15,29 +15,33 @@ using UnityEditorInternal;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
+namespace MasyoLab.Editor.FavoritesAsset
+{
     /// <summary>
     /// お気に入り登録機能
     /// </summary>
-    class FavoritesWindow : BaseWindow {
-
-        private PtrLinker<GUIStyle> m_boxStyle = new PtrLinker<GUIStyle>(() => {
-            return new GUIStyle(GUI.skin.textArea) {
+    class FavoritesWindow : BaseWindow
+    {
+        private PtrLinker<GUIStyle> m_boxStyle = new PtrLinker<GUIStyle>(() =>
+        {
+            return new GUIStyle(GUI.skin.textArea)
+            {
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
             };
         });
 
-        private static Vector2 m_scrollVec2 = Vector2.zero;
+        private static Vector2 m_scrollVec = Vector2.zero;
         private ReorderableList m_reorderableList = null;
 
-        public override void Init(IPipeline pipeline) {
+        public override void Init(IPipeline pipeline)
+        {
             base.Init(pipeline);
             InitSortFunction();
         }
 
-        public override void OnGUI() {
+        public override void OnGUI()
+        {
             // ドラッグアンドドロップ
             DragAndDropGUI();
 
@@ -49,39 +53,47 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 m_boxStyle.Inst);
         }
 
-        public override void Reload() {
+        public override void Reload()
+        {
             InitSortFunction();
         }
 
-        private void InitSortFunction() {
+        private void InitSortFunction()
+        {
             // データを複製
             var assetDatas = m_pipeline.Favorites.Data.ToList();
 
-            if (m_reorderableList == null) {
+            if (m_reorderableList == null)
+            {
                 m_reorderableList = new ReorderableList(assetDatas, typeof(AssetData));
             }
 
             AssetData releaseTarget = null;
 
             // 入れ替え時に呼び出す
-            void Changed(ReorderableList list) {
+            void Changed(ReorderableList list)
+            {
                 m_pipeline.Favorites.SortData(assetDatas);
             }
 
-            void DrawHeader(Rect rect) {
-                EditorGUI.LabelField(rect, "");
+            void DrawHeader(Rect rect)
+            {
+                EditorGUI.LabelField(rect, string.Empty);
 
                 // ヘッダーは最初に処理されるのでここでデータ数の確認
-                if (assetDatas.Count != m_pipeline.Favorites.Data.Count) {
+                if (assetDatas.Count != m_pipeline.Favorites.Data.Count)
+                {
                     assetDatas = m_pipeline.Favorites.Data.ToList();
                     m_reorderableList.list = assetDatas;
                 }
             }
 
-            void DrawFooter(Rect rect) {
-                EditorGUI.LabelField(rect, "");
+            void DrawFooter(Rect rect)
+            {
+                EditorGUI.LabelField(rect, string.Empty);
                 // フッターで解放する
-                if (releaseTarget != null) {
+                if (releaseTarget != null)
+                {
                     RemoveAsset(releaseTarget);
                     assetDatas = m_pipeline.Favorites.Data.ToList();
                     m_reorderableList.list = assetDatas;
@@ -89,13 +101,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 }
             }
 
-            void NoneElement(Rect rect) {
-                EditorGUI.LabelField(rect, "");
+            void NoneElement(Rect rect)
+            {
+                EditorGUI.LabelField(rect, string.Empty);
             }
 
-            void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+            void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
+            {
                 // お気に入り解除時に実行
-                if (DrawAsset(rect, index, isActive, isFocused)) {
+                if (DrawAsset(rect, index, isActive, isFocused))
+                {
                     releaseTarget = m_pipeline.Favorites.Data[index];
                 }
             }
@@ -117,15 +132,18 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// ドラッグアンドドロップ
         /// </summary>
-        private void DragAndDropGUI() {
+        private void DragAndDropGUI()
+        {
             GUI.Box(GUILayoutUtility.GetRect(0, CONST.GUI_LAYOUT_HEIGHT, GUILayout.ExpandWidth(true)),
                 LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.DragAndDrop), m_boxStyle.Inst);
 
-            if (!GetObjects(out List<UnityEngine.Object> objs, m_pipeline.Root)) {
+            if (!GetObjects(out List<UnityEngine.Object> objs, m_pipeline.Root))
+            {
                 return;
             }
 
-            foreach (var item in objs) {
+            foreach (var item in objs)
+            {
                 AddAssetToObject(item);
             }
 
@@ -135,8 +153,9 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// アセット表示
         /// </summary>
-        private void DrawAssetGUI() {
-            m_scrollVec2 = GUILayout.BeginScrollView(m_scrollVec2);
+        private void DrawAssetGUI()
+        {
+            m_scrollVec = GUILayout.BeginScrollView(m_scrollVec);
             m_reorderableList.DoLayoutList();
             GUILayout.EndScrollView();
         }
@@ -146,7 +165,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private bool DrawAsset(Rect rect, int index, bool isActive, bool isFocused) {
+        private bool DrawAsset(Rect rect, int index, bool isActive, bool isFocused)
+        {
             float BUTTON_WIDTH = 30;
             var assetData = m_pipeline.Favorites.Data[index];
             var copyRect = rect;
@@ -193,13 +213,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// Objectでアセットを登録
         /// </summary>
-        public void AddAssetToObject(Object assetObject) {
-            if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetObject, out string guid, out long localid)) {
+        public void AddAssetToObject(Object assetObject)
+        {
+            if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetObject, out string guid, out long localid))
+            {
                 return;
             }
 
             // Assetは保存済み
-            if (m_pipeline.Favorites.ExistsGUID(guid, localid)) {
+            if (m_pipeline.Favorites.ExistsGUID(guid, localid))
+            {
                 return;
             }
 
@@ -207,13 +230,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
             // SubAssets が1つしか無い場合
             var assetDatas = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
-            if (assetDatas.Length == 1) {
-                if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetDatas[0], out string sbuGuid, out long sbuLocalid)) {
+            if (assetDatas.Length == 1)
+            {
+                if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetDatas[0], out string sbuGuid, out long sbuLocalid))
+                {
                     return;
                 }
 
                 // Assetは保存済み
-                if (m_pipeline.Favorites.ExistsGUID(sbuGuid, sbuLocalid)) {
+                if (m_pipeline.Favorites.ExistsGUID(sbuGuid, sbuLocalid))
+                {
                     return;
                 }
 
@@ -252,7 +278,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// お気に入りを解除
         /// </summary>
         /// <param name="info"></param>
-        private void RemoveAsset(AssetData info) {
+        private void RemoveAsset(AssetData info)
+        {
             m_pipeline.Favorites.Remove(info);
             m_pipeline.Favorites.SaveFavoritesData();
         }
@@ -261,11 +288,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// アセットを開く
         /// </summary>
         /// <param name="info"></param>
-        private void OpenAsset(AssetData info) {
+        private void OpenAsset(AssetData info)
+        {
             // シーンアセットを開こうとしている
-            if (Path.GetExtension(info.Path).Equals(CONST.UNITY_EXT)) {
+            if (Path.GetExtension(info.Path).Equals(CONST.UNITY_EXT))
+            {
                 // シーンの保存を促す
-                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
                     // 保存をしたので開く
                     EditorSceneManager.OpenScene(info.Path, OpenSceneMode.Single);
                 }
@@ -279,18 +309,21 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <summary>
         /// ドラッグ&ドロップでオブジェクトを取得
         /// </summary>
-        public static bool GetObjects(out List<UnityEngine.Object> targetList, EditorWindow window, Rect? rect = null) {
+        public static bool GetObjects(out List<UnityEngine.Object> targetList, EditorWindow window, Rect? rect = null)
+        {
             targetList = null;
 
             // ドラックドロップされたオブジェクトがなければ終わり
             var objectReferences = GetObjects(window, rect);
-            if (objectReferences == null) {
+            if (objectReferences == null)
+            {
                 return false;
             }
 
             // ドロップされたオブジェクトに対象の物が無ければ終わり
             targetList = objectReferences.ToList();
-            if (targetList.Count == 0) {
+            if (targetList.Count == 0)
+            {
                 return false;
             }
 
@@ -304,21 +337,25 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// <param name="widthMin"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        private static UnityEngine.Object[] GetObjects(EditorWindow window, Rect? rect = null) {
+        private static UnityEngine.Object[] GetObjects(EditorWindow window, Rect? rect = null)
+        {
             var ev = Event.current;
 
             // エリアが指定されていれば範囲内か確認
-            if (rect.HasValue && !rect.Value.Contains(ev.mousePosition)) {
+            if (rect.HasValue && !rect.Value.Contains(ev.mousePosition))
+            {
                 return null;
             }
 
             // ドラッグ＆ドロップで操作が更新された時でも、実行した時でもなければ終わり
-            if (ev.type != EventType.DragUpdated && ev.type != EventType.DragPerform) {
+            if (ev.type != EventType.DragUpdated && ev.type != EventType.DragPerform)
+            {
                 return null;
             }
 
             var paths = DragAndDrop.paths;
-            if (EditorWindow.mouseOverWindow != window || paths.Length <= 0) {
+            if (EditorWindow.mouseOverWindow != window || paths.Length <= 0)
+            {
                 return null;
             }
 
@@ -326,7 +363,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
             DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
             // ドラッグ&ドロップで無ければ終わり
-            if (ev.type != EventType.DragPerform) {
+            if (ev.type != EventType.DragPerform)
+            {
                 return null;
             }
 
@@ -341,7 +379,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return DragAndDrop.objectReferences;
         }
 
-        public void Save() {
+        public void Save()
+        {
             m_pipeline.Favorites.SaveFavoritesData();
         }
     }
