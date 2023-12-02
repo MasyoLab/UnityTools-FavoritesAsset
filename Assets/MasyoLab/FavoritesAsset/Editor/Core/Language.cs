@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -6,13 +6,14 @@
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
+namespace MasyoLab.Editor.FavoritesAsset
+{
     /// <summary>
     /// 言語
     /// </summary>
     [System.Serializable]
-    enum LanguageEnum {
+    enum LanguageEnum
+    {
         English,
         Japanese,
     }
@@ -20,7 +21,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
     /// <summary>
     /// テキスト
     /// </summary>
-    enum TextEnum {
+    enum TextEnum
+    {
         Language,
         DragAndDrop,
         UnlockAll,
@@ -44,7 +46,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         FavoriteGroupIsEmpty,
     }
 
-    struct LanguageData {
+    struct LanguageData
+    {
         public static readonly string[] LANGUAGE = {
             $"{LanguageEnum.English}",
             "日本語",
@@ -98,8 +101,10 @@ namespace MasyoLab.Editor.FavoritesAsset {
             "お気に入りグループは空です",
         };
 
-        public static string GetText(LanguageEnum lang, TextEnum text) {
-            switch (lang) {
+        public static string GetText(LanguageEnum lang, TextEnum text)
+        {
+            switch (lang)
+            {
                 case LanguageEnum.English:
                     return TEXT_EN[(int)text];
                 case LanguageEnum.Japanese:

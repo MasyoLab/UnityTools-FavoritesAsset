@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,13 +11,15 @@ using UnityEngine.Events;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
-    struct SaveLoad {
-
-        public static void Save(string jsonData, string filePath) {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    struct SaveLoad
+    {
+        public static void Save(string jsonData, string filePath)
+        {
             // パス無し
-            if (string.IsNullOrEmpty(filePath)) {
+            if (string.IsNullOrEmpty(filePath))
+            {
                 return;
             }
 
@@ -25,13 +27,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
             System.IO.File.WriteAllText(filePath, jsonData);
         }
 
-        public static string Load(string filePath) {
+        public static string Load(string filePath)
+        {
             // パス無し
-            if (string.IsNullOrEmpty(filePath)) {
+            if (string.IsNullOrEmpty(filePath))
+            {
                 return string.Empty;
             }
 
-            if (!System.IO.File.Exists(filePath)) {
+            if (!System.IO.File.Exists(filePath))
+            {
                 return string.Empty;
             }
 
@@ -42,12 +47,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
             return jsonStr;
         }
 
-        public static void SaveFile(string jsonData, string directory, string filename, UnityAction<FileInfo> unityAction = null) {
+        public static void SaveFile(string jsonData, string directory, string filename, UnityAction<FileInfo> unityAction = null)
+        {
             directory = directory == string.Empty ? CONST.ASSETS : directory;
 
             // ファイルパス
             var filePath = EditorUtility.SaveFilePanel(CONST.SAVE, directory, filename, CONST.JSON_EXT);
-            if (string.IsNullOrEmpty(filePath)) {
+            if (string.IsNullOrEmpty(filePath))
+            {
                 return;
             }
 
@@ -55,12 +62,14 @@ namespace MasyoLab.Editor.FavoritesAsset {
             Save(jsonData, filePath);
         }
 
-        public static string LoadFile(string directory, UnityAction<FileInfo> unityAction = null) {
+        public static string LoadFile(string directory, UnityAction<FileInfo> unityAction = null)
+        {
             directory = directory == string.Empty ? CONST.ASSETS : directory;
 
             // ファイルパス
             var filePath = EditorUtility.OpenFilePanel(CONST.LOAD, directory, CONST.JSON_EXT);
-            if (string.IsNullOrEmpty(filePath)) {
+            if (string.IsNullOrEmpty(filePath))
+            {
                 return string.Empty;
             }
 
@@ -72,10 +81,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// 保存先
         /// </summary>
         /// <returns></returns>
-        public static string GetSaveDataPath(string fileName, string ext = CONST.JSON_EXT) {
+        public static string GetSaveDataPath(string fileName, string ext = CONST.JSON_EXT)
+        {
             var filePath = $"{UnityEngine.Application.dataPath.RemoveAtLast(CONST.ASSETS)}{CONST.LIBRARY}/{CONST.FOLDER_NAME}";
 
-            if (!System.IO.File.Exists(filePath)) {
+            if (!System.IO.File.Exists(filePath))
+            {
                 System.IO.Directory.CreateDirectory(filePath);
             }
 
@@ -87,14 +98,16 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        private static FileInfo CreateDirectoryFromFilePath(string filePath) {
+        private static FileInfo CreateDirectoryFromFilePath(string filePath)
+        {
             var index = filePath.LastIndexOf("/");
-            if (index == -1) {
+            if (index == -1)
+            {
                 return FileInfo.Empty;
             }
 
             var filename = filePath.Substring(index);
-            return new FileInfo(filePath.RemoveAtLast(filename), filename.Replace("/", ""));
+            return new FileInfo(filePath.RemoveAtLast(filename), filename.Replace("/", string.Empty));
         }
     }
 }
