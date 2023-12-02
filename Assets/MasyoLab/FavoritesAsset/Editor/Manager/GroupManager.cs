@@ -75,7 +75,7 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// 現在選択しているグループの保存ファイル
         /// </summary>
-        public string SelectGroupFileName => GroupDB.SelectGroupGUID == string.Empty ? CONST.FAVORITES_DATA : GroupDB.SelectGroupGUID;
+        public string SelectGroupFileName => GetGroupFileName(GroupDB.SelectGroupGUID);
 
         /// <summary>
         /// グループ破棄イベント
@@ -296,7 +296,7 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <param name="isSort"></param>
         private void SelectGroupByGUID(bool isSort = false)
         {
-            var groupData = GroupDB.Data.Find(v => v.GUID == GroupDB.SelectGroupGUID);
+            var groupData = GroupDB.Data.FirstOrDefault(v => v.GUID == GroupDB.SelectGroupGUID);
 
             if (isSort)
             {
@@ -324,12 +324,27 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <returns></returns>
         public string GetGroupNameByGUID(string guid)
         {
-            var groupData = GroupDB.Data.Find(v => v.GUID == guid);
+            var groupData = GroupDB.Data.FirstOrDefault(v => v.GUID == guid);
             if (groupData == null)
             {
                 return CONST.DEFAULT;
             }
             return groupData.GroupName;
+        }
+
+        /// <summary>
+        /// ファイル名を取得
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public string GetGroupFileName(string guid)
+        {
+            var groupData = GroupDB.Data.FirstOrDefault(v => v.GUID == guid);
+            if (groupData == null)
+            {
+                return CONST.FAVORITES_DATA;
+            }
+            return groupData.GUID;
         }
     }
 }

@@ -68,6 +68,16 @@ namespace MasyoLab.Editor.FavoritesAsset
             SaveLoad.Save(FavoritesJson.ToJson(m_assetDB.Inst), SaveLoad.GetSaveDataPath(m_pipeline.Group.SelectGroupFileName));
         }
 
+        public void SaveAll()
+        {
+            foreach (var item in m_pipeline.Group.GroupDB.Data)
+            {
+                var ptrLinker = GetSelectFavoritesData(item.GUID);
+                var fileName = m_pipeline.Group.GetGroupFileName(item.GUID);
+                SaveLoad.Save(FavoritesJson.ToJson(ptrLinker.Inst), SaveLoad.GetSaveDataPath(fileName));
+            }
+        }
+
         private static AssetDB LoadFavoritesData()
         {
             return LoadFavoritesData(CONST.FAVORITES_DATA);

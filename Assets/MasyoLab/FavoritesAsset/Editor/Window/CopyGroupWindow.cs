@@ -6,6 +6,13 @@ using UnityEditor;
 using UnityEditorInternal;
 using System.Linq;
 
+//=========================================================
+//
+//  developer : MasyoLab
+//  github    : https://github.com/MasyoLab/UnityTools-FavoritesAsset
+//
+//=========================================================
+
 namespace MasyoLab.Editor.FavoritesAsset
 {
     class CopyGroupWindow : BaseWindow
@@ -41,7 +48,7 @@ namespace MasyoLab.Editor.FavoritesAsset
                 m_pipeline.Group.Save();
                 m_pipeline.Group.UpdateGroupNameList();
                 m_pipeline.Favorites.ReplicationFavoriteData(baseGroup.GUID, newGroup.GUID);
-                m_pipeline.Favorites.SaveFavoritesData();
+                m_pipeline.Favorites.SaveAll();
             }
         }
 
