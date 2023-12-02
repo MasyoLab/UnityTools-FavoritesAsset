@@ -53,7 +53,6 @@ namespace MasyoLab.Editor.FavoritesAsset
 
         private void InitGroupGUI()
         {
-
             // データを複製
             var groupDatas = m_pipeline.Group.GroupDB.Data.ToList();
 

@@ -19,9 +19,9 @@ namespace MasyoLab.Editor.FavoritesAsset
     class FavoritesManager : BaseManager
     {
         private Dictionary<string, PtrLinker<AssetDB>> m_assetDBDict = new Dictionary<string, PtrLinker<AssetDB>>();
-        private PtrLinker<AssetDB> m_assetDB => SelectFavoritesData();
+        private PtrLinker<AssetDB> m_assetDB => GetSelectFavoritesData();
         public IReadOnlyList<AssetData> Data => m_assetDB.Inst.Ref;
-        public AssetDB AssetInfoList => SelectFavoritesData(CONST.FAVORITES_DATA).Inst;
+        public AssetDB AssetInfoList => GetSelectFavoritesData(CONST.FAVORITES_DATA).Inst;
 
         public FavoritesManager(IPipeline pipeline) : base(pipeline)
         {
@@ -186,11 +186,11 @@ namespace MasyoLab.Editor.FavoritesAsset
         }
 
         /// <summary>
-        /// お気に入りデータを切り替える
+        /// お気に入りデータを取得
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        private PtrLinker<AssetDB> SelectFavoritesData(string guid)
+        private PtrLinker<AssetDB> GetSelectFavoritesData(string guid)
         {
             if (m_assetDBDict.ContainsKey(guid))
             {
@@ -206,9 +206,14 @@ namespace MasyoLab.Editor.FavoritesAsset
             return favData;
         }
 
-        private PtrLinker<AssetDB> SelectFavoritesData()
+        /// <summary>
+        /// お気に入りデータを切り替える
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        private PtrLinker<AssetDB> GetSelectFavoritesData()
         {
-            return SelectFavoritesData(m_pipeline.Group.SelectGroupFileName);
+            return GetSelectFavoritesData(m_pipeline.Group.SelectGroupFileName);
         }
 
         public List<AssetDB> GetFavoriteList()
@@ -216,9 +221,22 @@ namespace MasyoLab.Editor.FavoritesAsset
             var returnData = new List<AssetDB>(m_pipeline.Group.GroupDB.Data.Count);
             foreach (var item in m_pipeline.Group.GroupDB.Data)
             {
-                returnData.Add(SelectFavoritesData(item.GUID).Inst);
+                returnData.Add(GetSelectFavoritesData(item.GUID).Inst);
             }
             return returnData;
+        }
+
+        /// <summary>
+        /// お気に入りデータを複製
+        /// </summary>
+        /// <param name="baseGUID"></param>
+        /// <param name="targetGUID"></param>
+        public void ReplicationFavoriteData(string baseGUID, string targetGUID)
+        {
+            var baseLinker = GetSelectFavoritesData(baseGUID);
+            var targetLinker = GetSelectFavoritesData(targetGUID);
+            targetLinker.Inst.Ref.Clear();
+            targetLinker.Inst.Ref.AddRange(baseLinker.Inst.Ref);
         }
     }
 }

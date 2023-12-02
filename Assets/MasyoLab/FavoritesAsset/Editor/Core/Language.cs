@@ -46,16 +46,20 @@ namespace MasyoLab.Editor.FavoritesAsset
         AddNewFavoriteGroup,
         FavoriteGroup,
         FavoriteGroupIsEmpty,
+        CopyFavoriteGroup,
+        CopyFavoriteGroupFeatureDescription,
+        CopyFavoriteGroupPulldownDescription,
+        CopyFavoriteGroupReplicationButton,
     }
 
     struct LanguageData
     {
         public static readonly string[] LANGUAGE = {
-            $"English",
+            "English",
             "Japanese",
         };
 
-        private static Dictionary<TextEnum, string> TEXT_EN_DICT = new Dictionary<TextEnum, string>()
+        private static IReadOnlyDictionary<TextEnum, string> TEXT_EN_DICT = new Dictionary<TextEnum, string>()
         {
             { TextEnum.Language , "Editor Language" },
             { TextEnum.DragAndDrop , "Register via Drag & Drop" },
@@ -78,9 +82,13 @@ namespace MasyoLab.Editor.FavoritesAsset
             { TextEnum.AddNewFavoriteGroup , "Add Favorite Group..." },
             { TextEnum.FavoriteGroup , "Favorite Groups" },
             { TextEnum.FavoriteGroupIsEmpty , "Favorite Groups are empty" },
+            { TextEnum.CopyFavoriteGroup , "Duplicate Favorite Group" },
+            { TextEnum.CopyFavoriteGroupFeatureDescription , "Duplicate the contents of the Favorite Group" },
+            { TextEnum.CopyFavoriteGroupPulldownDescription , "Select a group" },
+            { TextEnum.CopyFavoriteGroupReplicationButton , "Duplicate" },
         };
 
-        private static Dictionary<TextEnum, string> TEXT_JA_DICT = new Dictionary<TextEnum, string>()
+        private static IReadOnlyDictionary<TextEnum, string> TEXT_JA_DICT = new Dictionary<TextEnum, string>()
         {
             { TextEnum.Language , "エディターの言語" },
             { TextEnum.DragAndDrop , "ドラッグ＆ドロップで登録" },
@@ -103,6 +111,10 @@ namespace MasyoLab.Editor.FavoritesAsset
             { TextEnum.AddNewFavoriteGroup , "お気に入りグループを追加..." },
             { TextEnum.FavoriteGroup , "お気に入りグループ" },
             { TextEnum.FavoriteGroupIsEmpty , "お気に入りグループは空です" },
+            { TextEnum.CopyFavoriteGroup , "お気に入りグループを複製" },
+            { TextEnum.CopyFavoriteGroupFeatureDescription , "お気に入りグループの内容を複製します" },
+            { TextEnum.CopyFavoriteGroupPulldownDescription , "グループを選択" },
+            { TextEnum.CopyFavoriteGroupReplicationButton , "複製" },
         };
 
         public static string GetText(LanguageEnum lang, TextEnum text)

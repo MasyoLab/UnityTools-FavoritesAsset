@@ -203,7 +203,7 @@ namespace MasyoLab.Editor.FavoritesAsset
                     GetWindowClass<FavoritesWindow>();
                 }
 
-                var selectIndex = EditorGUILayout.Popup(m_pipeline.Group.Index, m_pipeline.Group.GroupNames);
+                var selectIndex = EditorGUILayout.Popup(m_pipeline.Group.Index, m_pipeline.Group.GroupNamesForMenu);
                 switch (m_pipeline.Group.SelectGroupByIndex(selectIndex))
                 {
                     case GroupSelectEventEnum.Unselect:
@@ -252,6 +252,11 @@ namespace MasyoLab.Editor.FavoritesAsset
             {
                 GetWindowClass<GroupWindow>();
             }, TextEnum.FavoriteGroup);
+            
+            menu.AddItem(new GUIContent(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.CopyFavoriteGroup)), false, (call) =>
+            {
+                GetWindowClass<CopyGroupWindow>();
+            }, TextEnum.CopyFavoriteGroup);
             menu.AddSeparator(string.Empty);
 
             menu.AddItem(new GUIContent(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.Setting)), false, (call) =>
