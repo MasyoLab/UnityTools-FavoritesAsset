@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -6,10 +6,11 @@
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
+namespace MasyoLab.Editor.FavoritesAsset
+{
     [System.Serializable]
-    class SettingData {
+    class SettingData
+    {
         public LanguageEnum Language = LanguageEnum.English;
         public string IOTarget = string.Empty;
         public string IOFileName = string.Empty;

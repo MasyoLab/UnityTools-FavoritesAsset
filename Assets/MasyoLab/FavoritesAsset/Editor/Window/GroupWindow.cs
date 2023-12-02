@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,98 +13,114 @@ using UnityEditorInternal;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    class GroupWindow : BaseWindow
+    {
+        private ReorderableList m_reorderableList = null;
+        private Vector2 m_scrollVec = Vector2.zero;
+        private bool m_isUpdate = false;
 
-    class GroupWindow : BaseWindow {
-
-        ReorderableList _reorderableList = null;
-        Vector2 _scrollVec2;
-        bool _isUpdate = false;
-
-        public override void Init(IPipeline pipeline) {
+        public override void Init(IPipeline pipeline)
+        {
             base.Init(pipeline);
             InitGroupGUI();
-            _isUpdate = false;
+            m_isUpdate = false;
         }
 
-        public override void OnGUI() {
-            _scrollVec2 = GUILayout.BeginScrollView(_scrollVec2);
-            _reorderableList.DoLayoutList();
+        public override void OnGUI()
+        {
+            m_scrollVec = GUILayout.BeginScrollView(m_scrollVec);
+            m_reorderableList.DoLayoutList();
             GUILayout.EndScrollView();
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             base.Close();
-            if (_isUpdate == false)
+            if (m_isUpdate == false)
+            {
                 return;
-            _pipeline.Group.Save();
+            }
+            m_pipeline.Group.Save();
         }
 
-        public override void Reload() {
+        public override void Reload()
+        {
             base.Reload();
             InitGroupGUI();
         }
 
-        void InitGroupGUI() {
-
+        private void InitGroupGUI()
+        {
             // データを複製
-            var groupDatas = _pipeline.Group.GroupDB.Data.ToList();
+            var groupDatas = m_pipeline.Group.GroupDB.Data.ToList();
 
-            if (_reorderableList == null) {
-                _reorderableList = new ReorderableList(groupDatas, typeof(AssetData));
+            if (m_reorderableList == null)
+            {
+                m_reorderableList = new ReorderableList(groupDatas, typeof(AssetData));
             }
 
-            void DrawHeader(Rect rect) {
-                EditorGUI.LabelField(rect, LanguageData.GetText(_pipeline.Setting.Language, TextEnum.FavoriteGroup));
-                if (groupDatas.Count != _pipeline.Group.GroupDB.Data.Count) {
-                    groupDatas = _pipeline.Group.GroupDB.Data.ToList();
-                    _reorderableList.list = groupDatas;
+            void DrawHeader(Rect rect)
+            {
+                EditorGUI.LabelField(rect, LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.FavoriteGroup));
+                if (groupDatas.Count != m_pipeline.Group.GroupDB.Data.Count)
+                {
+                    groupDatas = m_pipeline.Group.GroupDB.Data.ToList();
+                    m_reorderableList.list = groupDatas;
                 }
             }
 
             // 入れ替え時に呼び出す
-            void Changed(ReorderableList list) {
-                for (int i = 0; i < groupDatas.Count; i++) {
+            void Changed(ReorderableList list)
+            {
+                for (int i = 0; i < groupDatas.Count; i++)
+                {
                     groupDatas[i].Index = i;
                 }
-                _pipeline.Group.Sort();
-                _isUpdate = true;
+                m_pipeline.Group.Sort();
+                m_isUpdate = true;
             }
 
-            void AddCallback(ReorderableList list) {
-                groupDatas.Add(_pipeline.Group.AddData());
-                _pipeline.Group.Save();
+            void AddCallback(ReorderableList list)
+            {
+                groupDatas.Add(m_pipeline.Group.AddData());
+                m_pipeline.Group.Save();
             }
 
-            void RemoveCallback(ReorderableList list) {
+            void RemoveCallback(ReorderableList list)
+            {
                 groupDatas.RemoveAt(list.index);
-                _pipeline.Group.Remove(list.index);
-                _pipeline.Group.Save();
+                m_pipeline.Group.Remove(list.index);
+                m_pipeline.Group.Save();
             }
 
-            void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+            void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
+            {
                 var item = groupDatas[index];
                 rect.height -= 2;
                 rect.y += 1;
                 var newText = EditorGUI.TextField(rect, item.GroupName);
-                if (newText != item.GroupName) {
+                if (newText != item.GroupName)
+                {
                     item.GroupName = newText;
-                    _pipeline.Group.UpdateGroupNameList();
-                    _isUpdate = true;
+                    m_pipeline.Group.UpdateGroupNameList();
+                    m_isUpdate = true;
                 }
             }
 
-            void NoneElement(Rect rect) {
-                EditorGUI.LabelField(rect, LanguageData.GetText(_pipeline.Setting.Language, TextEnum.FavoriteGroupIsEmpty));
+            void NoneElement(Rect rect)
+            {
+                EditorGUI.LabelField(rect, LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.FavoriteGroupIsEmpty));
             }
 
-            _reorderableList.list = groupDatas;
-            _reorderableList.drawElementCallback = DrawElement;
-            _reorderableList.onChangedCallback = Changed;
-            _reorderableList.drawHeaderCallback = DrawHeader;
-            _reorderableList.onAddCallback = AddCallback;
-            _reorderableList.onRemoveCallback = RemoveCallback;
-            _reorderableList.drawNoneElementCallback = NoneElement;
+            m_reorderableList.list = groupDatas;
+            m_reorderableList.drawElementCallback = DrawElement;
+            m_reorderableList.onChangedCallback = Changed;
+            m_reorderableList.drawHeaderCallback = DrawHeader;
+            m_reorderableList.onAddCallback = AddCallback;
+            m_reorderableList.onRemoveCallback = RemoveCallback;
+            m_reorderableList.drawNoneElementCallback = NoneElement;
         }
     }
 }

@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -9,8 +9,10 @@ using UnityEngine;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-    interface IPipeline {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    interface IPipeline
+    {
         FavoritesManager Favorites { get; }
         SettingManager Setting { get; }
         GroupManager Group { get; }

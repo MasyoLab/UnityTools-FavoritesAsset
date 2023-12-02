@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,14 +11,15 @@ using UnityEditor;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    class BaseWindow
+    {
+        protected IPipeline m_pipeline = null;
 
-    class BaseWindow {
-
-        protected IPipeline _pipeline = null;
-
-        public virtual void Init(IPipeline pipeline) {
-            _pipeline = pipeline;
+        public virtual void Init(IPipeline pipeline)
+        {
+            m_pipeline = pipeline;
         }
 
         public virtual void OnGUI() { }

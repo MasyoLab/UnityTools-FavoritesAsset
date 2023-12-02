@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -6,10 +6,12 @@
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
-    static class StringExtensions {
-        public static string RemoveAtLast(this string self, string value) {
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    static class StringExtensions
+    {
+        public static string RemoveAtLast(this string self, string value)
+        {
             return self.Remove(self.LastIndexOf(value), value.Length);
         }
     }

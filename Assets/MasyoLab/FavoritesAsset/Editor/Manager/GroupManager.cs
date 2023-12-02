@@ -1,6 +1,8 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,48 +13,62 @@ using UnityEngine.Events;
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-
+namespace MasyoLab.Editor.FavoritesAsset
+{
     /// <summary>
     /// グループ選択時のイベント
     /// </summary>
-    enum GroupSelectEventEnum {
+    enum GroupSelectEventEnum
+    {
         Unselect,
         Select,
         Open,
     }
 
-    class GroupManager : BaseManager {
-        PtrLinker<GroupDB> _groupDB = new PtrLinker<GroupDB>(Load);
-        public GroupDB GroupDB => _groupDB.Inst;
+    class GroupManager : BaseManager
+    {
+        private PtrLinker<GroupDB> m_groupDB = new PtrLinker<GroupDB>(Load);
+        public GroupDB GroupDB => m_groupDB.Inst;
 
-        /// <summary>
-        /// グループ名リスト
-        /// </summary>
-        List<string> _groupNameList = null;
+        private List<string> m_groupNameList = null;
         /// <summary>
         /// グループ名リスト(中継)
         /// </summary>
-        string[] _groupNames = null;
+        private string[] m_groupNames = null;
         /// <summary>
         /// グループ名
         /// </summary>
-        public string[] GroupNames => GetGroupName();
+        public string[] GroupNames => GetGroupNames();
 
-        int _index = -1;
+        private List<string> m_groupNameListForMenu = null;
+        /// <summary>
+        /// 表示用グループ名リスト(中継)
+        /// </summary>
+        private string[] m_groupNamesForMenu = null;
+        /// <summary>
+        /// 表示用グループ名
+        /// </summary>
+        public string[] GroupNamesForMenu => GetGroupNamesForMenu();
+
+        private int m_index = -1;
+
         /// <summary>
         /// 選択中のグループID
         /// </summary>
-        public int Index {
-            private set => _index = value;
-            get {
-                if (_index == -1) {
-                    for (int i = 0; i < GroupDB.Data.Count; i++) {
+        public int Index
+        {
+            private set => m_index = value;
+            get
+            {
+                if (m_index == -1)
+                {
+                    for (int i = 0; i < GroupDB.Data.Count; i++)
+                    {
                         GroupDB.Data[i].Index = i;
                     }
                     SelectGroupByGUID();
                 }
-                return _index;
+                return m_index;
             }
         }
 
@@ -68,16 +84,19 @@ namespace MasyoLab.Editor.FavoritesAsset {
 
         public GroupManager(IPipeline pipeline) : base(pipeline) { }
 
-        public void Save() {
+        public void Save()
+        {
             SaveLoad.Save(JsonUtility.ToJson(GroupDB), SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
         }
 
-        static GroupDB Load() {
+        private static GroupDB Load()
+        {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(CONST.GROUP_DATA));
 
             // json から読み込む
             var assets = JsonUtility.FromJson<GroupDB>(jsonData);
-            if (assets == null) {
+            if (assets == null)
+            {
                 return new GroupDB();
             }
             return assets;
@@ -87,9 +106,12 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// インポートしたデータを登録
         /// </summary>
         /// <param name="importData"></param>
-        public void SetImportData(FavoritesJsonExportData importData) {
+        public void SetImportData(FavoritesJsonExportData importData)
+        {
             if (importData == null)
+            {
                 return;
+            }
 
             GroupDB.Set(importData.GroupDB);
             SelectGroupByGUID();
@@ -101,7 +123,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// グループ削除
         /// </summary>
         /// <param name="index"></param>
-        public void Remove(int index) {
+        public void Remove(int index)
+        {
             var data = GroupDB.Data[index];
             var guid = data.GUID;
 
@@ -120,9 +143,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// グループ追加
         /// </summary>
         /// <returns></returns>
-        public GroupData AddData() {
+        public GroupData AddData()
+        {
             // 予約済みリストから取得
-            if (GroupDB.Reserved.Count != 0) {
+            if (GroupDB.Reserved.Count != 0)
+            {
                 var data = GroupDB.Reserved[0];
                 RemoveEvent?.Invoke(data.GUID);
                 GroupDB.Data.Add(data);
@@ -131,7 +156,8 @@ namespace MasyoLab.Editor.FavoritesAsset {
                 return data;
             }
             // 新規作成
-            else {
+            else
+            {
                 var data = new GroupData();
                 GroupDB.Data.Add(data);
                 UpdateGroupNameList();
@@ -139,10 +165,25 @@ namespace MasyoLab.Editor.FavoritesAsset {
             }
         }
 
+        public GroupData GetData(int index)
+        {
+            // デフォルトはグループデータが存在しない
+            if (index == 0)
+            {
+                var data = new GroupData();
+                data.GUID = CONST.FAVORITES_DATA;
+                data.Index = index;
+                data.GroupName = CONST.DEFAULT;
+                return data;
+            }
+            return GroupDB.Data[index - 1];
+        }
+
         /// <summary>
         /// ソート
         /// </summary>
-        public void Sort() {
+        public void Sort()
+        {
             SelectGroupByGUID(true);
             UpdateGroupNameList();
         }
@@ -151,38 +192,69 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// グループ名
         /// </summary>
         /// <returns></returns>
-        string[] GetGroupName() {
-            if (_groupNames != null)
-                return _groupNames;
-            return UpdateGroupNameList();
+        private string[] GetGroupNames()
+        {
+            if (m_groupNames != null)
+            {
+                return m_groupNames;
+            }
+            UpdateGroupNameList();
+            return m_groupNames;
+        }
+
+        /// <summary>
+        /// グループ名
+        /// </summary>
+        /// <returns></returns>
+        private string[] GetGroupNamesForMenu()
+        {
+            if (m_groupNamesForMenu != null)
+            {
+                return m_groupNamesForMenu;
+            }
+            UpdateGroupNameList();
+            return m_groupNamesForMenu;
         }
 
         /// <summary>
         /// グループ名リストを更新
         /// </summary>
         /// <returns></returns>
-        public string[] UpdateGroupNameList() {
-            if (_groupNameList == null) {
-                _groupNameList = new List<string>();
+        public void UpdateGroupNameList()
+        {
+            if (m_groupNameList == null)
+            {
+                m_groupNameList = new List<string>();
+            }
+            if (m_groupNameListForMenu == null)
+            {
+                m_groupNameListForMenu = new List<string>();
             }
 
-            int index = 0;
+            m_groupNameList.Clear();
+            m_groupNameListForMenu.Clear();
 
-            _groupNameList.Clear();
-            _groupNameList.Add($"{index}: {CONST.DEFAULT}");
+            int index = 0;
+            m_groupNameList.Add($"{index}: {CONST.DEFAULT}");
+            m_groupNameListForMenu.Add($"{index}: {CONST.DEFAULT}");
             index++;
 
-            foreach (var item in GroupDB.Data) {
+            foreach (var item in GroupDB.Data)
+            {
                 if (item.IsNull)
+                {
                     continue;
-                _groupNameList.Add($"{index}: {item.GroupName}");
+                }
+                m_groupNameList.Add($"{index}: {item.GroupName}");
+                m_groupNameListForMenu.Add($"{index}: {item.GroupName}");
                 index++;
             }
 
-            _groupNameList.Add("");
-            _groupNameList.Add(LanguageData.GetText(_pipeline.Setting.Language, TextEnum.AddNewFavoriteGroup));
+            m_groupNameListForMenu.Add(string.Empty);
+            m_groupNameListForMenu.Add(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.AddNewFavoriteGroup));
 
-            return _groupNames = _groupNameList.ToArray();
+            m_groupNames = m_groupNameList.ToArray();
+            m_groupNamesForMenu = m_groupNameListForMenu.ToArray();
         }
 
         /// <summary>
@@ -190,22 +262,27 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="selectIndex"></param>
         /// <returns></returns>
-        public GroupSelectEventEnum SelectGroupByIndex(int selectIndex) {
+        public GroupSelectEventEnum SelectGroupByIndex(int selectIndex)
+        {
             var isSave = selectIndex != Index;
 
-            if (selectIndex == 0) {
+            if (selectIndex == 0)
+            {
                 GroupDB.SelectGroupGUID = string.Empty;
                 Index = selectIndex;
             }
-            else if (selectIndex == GroupNames.Length - 1) {
+            else if (selectIndex == GroupNamesForMenu.Length - 1)
+            {
                 return GroupSelectEventEnum.Open;
             }
-            else {
+            else
+            {
                 GroupDB.SelectGroupGUID = GroupDB.Data[selectIndex - 1].GUID;
                 Index = selectIndex;
             }
 
-            if (isSave) {
+            if (isSave)
+            {
                 Save();
                 return GroupSelectEventEnum.Select;
             }
@@ -217,17 +294,21 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// GUIDで選択中のグループを切り替える
         /// </summary>
         /// <param name="isSort"></param>
-        void SelectGroupByGUID(bool isSort = false) {
+        private void SelectGroupByGUID(bool isSort = false)
+        {
             var groupData = GroupDB.Data.Find(v => v.GUID == GroupDB.SelectGroupGUID);
 
-            if (isSort) {
+            if (isSort)
+            {
                 GroupDB.Data.Sort((itemA, itemB) => itemA.Index - itemB.Index);
-                for (int i = 0; i < GroupDB.Data.Count; i++) {
+                for (int i = 0; i < GroupDB.Data.Count; i++)
+                {
                     GroupDB.Data[i].Index = i;
                 }
             }
 
-            if (groupData == null) {
+            if (groupData == null)
+            {
                 GroupDB.SelectGroupGUID = string.Empty;
                 Index = 0;
                 return;
@@ -241,9 +322,11 @@ namespace MasyoLab.Editor.FavoritesAsset {
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public string GetGroupNameByGUID(string guid) {
+        public string GetGroupNameByGUID(string guid)
+        {
             var groupData = GroupDB.Data.Find(v => v.GUID == guid);
-            if (groupData == null) {
+            if (groupData == null)
+            {
                 return CONST.DEFAULT;
             }
             return groupData.GroupName;

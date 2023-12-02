@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 //=========================================================
 //
 //  developer : MasyoLab
@@ -6,12 +6,15 @@
 //
 //=========================================================
 
-namespace MasyoLab.Editor.FavoritesAsset {
-    class BaseManager {
-        protected IPipeline _pipeline = null;
+namespace MasyoLab.Editor.FavoritesAsset
+{
+    class BaseManager
+    {
+        protected IPipeline m_pipeline = null;
 
-        public BaseManager(IPipeline pipeline) {
-            _pipeline = pipeline;
+        public BaseManager(IPipeline pipeline)
+        {
+            m_pipeline = pipeline;
         }
     }
 }
