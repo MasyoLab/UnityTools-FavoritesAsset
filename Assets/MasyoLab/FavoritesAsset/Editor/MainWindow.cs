@@ -197,7 +197,7 @@ namespace MasyoLab.Editor.FavoritesAsset
                     OpenMenu();
                 }
 
-                content = new GUIContent(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.Favorites));
+                content = new GUIContent(LanguageData.GetText(m_pipeline.Setting.Language, TextEnum.Home));
                 if (GUILayout.Button(content, EditorStyles.toolbarButton))
                 {
                     GetWindowClass<FavoritesWindow>();
