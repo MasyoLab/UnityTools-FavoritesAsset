@@ -1,0 +1,15 @@
+{
+    "name": "MasyoLab-FavoritesAssetExamples",
+    "references": [
+        "GUID:819346cd6af928a428f4bddbc8dc5b7d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
