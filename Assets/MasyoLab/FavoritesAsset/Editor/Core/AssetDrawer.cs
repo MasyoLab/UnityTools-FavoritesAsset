@@ -30,8 +30,13 @@ namespace MasyoLab.Editor.FavoritesAsset
         private static void DrawingSetting(IPipeline pipeline, AssetData info, UnityAction<GUIContent, GUIStyle> onAction = null)
         {
             GUIContent content = null;
+            Texture assetIcon = null;
 
-            var assetIcon = AssetDatabase.GetCachedIcon(info.Path);
+            assetIcon = FavoritesAssetWindow.GetFavoritesAssetIcon?.Invoke(info.Path);
+            if (assetIcon == null)
+            {
+                assetIcon = AssetDatabase.GetCachedIcon(info.Path);
+            }
             if (assetIcon == null)
             {
                 assetIcon = EditorGUIUtility.IconContent(CONST.ICON_ERRORICON).image;
