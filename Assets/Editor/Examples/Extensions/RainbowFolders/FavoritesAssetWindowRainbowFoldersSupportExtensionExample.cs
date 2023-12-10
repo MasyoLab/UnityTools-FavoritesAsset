@@ -10,9 +10,9 @@ using Borodar.RainbowFolders.Editor.Settings;
 /// Compatibility with RainbowFolders in the Favorites Assets window.
 /// </summary>
 [InitializeOnLoad]
-public class FavoritesAssetWindowRainbowFoldersSupportExample
+public class FavoritesAssetWindowRainbowFoldersSupportExtensionExample
 {
-    static FavoritesAssetWindowRainbowFoldersSupportExample()
+    static FavoritesAssetWindowRainbowFoldersSupportExtensionExample()
     {
         FavoritesAssetWindow.GetFavoritesAssetIcon += GetAssetIcon;
     }

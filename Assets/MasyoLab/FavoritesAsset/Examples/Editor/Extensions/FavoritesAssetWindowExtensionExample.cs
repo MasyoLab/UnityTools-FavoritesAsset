@@ -5,9 +5,9 @@ using UnityEditor;
 using UnityEngine;
 
 [InitializeOnLoad]
-class FavoritesAssetWindowExample
+class FavoritesAssetWindowExtensionExample
 {
-    static FavoritesAssetWindowExample()
+    static FavoritesAssetWindowExtensionExample()
     {
         MasyoLab.Editor.FavoritesAssetWindow.GetFavoritesAssetIcon += GetAssetIcon;
     }
