@@ -74,6 +74,7 @@ namespace MasyoLab.Editor.FavoritesAsset
         {
             var window = GetWindow<MainWindow>(CONST.EDITOR_WINDOW_NAME);
             window.titleContent.image = EditorGUIUtility.IconContent(CONST.FAVORITE_ICON).image;
+            window.titleContent.text = CONST.EDITOR_WINDOW_NAME;
             m_instance = window;
         }
 
