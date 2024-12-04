@@ -87,7 +87,7 @@ TextureImporter:
       213: 21300054
     second: walk-0016
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -107,6 +107,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -115,9 +117,9 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -138,13 +140,29 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 1
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -756,6 +774,35 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      turn-0001: 21300000
+      turn-0002: 21300002
+      turn-0003: 21300004
+      turn-0004: 21300006
+      turn-0005: 21300008
+      turn-0006: 21300010
+      turn-0007: 21300012
+      turn-0008: 21300014
+      turn-0009: 21300016
+      turn-0010: 21300018
+      turn-0011: 21300020
+      turn-0012: 21300022
+      walk-0001: 21300024
+      walk-0002: 21300026
+      walk-0003: 21300028
+      walk-0004: 21300030
+      walk-0005: 21300032
+      walk-0006: 21300034
+      walk-0007: 21300036
+      walk-0008: 21300038
+      walk-0009: 21300040
+      walk-0010: 21300042
+      walk-0011: 21300044
+      walk-0012: 21300046
+      walk-0013: 21300048
+      walk-0014: 21300050
+      walk-0015: 21300052
+      walk-0016: 21300054
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
