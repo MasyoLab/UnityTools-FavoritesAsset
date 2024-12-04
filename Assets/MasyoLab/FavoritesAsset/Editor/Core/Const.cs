@@ -45,7 +45,12 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// 閉じるアイコン
         /// </summary>
-        public const string ICON_CLOSE = "winbtn_win_close";
+        public const string ICON_CLOSE
+#if UNITY_6000_0_OR_NEWER
+            = "d_clear@2x";
+#else
+            = "winbtn_win_close";
+#endif
 
         /// <summary>
         /// FolderAdded
