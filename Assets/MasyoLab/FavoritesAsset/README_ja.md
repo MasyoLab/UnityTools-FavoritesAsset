@@ -1,7 +1,6 @@
 ﻿# Favorites Asset Window
 
 [![License](https://img.shields.io/badge/Licenses-MIT-brightgreen)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md)
-[![Release](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/release.yml/badge.svg)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/release.yml)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
 
