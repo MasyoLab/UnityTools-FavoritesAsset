@@ -26,31 +26,23 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// アセットパス
         /// </summary>
-        public string Path = string.Empty;
+        public string Path { get; private set; }
         /// <summary>
         /// アセット名
         /// </summary>
-        public string Name = string.Empty;
-        /// <summary>
-        /// アセットタイプ
-        /// </summary>
-        public string Type = string.Empty;
+        public string Name { get; private set; }
         /// <summary>
         /// LocalID (fileID)
         /// </summary>
         public long LocalId = 0;
 
-        [System.NonSerialized]
-        public int Index = 0;
+        public int Index { get; set; }
 
-        public AssetData() { }
-        public AssetData(string guid, string path, string name, string type, long localId)
+        public AssetData(string guid, long localId)
         {
             Guid = guid;
-            Path = path;
-            Name = name;
-            Type = type;
             LocalId = localId;
+            UpdateData();
         }
 
         public Object GetObject()
@@ -88,6 +80,16 @@ namespace MasyoLab.Editor.FavoritesAsset
                 }
             }
             return asset;
+        }
+
+        /// <summary>
+        /// データを更新
+        /// </summary>
+        public void UpdateData()
+        {
+            var asset = GetObject();
+            Path = asset == null ? string.Empty : AssetDatabase.GUIDToAssetPath(Guid);
+            Name = asset == null ? string.Empty : asset.name;
         }
     }
 

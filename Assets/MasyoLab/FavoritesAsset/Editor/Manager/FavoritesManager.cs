@@ -33,14 +33,9 @@ namespace MasyoLab.Editor.FavoritesAsset
             };
         }
 
-        public void Add(AssetData info)
+        public void Add(string guid, long localId)
         {
-            m_assetDB.Inst.Ref.Add(info);
-        }
-
-        public void Add(string guid, string path, string name, string type, long localId)
-        {
-            m_assetDB.Inst.Ref.Add(new AssetData(guid, path, name, type, localId));
+            m_assetDB.Inst.Ref.Add(new AssetData(guid, localId));
         }
 
         public void Remove(AssetData info)
@@ -58,11 +53,6 @@ namespace MasyoLab.Editor.FavoritesAsset
             return m_assetDB.Inst.Ref.Exists(x => x.Guid == guid && x.LocalId == localId);
         }
 
-        public bool ExistsAssetPath(string path, long localId)
-        {
-            return m_assetDB.Inst.Ref.Exists(x => x.Path == path && x.LocalId == localId);
-        }
-
         public void SaveFavoritesData()
         {
             SaveLoad.Save(FavoritesJson.ToJson(m_assetDB.Inst), SaveLoad.GetSaveDataPath(m_pipeline.Group.SelectGroupFileName));
@@ -78,11 +68,22 @@ namespace MasyoLab.Editor.FavoritesAsset
             }
         }
 
-        private static AssetDB LoadFavoritesData()
+        /// <summary>
+        /// お気に入り登録したアセットを更新
+        /// </summary>
+        public void CheckFavoritesAsset()
         {
-            return LoadFavoritesData(CONST.FAVORITES_DATA);
+            foreach (var item in m_assetDB.Inst.Ref)
+            {
+                item.UpdateData();
+            }
         }
 
+        /// <summary>
+        /// お気に入りデータを読み込む
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private static AssetDB LoadFavoritesData(string fileName)
         {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(fileName));
@@ -100,53 +101,8 @@ namespace MasyoLab.Editor.FavoritesAsset
 
             data = FavoritesJson.FromJson(jsonData).AssetDB;
             data.Guid = guid;
+            data.Ref.ForEach(v => v.UpdateData());
             return data;
-        }
-
-        /// <summary>
-        /// お気に入り登録したアセットを更新
-        /// </summary>
-        public void CheckFavoritesAsset()
-        {
-            bool isUpdate = false;
-
-            foreach (var item in Data)
-            {
-                // アセット
-                var assetData = item.GetObject();
-                if (assetData == null)
-                {
-                    continue;
-                }
-
-                var oldPath = item.Path;
-                var oldLocalid = item.LocalId;
-
-                // GUIDでパスを取得
-                var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
-                if (newPath == string.Empty)
-                {
-                    continue;
-                }
-
-                // ローカルID
-                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetData, out string guid, out long localid))
-                {
-                    item.LocalId = localid;
-                }
-
-                item.Path = newPath;
-                item.Name = assetData.name;
-                item.Type = assetData.GetType().ToString();
-
-                // 更新判定
-                isUpdate = isUpdate ? isUpdate : (oldPath != item.Path || oldLocalid != item.LocalId);
-            }
-
-            if (isUpdate)
-            {
-                SaveFavoritesData();
-            }
         }
 
         /// <summary>
@@ -219,13 +175,16 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// お気に入りデータを切り替える
         /// </summary>
-        /// <param name="guid"></param>
         /// <returns></returns>
         private PtrLinker<AssetDB> GetSelectFavoritesData()
         {
             return GetSelectFavoritesData(m_pipeline.Group.SelectGroupFileName);
         }
 
+        /// <summary>
+        /// お気に入りデータを取得
+        /// </summary>
+        /// <returns></returns>
         public List<AssetDB> GetFavoriteList()
         {
             var returnData = new List<AssetDB>(m_pipeline.Group.GroupDB.Data.Count);

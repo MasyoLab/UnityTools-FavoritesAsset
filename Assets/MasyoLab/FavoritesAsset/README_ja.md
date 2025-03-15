@@ -85,6 +85,15 @@ https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/F
 - 2020.3 LTS
 - 2019.4 LTS
 
+## その他
+
+この拡張機能は、私が趣味で作成したツールです。
+
+機能追加に関しては、良いアイデアとモチベーションがあれば取り組みます。  
+アイデアをお持ちの方は、機能拡張のプルリクエストを歓迎します。
+
+報告されたバグ修正に関しては、最短で1週間、最長で3週間程度で修正します。
+
 ## License
 
 この拡張エディタは、MITライセンスです。詳細は [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md) を参照してください。
