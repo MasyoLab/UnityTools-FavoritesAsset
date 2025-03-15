@@ -228,26 +228,6 @@ namespace MasyoLab.Editor.FavoritesAsset
 
             var assetPath = AssetDatabase.GetAssetPath(assetObject);
 
-            // SubAssets が1つしか無い場合
-            var assetDatas = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
-            if (assetDatas.Length == 1)
-            {
-                if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetDatas[0], out string sbuGuid, out long sbuLocalid))
-                {
-                    return;
-                }
-
-                // Assetは保存済み
-                if (m_pipeline.Favorites.ExistsGUID(sbuGuid, sbuLocalid))
-                {
-                    return;
-                }
-
-                guid = sbuGuid;
-                localid = sbuLocalid;
-                assetObject = assetDatas[0];
-            }
-
             // お気に入りに登録
             m_pipeline.Favorites.Add(guid, assetPath, assetObject.name, assetObject.GetType().ToString(), localid);
         }
