@@ -1,3 +1,9 @@
+## [1.5.2] - 2025-3-16
+## バグの修正
+### Changes
+- [#62](https://github.com/MasyoLab/UnityTools-FavoritesAsset/issues/62) Regarding the behavior when registering an item that contains only one subAsset
+- [#63](https://github.com/MasyoLab/UnityTools-FavoritesAsset/issues/63) Issues with Favorite Asset References
+
 ## [1.5.1] - 2024-12-04
 ### Unity 6 向けの更新
 ### Changes
