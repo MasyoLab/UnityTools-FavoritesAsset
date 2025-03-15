@@ -164,7 +164,10 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// お気に入りの描画
         /// </summary>
-        /// <param name="info"></param>
+        /// <param name="rect"></param>
+        /// <param name="index"></param>
+        /// <param name="isActive"></param>
+        /// <param name="isFocused"></param>
         /// <returns></returns>
         private bool DrawAsset(Rect rect, int index, bool isActive, bool isFocused)
         {
@@ -190,30 +193,9 @@ namespace MasyoLab.Editor.FavoritesAsset
         }
 
         /// <summary>
-        /// ファイルパスでアセットを登録
+        /// お気に入りを解除
         /// </summary>
-        /*
-        void AddAssetToAssetPath(string assetPath) {
-            // AssetPathは保存済み
-            if (_pipeline.Favorites.ExistsAssetPath(assetPath))
-                return;
-
-            // GUID を取得
-            var guid = AssetDatabase.AssetPathToGUID(assetPath);
-
-            // アセットの情報
-            var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
-
-            if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string oguid, out long localid)) { }
-
-            // お気に入りに登録
-            _pipeline.Favorites.Add(guid, assetPath, asset.name, asset.GetType().ToString(), localid);
-        }
-        */
-
-        /// <summary>
-        /// Objectでアセットを登録
-        /// </summary>
+        /// <param name="assetObject"></param>
         public void AddAssetToObject(Object assetObject)
         {
             if (!AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetObject, out string guid, out long localid))
@@ -230,28 +212,6 @@ namespace MasyoLab.Editor.FavoritesAsset
             // お気に入りに登録
             m_pipeline.Favorites.Add(guid, localid);
         }
-
-        /// <summary>
-        /// GUIDでアセットを登録
-        /// </summary>
-        /*
-        void AddAssetToGUID(string assetGuid) {
-            // GUIDは保存済み
-            if (_pipeline.Favorites.ExistsGUID(assetGuid))
-                return;
-
-            // GUID からアセットパスを取得
-            var path = AssetDatabase.GUIDToAssetPath(assetGuid);
-
-            // アセットの情報
-            var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
-
-            if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(asset, out string oguid, out long localid)) { }
-
-            // お気に入りに登録
-            _pipeline.Favorites.Add(assetGuid, path, asset.name, asset.GetType().ToString(), localid);
-        }
-        */
 
         /// <summary>
         /// お気に入りを解除
@@ -288,6 +248,10 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// ドラッグ&ドロップでオブジェクトを取得
         /// </summary>
+        /// <param name="targetList"></param>
+        /// <param name="window"></param>
+        /// <param name="rect"></param>
+        /// <returns></returns>
         public static bool GetObjects(out List<UnityEngine.Object> targetList, EditorWindow window, Rect? rect = null)
         {
             targetList = null;
@@ -312,9 +276,8 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// ドラッグ&ドロップでオブジェクトを取得
         /// </summary>
-        /// <param name="areaTitle"></param>
-        /// <param name="widthMin"></param>
-        /// <param name="height"></param>
+        /// <param name="window"></param>
+        /// <param name="rect"></param>
         /// <returns></returns>
         private static UnityEngine.Object[] GetObjects(EditorWindow window, Rect? rect = null)
         {

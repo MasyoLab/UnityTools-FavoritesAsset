@@ -33,11 +33,6 @@ namespace MasyoLab.Editor.FavoritesAsset
             };
         }
 
-        public void Add(AssetData info)
-        {
-            m_assetDB.Inst.Ref.Add(info);
-        }
-
         public void Add(string guid, long localId)
         {
             m_assetDB.Inst.Ref.Add(new AssetData(guid, localId));
@@ -58,11 +53,6 @@ namespace MasyoLab.Editor.FavoritesAsset
             return m_assetDB.Inst.Ref.Exists(x => x.Guid == guid && x.LocalId == localId);
         }
 
-        public bool ExistsAssetPath(string path, long localId)
-        {
-            return m_assetDB.Inst.Ref.Exists(x => x.Path == path && x.LocalId == localId);
-        }
-
         public void SaveFavoritesData()
         {
             SaveLoad.Save(FavoritesJson.ToJson(m_assetDB.Inst), SaveLoad.GetSaveDataPath(m_pipeline.Group.SelectGroupFileName));
@@ -78,11 +68,11 @@ namespace MasyoLab.Editor.FavoritesAsset
             }
         }
 
-        private static AssetDB LoadFavoritesData()
-        {
-            return LoadFavoritesData(CONST.FAVORITES_DATA);
-        }
-
+        /// <summary>
+        /// お気に入りデータを読み込む
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private static AssetDB LoadFavoritesData(string fileName)
         {
             string jsonData = SaveLoad.Load(SaveLoad.GetSaveDataPath(fileName));
@@ -174,13 +164,16 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <summary>
         /// お気に入りデータを切り替える
         /// </summary>
-        /// <param name="guid"></param>
         /// <returns></returns>
         private PtrLinker<AssetDB> GetSelectFavoritesData()
         {
             return GetSelectFavoritesData(m_pipeline.Group.SelectGroupFileName);
         }
 
+        /// <summary>
+        /// お気に入りデータを取得
+        /// </summary>
+        /// <returns></returns>
         public List<AssetDB> GetFavoriteList()
         {
             var returnData = new List<AssetDB>(m_pipeline.Group.GroupDB.Data.Count);
