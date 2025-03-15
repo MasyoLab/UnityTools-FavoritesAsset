@@ -142,11 +142,6 @@ namespace MasyoLab.Editor.FavoritesAsset
             UpdateGUIAction();
         }
 
-        private void OnFocus()
-        {
-            m_pipeline.Favorites.CheckFavoritesAsset();
-        }
-
         private void UpdateGUIAction()
         {
             if (m_window == null)

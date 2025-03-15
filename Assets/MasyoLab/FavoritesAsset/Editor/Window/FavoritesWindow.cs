@@ -37,7 +37,7 @@ namespace MasyoLab.Editor.FavoritesAsset
         public override void Init(IPipeline pipeline)
         {
             base.Init(pipeline);
-            InitSortFunction();
+            InitFavoritesWindow();
         }
 
         public override void OnGUI()
@@ -55,13 +55,14 @@ namespace MasyoLab.Editor.FavoritesAsset
 
         public override void Reload()
         {
-            InitSortFunction();
+            InitFavoritesWindow();
         }
 
-        private void InitSortFunction()
+        private void InitFavoritesWindow()
         {
             // データを複製
             var assetDatas = m_pipeline.Favorites.Data.ToList();
+            assetDatas.ForEach(v => v.UpdateData());
 
             if (m_reorderableList == null)
             {
@@ -226,10 +227,8 @@ namespace MasyoLab.Editor.FavoritesAsset
                 return;
             }
 
-            var assetPath = AssetDatabase.GetAssetPath(assetObject);
-
             // お気に入りに登録
-            m_pipeline.Favorites.Add(guid, assetPath, assetObject.name, assetObject.GetType().ToString(), localid);
+            m_pipeline.Favorites.Add(guid, localid);
         }
 
         /// <summary>

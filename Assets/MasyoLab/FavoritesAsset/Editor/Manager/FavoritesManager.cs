@@ -38,9 +38,9 @@ namespace MasyoLab.Editor.FavoritesAsset
             m_assetDB.Inst.Ref.Add(info);
         }
 
-        public void Add(string guid, string path, string name, string type, long localId)
+        public void Add(string guid, long localId)
         {
-            m_assetDB.Inst.Ref.Add(new AssetData(guid, path, name, type, localId));
+            m_assetDB.Inst.Ref.Add(new AssetData(guid, localId));
         }
 
         public void Remove(AssetData info)
@@ -100,53 +100,8 @@ namespace MasyoLab.Editor.FavoritesAsset
 
             data = FavoritesJson.FromJson(jsonData).AssetDB;
             data.Guid = guid;
+            data.Ref.ForEach(v => v.UpdateData());
             return data;
-        }
-
-        /// <summary>
-        /// お気に入り登録したアセットを更新
-        /// </summary>
-        public void CheckFavoritesAsset()
-        {
-            bool isUpdate = false;
-
-            foreach (var item in Data)
-            {
-                // アセット
-                var assetData = item.GetObject();
-                if (assetData == null)
-                {
-                    continue;
-                }
-
-                var oldPath = item.Path;
-                var oldLocalid = item.LocalId;
-
-                // GUIDでパスを取得
-                var newPath = AssetDatabase.GUIDToAssetPath(item.Guid);
-                if (newPath == string.Empty)
-                {
-                    continue;
-                }
-
-                // ローカルID
-                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(assetData, out string guid, out long localid))
-                {
-                    item.LocalId = localid;
-                }
-
-                item.Path = newPath;
-                item.Name = assetData.name;
-                item.Type = assetData.GetType().ToString();
-
-                // 更新判定
-                isUpdate = isUpdate ? isUpdate : (oldPath != item.Path || oldLocalid != item.LocalId);
-            }
-
-            if (isUpdate)
-            {
-                SaveFavoritesData();
-            }
         }
 
         /// <summary>
