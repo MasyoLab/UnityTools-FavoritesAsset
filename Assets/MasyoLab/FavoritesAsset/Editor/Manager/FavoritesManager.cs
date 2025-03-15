@@ -69,6 +69,17 @@ namespace MasyoLab.Editor.FavoritesAsset
         }
 
         /// <summary>
+        /// お気に入り登録したアセットを更新
+        /// </summary>
+        public void CheckFavoritesAsset()
+        {
+            foreach (var item in m_assetDB.Inst.Ref)
+            {
+                item.UpdateData();
+            }
+        }
+
+        /// <summary>
         /// お気に入りデータを読み込む
         /// </summary>
         /// <param name="fileName"></param>
