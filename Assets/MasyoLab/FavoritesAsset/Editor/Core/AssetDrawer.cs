@@ -78,62 +78,6 @@ namespace MasyoLab.Editor.FavoritesAsset
         }
 
         /// <summary>
-        /// アセットを開くボタン
-        /// </summary>
-        /// <param name="pipeline"></param>
-        /// <param name="win"></param>
-        /// <param name="data"></param>
-        /// <param name="onButtonAction"></param>
-        public static void OnAssetButton(IPipeline pipeline, EditorWindow win, AssetData data, UnityAction<AssetData> onButtonAction = null)
-        {
-            DrawingSetting(pipeline, data, (content, style) =>
-            {
-                float width = win.position.width - 100f;
-                if (GUILayout.Button(content, style, GUILayout.MaxWidth(width), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT)))
-                {
-                    onButtonAction?.Invoke(data);
-                }
-            });
-        }
-
-        /// <summary>
-        /// アセットを開くボタン
-        /// </summary>
-        /// <param name="pipeline"></param>
-        /// <param name="data"></param>
-        /// <param name="onButtonAction"></param>
-        public static void OnAssetButton(IPipeline pipeline, AssetData data, UnityAction<AssetData> onButtonAction = null)
-        {
-            DrawingSetting(pipeline, data, (content, style) =>
-            {
-                if (GUILayout.Button(content, style, GUILayout.ExpandWidth(true), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT)))
-                {
-                    onButtonAction?.Invoke(data);
-                }
-            });
-        }
-
-        /// <summary>
-        /// アセットをPingする
-        /// </summary>
-        /// <param name="data"></param>
-        public static void OnPingObjectButton(AssetData data)
-        {
-            // アイコンを指定
-            var content = EditorGUIUtility.IconContent(CONST.ICON_ANIMATION_VISIBILITY_TOGGLE_ON);
-            if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT)))
-            {
-                // アセットの情報
-                var asset = data.GetObject();
-                var oldActiveObject = Selection.activeObject;
-                Selection.activeObject = asset;
-                EditorGUIUtility.PingObject(asset);
-                EditorUtility.FocusProjectWindow();
-                Selection.activeObject = oldActiveObject;
-            }
-        }
-
-        /// <summary>
         /// アセットをPingする
         /// </summary>
         /// <param name="rect"></param>
@@ -152,24 +96,6 @@ namespace MasyoLab.Editor.FavoritesAsset
                 EditorUtility.FocusProjectWindow();
                 Selection.activeObject = oldActiveObject;
             }
-        }
-
-        /// <summary>
-        /// お気に入り解除
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="onButtonAction"></param>
-        /// <returns></returns>
-        public static bool OnUnfavoriteButton(AssetData data, UnityAction<AssetData> onButtonAction = null)
-        {
-            // アイコンを指定
-            var content = EditorGUIUtility.IconContent(CONST.ICON_CLOSE);
-            if (GUILayout.Button(content, GUILayout.ExpandWidth(false), GUILayout.Height(CONST.GUI_LAYOUT_HEIGHT)))
-            {
-                onButtonAction?.Invoke(data);
-                return true;
-            }
-            return false;
         }
 
         /// <summary>

@@ -84,6 +84,15 @@ The following data is included in the import/export target.
 - 2020.3 LTS
 - 2019.4 LTS
 
+## Other
+
+This extension is a tool I created as a hobby.
+
+Regarding feature additions, I will work on them if I have good ideas and motivation.  
+If you have any ideas, pull requests for feature extensions are very welcome.
+
+Regarding bug fixes that have been reported, I will fix them as quickly as 1 week, or as late as 3 weeks.
+
 ## License
 
 This extension editor is licensed under the MIT License. Please see [LICENSE](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md) for more information.
