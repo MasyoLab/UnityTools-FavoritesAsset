@@ -2,7 +2,7 @@
   "name": "com.masyo-lab.favorites-asset",
   "displayName": "Favorites Asset Window",
   "version": "1.5.2",
-  "unity": "2019.4 || 2020.3 || 2021.3 || 2022.3 || 6000.0",
+  "unity": "2019.4",
   "description": "This function allows you to bookmark (register as a favorite) resources.\nMIT License\nCopyright (c) 2021 MasyoLab",
   "author": {
     "name": "MasyoLab",
