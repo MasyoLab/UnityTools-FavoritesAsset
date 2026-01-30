@@ -4,6 +4,11 @@
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
 
+| English | [日本語](README_ja.md) |
+| :------: | :---- |
+
+## Overview
+
 This function allows you to bookmark (register as a favorite) resources.
 
 ![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
