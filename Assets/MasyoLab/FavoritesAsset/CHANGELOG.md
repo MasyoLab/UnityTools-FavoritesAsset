@@ -1,3 +1,7 @@
+## [1.5.3] - 2026-01-30
+### Cleanups
+- Removed `Editor/Attributes.meta` to stop spamming console warnings. (cleanup)
+
 ## [1.5.2] - 2025-03-16
 ### Bug Fixes
 - [#62](https://github.com/MasyoLab/UnityTools-FavoritesAsset/issues/62) Regarding the behavior when registering an item that contains only one subAsset
