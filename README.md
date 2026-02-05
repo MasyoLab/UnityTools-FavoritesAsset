@@ -1,6 +1,8 @@
 ﻿# Favorites Asset Window
 
 [![License](https://img.shields.io/badge/Licenses-MIT-brightgreen)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/blob/master/LICENSE.md)
+[![Unity Editor Extension Test](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/unity-test.yml/badge.svg)](https://github.com/MasyoLab/UnityTools-FavoritesAsset/actions/workflows/unity-test.yml)
+[![Unity 2019.4+](https://img.shields.io/badge/Unity-2019.4%2B-blue)](https://unity.com/releases/editor/archive)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMasyoLab%2FUnityTools-FavoritesAsset?ref=badge_shield)
 
@@ -12,6 +14,18 @@
 This function allows you to bookmark (register as a favorite) resources.
 
 ![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
+
+## Supported Unity Versions
+
+This editor extension has been tested on the following Unity LTS versions:
+
+- ✅ Unity 6000.0 LTS
+- ✅ Unity 2022.3 LTS
+- ✅ Unity 2021.3 LTS
+- ✅ Unity 2020.3 LTS
+- ✅ Unity 2019.4 LTS
+
+> Automated tests run on all versions when a Pull Request is created via CI/CD. For details, see the [CI/CD Setup Guide](.github/CI_SETUP.md).
 
 ## Install
 

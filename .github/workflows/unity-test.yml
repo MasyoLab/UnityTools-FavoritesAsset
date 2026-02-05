@@ -1,0 +1,90 @@
+name: Unity Editor Extension Test
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+      - feature/**
+    paths:
+      - 'Assets/**'
+      - 'Packages/**'
+      - 'ProjectSettings/**'
+      - '.github/workflows/unity-test.yml'
+
+jobs:
+  test-editor-extension:
+    name: Unity ${{ matrix.unityVersion }} - Editor Extension Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        unityVersion:
+          - 6000.0.28f1  # Unity 6000.0 LTS
+          - 2022.3.54f1  # Unity 2022.3 LTS
+          - 2021.3.45f1  # Unity 2021.3 LTS
+          - 2020.3.48f1  # Unity 2020.3 LTS
+          - 2019.4.40f1  # Unity 2019.4 LTS
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      
+      - name: Cache Library folder
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ matrix.unityVersion }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.unityVersion }}-
+            Library-
+      
+      - name: Run EditMode tests and compilation check
+        uses: game-ci/unity-test-runner@v4
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: EditMode
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: Unity ${{ matrix.unityVersion }} Test Results
+          customParameters: -enableCodeCoverage
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test results (Unity ${{ matrix.unityVersion }})
+          path: ${{ steps.tests.outputs.artifactsPath }}
+          retention-days: 7
+      
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.tests.outcome }}" == "success" ]; then
+            echo "✅ Unity ${{ matrix.unityVersion }} - All tests passed and compilation successful"
+          else
+            echo "❌ Unity ${{ matrix.unityVersion }} - Tests failed or compilation errors detected"
+            exit 1
+          fi
+
+  status-check:
+    name: All Unity Versions Passed
+    runs-on: ubuntu-latest
+    needs: [test-editor-extension]
+    if: always()
+    steps:
+      - name: Check all test results
+        run: |
+          if [ "${{ needs.test-editor-extension.result }}" != "success" ]; then
+            echo "❌ Some Unity versions failed the tests"
+            echo "Please check the test results for each Unity version"
+            exit 1
+          fi
+          echo "✅ All Unity versions passed successfully!"
+          echo "Tested versions: 6000.0, 2022.3, 2021.3, 2020.3, 2019.4 LTS"
