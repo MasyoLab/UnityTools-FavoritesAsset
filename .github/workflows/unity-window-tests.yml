@@ -9,43 +9,23 @@ on:
 jobs:
   editmode-tests:
     runs-on: ubuntu-latest
-    strategy:
+      strategy:
       fail-fast: false
       matrix:
-        # Provide unityVersion and a comma-separated list of candidate docker tags to try.
         include:
           - unityVersion: '6000.3f1'
-            candidates: 'ubuntu-6000.0.67f1-webgl-3.2.1,ubuntu-6000.0.67f1-base-3,6000.0.67f1-webgl-3'
+            customImage: 'unityci/editor:ubuntu-6000.0.67f1-webgl-3.2.1'
           - unityVersion: '2022.3.30f1'
-            candidates: 'ubuntu-2022.3.30f1-base-0,ubuntu-2022.3.30f1-linux-il2cpp-0,ubuntu-2022.3.30f1'
+            customImage: 'unityci/editor:ubuntu-2022.3.30f1-linux-il2cpp-3.2.1'
           - unityVersion: '2021.3.32f1'
-            candidates: 'ubuntu-2021.3.32f1-base-0,ubuntu-2021.3.32f1-linux-il2cpp-0,ubuntu-2021.3.32f1'
+            customImage: 'unityci/editor:ubuntu-2021.3.32f1-linux-il2cpp-3.2.1'
           - unityVersion: '2020.3.48f1'
-            candidates: 'ubuntu-2020.3.48f1-base-0,ubuntu-2020.3.48f1-linux-il2cpp-0,ubuntu-2020.3.48f1'
+            customImage: 'unityci/editor:ubuntu-2020.3.48f1-linux-il2cpp-3.2.1'
           - unityVersion: '2019.4.40f1'
-            candidates: 'ubuntu-2019.4.40f1-base-0,ubuntu-2019.4.40f1-linux-il2cpp-0,ubuntu-2019.4.40f1'
+            customImage: 'unityci/editor:ubuntu-2019.4.40f1-linux-il2cpp-3.2.1'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Pick available unityci/editor image
-        id: pick-image
-        run: |
-          set -e
-          echo "Candidates: ${{ matrix.candidates }}"
-          IFS=',' read -ra TAGS <<< "${{ matrix.candidates }}"
-          FOUND=""
-          for t in "${TAGS[@]}"; do
-            echo "Trying to pull unityci/editor:${t} ..."
-            if docker pull "unityci/editor:${t}"; then
-              echo "Found image: unityci/editor:${t}"
-              FOUND="unityci/editor:${t}"
-              break
-            else
-              echo "Not available: unityci/editor:${t}"
-            fi
-          done
-          echo "custom_image=${FOUND}" >> $GITHUB_OUTPUT
 
       - name: Run Edit Mode tests
         uses: game-ci/unity-test-runner@v2
@@ -55,7 +35,7 @@ jobs:
           testMode: editmode
           # Save test results into the workspace for artifact upload
           artifactsPath: TestResults
-          customImage: ${{ steps.pick-image.outputs.custom_image }}
+          customImage: ${{ matrix.customImage }}
         env:
           # A Unity license or activation method is required for some hosted runners.
           # Add `UNITY_LICENSE` as a repository secret (content of Unity license file) if needed.
