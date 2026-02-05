@@ -61,7 +61,7 @@ jobs:
           unityVersion: 2021.3.45f1
       
       - name: Upload activation file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Manual Activation File
           path: ${{ steps.getManualLicenseFile.outputs.filePath }}
