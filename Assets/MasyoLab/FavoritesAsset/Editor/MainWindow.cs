@@ -13,7 +13,7 @@ using UnityEditor;
 
 namespace MasyoLab.Editor.FavoritesAsset
 {
-    class MainWindow : EditorWindow
+    public class MainWindow : EditorWindow
     {
         private class Pipeline : IPipeline
         {

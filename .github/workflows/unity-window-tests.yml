@@ -1,0 +1,39 @@
+name: Unity Editor Window Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  editmode-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Specific patch versions (latest-patch examples). Replace if you want exact different patches.
+        unityVersion: [ '6000.3f1', '2022.3.30f1', '2021.3.32f1', '2020.3.48f1', '2019.4.40f1' ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Edit Mode tests
+        uses: game-ci/unity-test-runner@v2
+        with:
+          unityVersion: ${{ matrix.unityVersion }}
+          projectPath: .
+          testMode: editmode
+          # Save test results into the workspace for artifact upload
+          testResults: TestResults
+        env:
+          # A Unity license or activation method is required for some hosted runners.
+          # Add `UNITY_LICENSE` as a repository secret (content of Unity license file) if needed.
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editmode-test-results-${{ matrix.unityVersion }}
+          path: TestResults
