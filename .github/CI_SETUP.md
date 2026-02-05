@@ -6,11 +6,14 @@
 
 以下のUnity LTSバージョンで自動テストが実行されます：
 
-- Unity 6000.0 LTS (6000.0.28f1)
-- Unity 2022.3 LTS (2022.3.54f1)
-- Unity 2021.3 LTS (2021.3.45f1)
-- Unity 2020.3 LTS (2020.3.48f1)
-- Unity 2019.4 LTS (2019.4.40f1)
+- Unity 6000.3 LTS (6000.3.7f1)
+- Unity 6000.3 LTS (6000.3.0f1)
+- Unity 6000.0 LTS (6000.0.67f1)
+- Unity 6000.0 LTS (6000.0.59f2)
+- Unity 2022.3 LTS (2022.3.62f3)
+- Unity 2021.3 LTS (2021.3.45f2)
+- Unity 2020.3 LTS (2020.3.49f1)
+- Unity 2019.4 LTS (2019.4.41f2)
 
 ## GitHub Secretsの設定
 

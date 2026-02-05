@@ -15,18 +15,6 @@ This function allows you to bookmark (register as a favorite) resources.
 
 ![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
 
-## Supported Unity Versions
-
-This editor extension has been tested on the following Unity LTS versions:
-
-- ✅ Unity 6000.0 LTS
-- ✅ Unity 2022.3 LTS
-- ✅ Unity 2021.3 LTS
-- ✅ Unity 2020.3 LTS
-- ✅ Unity 2019.4 LTS
-
-> Automated tests run on all versions when a Pull Request is created via CI/CD. For details, see the [CI/CD Setup Guide](.github/CI_SETUP.md).
-
 ## Install
 
 ### PackageManager
@@ -95,13 +83,17 @@ The following data is included in the import/export target.
 - Favorite Groups
 - Last Favorite Group Opened
 
-## Supported Versions
+## Supported Unity Versions
 
-- 6000.0 LTS
-- 2022.3 LTS
-- 2021.3 LTS
-- 2020.3 LTS
-- 2019.4 LTS
+This editor extension has been tested on the following Unity LTS versions:
+
+- ✅ Unity 6000.0 LTS
+- ✅ Unity 2022.3 LTS
+- ✅ Unity 2021.3 LTS
+- ✅ Unity 2020.3 LTS
+- ✅ Unity 2019.4 LTS
+
+> Automated tests run on all versions when a Pull Request is created via CI/CD. For details, see the [CI/CD Setup Guide](.github/CI_SETUP.md).
 
 ## Other
 

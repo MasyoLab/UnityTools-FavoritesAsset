@@ -15,18 +15,6 @@
 
 ![main](https://user-images.githubusercontent.com/20793765/129486046-a0e18e0d-a60f-4532-a188-be63b02f8781.png)
 
-## 対応バージョン
-
-このエディタ拡張は、以下のUnity LTSバージョンで動作確認されています：
-
-- ✅ Unity 6000.0 LTS
-- ✅ Unity 2022.3 LTS
-- ✅ Unity 2021.3 LTS
-- ✅ Unity 2020.3 LTS
-- ✅ Unity 2019.4 LTS
-
-> CI/CDにより、Pull Request作成時に全バージョンで自動テストが実行されます。詳細は[CI/CDセットアップガイド](.github/CI_SETUP.md)をご確認ください。
-
 ## インストール方法
 
 ### パッケージマネージャー
@@ -96,13 +84,17 @@ https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/F
 - お気に入りグループ
 - 最後に開いていたお気に入りグループ
 
-## サポートされているバージョン
+## 対応バージョン
 
-- 6000.0 LTS
-- 2022.3 LTS
-- 2021.3 LTS
-- 2020.3 LTS
-- 2019.4 LTS
+このエディタ拡張は、以下のUnity LTSバージョンで動作確認されています：
+
+- ✅ Unity 6000.0 LTS
+- ✅ Unity 2022.3 LTS
+- ✅ Unity 2021.3 LTS
+- ✅ Unity 2020.3 LTS
+- ✅ Unity 2019.4 LTS
+
+> CI/CDにより、Pull Request作成時に全バージョンで自動テストが実行されます。詳細は[CI/CDセットアップガイド](.github/CI_SETUP.md)をご確認ください。
 
 ## その他
 
