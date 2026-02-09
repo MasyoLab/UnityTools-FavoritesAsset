@@ -1,0 +1,86 @@
+name: Build and Release Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    name: Build Unity Package and Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version: $VERSION"
+      
+      - name: Cache Library folder
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-build-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-build-
+            Library-
+      
+      - name: Build Unity Package
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 2022.3.62f3
+          targetPlatform: StandaloneLinux64
+          buildMethod: CI.Builder.Build
+          versioning: None
+          allowDirtyBuild: true
+      
+      - name: Verify package exists
+        run: |
+          if [ ! -f "FavoritesAsset.unitypackage" ]; then
+            echo "❌ Package file not found!"
+            exit 1
+          fi
+          echo "✅ Package file created successfully"
+          ls -lh FavoritesAsset.unitypackage
+      
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Release ${{ steps.version.outputs.tag }}
+          body: |
+            ## Favorites Asset ${{ steps.version.outputs.version }}
+            
+            Unity package release for version ${{ steps.version.outputs.version }}.
+            
+            ### Installation
+            Download `FavoritesAsset.unitypackage` and import it into your Unity project.
+            
+            ### Changes
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md) for details.
+          files: |
+            FavoritesAsset.unitypackage
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Summary
+        run: |
+          echo "✅ Successfully built and released version ${{ steps.version.outputs.version }}"
+          echo "📦 Package: FavoritesAsset.unitypackage"
+          echo "🔗 Release URL: ${{ steps.create_release.outputs.url }}"
