@@ -87,6 +87,7 @@ The following data is included in the import/export target.
 
 This editor extension has been tested on the following Unity LTS versions:
 
+- ✅ Unity 6000.3 LTS
 - ✅ Unity 6000.0 LTS
 - ✅ Unity 2022.3 LTS
 - ✅ Unity 2021.3 LTS
