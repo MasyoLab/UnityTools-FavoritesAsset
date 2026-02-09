@@ -246,6 +246,47 @@ namespace MasyoLab.Editor.FavoritesAsset
         }
 
         /// <summary>
+        /// マウスが特定の EditorWindow 上にあるか
+        /// </summary>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        private static bool IsMouseOverWindow(EditorWindow window)
+        {
+            if (window == null)
+            {
+                return false;
+            }
+
+            // 標準判定（速い）
+            if (EditorWindow.mouseOverWindow == window)
+            {
+                return true;
+            }
+
+#if UNITY_6000_3_OR_NEWER
+            // フォールバック：イベントのマウス座標をスクリーン座標に変換してウィンドウ矩形と比較
+            // Unity 6000.3 LTS で発生する回帰バグ回避:
+            // ドラッグ操作中に `EditorWindow.mouseOverWindow` が更新されない問題が発生。
+            // そのためドラッグ中はイベントの mousePosition をスクリーン座標に変換し、
+            // 全ての EditorWindow の矩形と比較してマウス下のウィンドウを判定するフォールバック実装を使用します。
+            // This is a workaround for a regression in Unity 6000.3 LTS where
+            // `EditorWindow.mouseOverWindow` is not updated during drag operations.
+            // Use Event.current.mousePosition -> GUIUtility.GUIToScreenPoint and compare
+            // against window.position as a fallback.
+            var ev = Event.current;
+            if (ev == null)
+            {
+                return false;
+            }
+
+            var screenPoint = GUIUtility.GUIToScreenPoint(ev.mousePosition);
+            return window.position.Contains(screenPoint);
+#else
+            return false;
+#endif
+        }
+
+        /// <summary>
         /// ドラッグ&ドロップでオブジェクトを取得
         /// </summary>
         /// <param name="targetList"></param>
@@ -282,6 +323,10 @@ namespace MasyoLab.Editor.FavoritesAsset
         private static UnityEngine.Object[] GetObjects(EditorWindow window, Rect? rect = null)
         {
             var ev = Event.current;
+            if (ev == null)
+            {
+                return null;
+            }
 
             // エリアが指定されていれば範囲内か確認
             if (rect.HasValue && !rect.Value.Contains(ev.mousePosition))
@@ -296,7 +341,12 @@ namespace MasyoLab.Editor.FavoritesAsset
             }
 
             var paths = DragAndDrop.paths;
-            if (EditorWindow.mouseOverWindow != window || paths.Length <= 0)
+            if (paths == null)
+            {
+                return null;
+            }
+
+            if (!IsMouseOverWindow(window) || paths.Length <= 0)
             {
                 return null;
             }

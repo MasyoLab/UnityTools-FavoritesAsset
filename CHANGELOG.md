@@ -1,3 +1,7 @@
+## [1.5.4] - 2026-02-09
+### Bug Fixes
+- Fix bug occurring on Unity 6.3 LTS. (#69)
+
 ## [1.5.3] - 2026-01-30
 ### Cleanups
 - Removed `Editor/Attributes.meta` to stop spamming console warnings. (cleanup)

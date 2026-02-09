@@ -88,6 +88,7 @@ https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/F
 
 このエディタ拡張は、以下のUnity LTSバージョンで動作確認されています：
 
+- ✅ Unity 6000.3 LTS
 - ✅ Unity 6000.0 LTS
 - ✅ Unity 2022.3 LTS
 - ✅ Unity 2021.3 LTS
