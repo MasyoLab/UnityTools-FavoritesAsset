@@ -1,3 +1,7 @@
+## [1.5.5] - 2026-02-19
+## Changes
+- fix(asmdef): set Examples asmdef to Editor platform
+
 ## [1.5.4] - 2026-02-09
 ### Bug Fixes
 - Fix bug occurring on Unity 6.3 LTS. (#69)

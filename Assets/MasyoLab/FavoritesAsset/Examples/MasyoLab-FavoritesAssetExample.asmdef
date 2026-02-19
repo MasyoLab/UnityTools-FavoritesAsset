@@ -1,9 +1,12 @@
 {
     "name": "MasyoLab-FavoritesAssetExamples",
+    "rootNamespace": "",
     "references": [
         "GUID:819346cd6af928a428f4bddbc8dc5b7d"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
