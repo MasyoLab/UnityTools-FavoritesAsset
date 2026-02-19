@@ -1,6 +1,6 @@
 ## [1.5.5] - 2026-02-19
 ## Changes
-- fix(asmdef): set Examples asmdef to Editor platform
+- fix(asmdef): set Examples asmdef to Editor platform (Assets/MasyoLab/FavoritesAsset/Examples/MasyoLab-FavoritesAssetExample.asmdef)
 
 ## [1.5.4] - 2026-02-09
 ### Bug Fixes
