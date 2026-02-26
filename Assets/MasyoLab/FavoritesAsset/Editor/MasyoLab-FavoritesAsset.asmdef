@@ -1,5 +1,6 @@
 {
     "name": "MasyoLab-FavoritesAsset",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [
         "Editor"
@@ -10,6 +11,22 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "Unity",
+            "expression": "[6000.3.0f1,6000.3.10f1]",
+            "define": "FAVORITES_ASSET_1_5_4_69"
+        },
+        {
+            "name": "Unity",
+            "expression": "[6000.4.0b1,6000.4.0b10]",
+            "define": "FAVORITES_ASSET_1_5_4_69"
+        },
+        {
+            "name": "Unity",
+            "expression": "[6000.5.0a1,6000.5.0a7]",
+            "define": "FAVORITES_ASSET_1_5_4_69"
+        }
+    ],
     "noEngineReferences": false
 }

@@ -263,7 +263,7 @@ namespace MasyoLab.Editor.FavoritesAsset
                 return true;
             }
 
-#if UNITY_6000_3_OR_NEWER
+#if FAVORITES_ASSET_1_5_4_69
             // フォールバック：イベントのマウス座標をスクリーン座標に変換してウィンドウ矩形と比較
             // Unity 6000.3 LTS で発生する回帰バグ回避:
             // ドラッグ操作中に `EditorWindow.mouseOverWindow` が更新されない問題が発生。
