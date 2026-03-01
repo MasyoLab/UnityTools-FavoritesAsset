@@ -1,3 +1,7 @@
+## [1.5.6] - 2026-xx-xx
+## Changes
+- Set the target Unity version for the fix in #69 and #77
+
 ## [1.5.5] - 2026-02-19
 ## Changes
 - fix(asmdef): set Examples asmdef to Editor platform (Assets/MasyoLab/FavoritesAsset/Examples/MasyoLab-FavoritesAssetExample.asmdef)
