@@ -20,9 +20,9 @@ jobs:
       fail-fast: false
       matrix:
         unityVersion:
-          - 6000.3.7f1   # Unity 6000.3 LTS
+          - 6000.3.10f1  # Unity 6000.3 LTS
           - 6000.3.0f1   # Unity 6000.3 LTS
-          - 6000.0.67f1  # Unity 6000.0 LTS
+          - 6000.0.68f1  # Unity 6000.0 LTS
           - 6000.0.59f2  # Unity 6000.0 LTS
           - 2022.3.62f3  # Unity 2022.3 LTS
           - 2021.3.45f2  # Unity 2021.3 LTS
