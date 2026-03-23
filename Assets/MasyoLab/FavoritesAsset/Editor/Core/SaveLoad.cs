@@ -23,6 +23,11 @@ namespace MasyoLab.Editor.FavoritesAsset
                 return;
             }
 
+            if (filePath.Contains(".."))
+            {
+                throw new System.ArgumentException("Invalid file path");
+            }
+
             // 保存処理
             System.IO.File.WriteAllText(filePath, jsonData);
         }
