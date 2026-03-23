@@ -105,6 +105,10 @@ namespace MasyoLab.Editor.FavoritesAsset
         /// <returns></returns>
         private static FileInfo CreateDirectoryFromFilePath(string filePath)
         {
+            if (filePath == null || filePath.Contains(".."))
+            {
+                throw new System.ArgumentException("Invalid file path");
+            }
             var index = filePath.LastIndexOf("/");
             if (index == -1)
             {
