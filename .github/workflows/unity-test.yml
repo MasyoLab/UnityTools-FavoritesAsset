@@ -45,7 +45,7 @@ jobs:
             Library-
       
       - name: Run EditMode tests and compilation check
-        uses: game-ci/unity-test-runner@v4
+        uses: game-ci/unity-test-runner@0ff419b913a3630032cbe0de48a0099b5a9f0ed9 # v4.3.1
         id: tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
