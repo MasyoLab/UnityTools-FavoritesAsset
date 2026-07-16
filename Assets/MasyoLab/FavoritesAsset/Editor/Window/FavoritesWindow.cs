@@ -296,7 +296,8 @@ namespace MasyoLab.Editor.FavoritesAsset
             }
 
             var paths = DragAndDrop.paths;
-            if (EditorWindow.focusedWindow != window || paths.Length <= 0)
+            var isTargetWindow = EditorWindow.mouseOverWindow == window || EditorWindow.focusedWindow == window;
+            if (!isTargetWindow || paths.Length <= 0)
             {
                 return null;
             }
