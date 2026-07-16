@@ -75,7 +75,7 @@ jobs:
             #### Option 2: Using Git URL (Unity 2019.4+)
             In Unity Package Manager, select "Add package from git URL" and paste:
             ```
-            https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/FavoritesAsset#${{ steps.version.outputs.tag }}
+            https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/FavoritesAsset
             ```
             
             ### Changes
