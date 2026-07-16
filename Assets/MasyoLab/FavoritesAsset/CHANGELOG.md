@@ -1,3 +1,7 @@
+## [1.5.7] - 2026-07-17
+### Bug Fixes
+- Cannot drag assets from the Project window into Favourite Asset Window when the latter is docked (#88)
+
 ## [1.5.6] - 2026-03-12
 ## Changes
 - Refactor: Switch to EditorWindow.focusedWindow to resolve (#77)
