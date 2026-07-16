@@ -68,7 +68,15 @@ jobs:
             Unity package release for version ${{ steps.version.outputs.version }}.
             
             ### Installation
+            
+            #### Option 1: Using .unitypackage
             Download `FavoritesAsset.unitypackage` and import it into your Unity project.
+            
+            #### Option 2: Using Git URL (Unity 2019.4+)
+            In Unity Package Manager, select "Add package from git URL" and paste:
+            ```
+            https://github.com/MasyoLab/UnityTools-FavoritesAsset.git?path=Assets/MasyoLab/FavoritesAsset#${{ steps.version.outputs.tag }}
+            ```
             
             ### Changes
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md) for details.
